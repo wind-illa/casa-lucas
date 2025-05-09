@@ -1,0 +1,76 @@
+<div class="admin-container">
+  <%= render 'admin/shared/sidevar' %>
+  <div class="banner-content">
+    <div class="ajustes-container-full">
+
+      <div class="container-ajustes-link">
+
+        <%= link_to admin_shipping_methods_path, class: 'link-Ajustes'  do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-truck') %>"></use>
+          </svg>
+          <div class="list-text">
+            <h2>Métodos de envío</h2>
+            <span>Edita o elimina opciones de envío según las necesidades de tu negocio</span>
+          </div>
+        <% end %>
+
+        <%= link_to admin_payment_methods_path, class: 'link-Ajustes'  do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-wallet') %>"></use>
+          </svg>
+          <div class="list-text">
+            <h2>Medios de pago</h2>
+            <span>Permite que los clientes elijan la opción que mejor se adapte a sus necesidades</span>
+          </div>
+        <% end %>
+
+        <%= link_to admin_discount_ranges_path, class: 'link-Ajustes'  do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-sale') %>"></use>
+          </svg>
+          <div class="list-text">
+            <h2>Rangos de descuentos</h2>
+            <span>Configura descuentos graduales e ideales según la cantidad de compra</span>
+          </div>
+        <% end %>
+
+        <%= link_to admin_banners_path, class: 'link-Ajustes'  do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-banner') %>"></use>
+          </svg>
+          <div class="list-text">
+            <h2>Banners</h2>
+            <span>Configura los banners que se mostrarán en el Home, tanto para móvil como para escritorio</span>
+          </div>
+        <% end %>
+
+        <%= link_to admin_bank_accounts_path, class: 'link-Ajustes'  do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#cash-icon') %>"></use>
+          </svg>
+          <div class="list-text">
+            <h2>Cuentas Bancarias</h2>
+            <span>Administra las cuentas bancarias para recibir transferencias</span>
+          </div>
+        <% end %>
+
+        <%= link_to admin_mercado_pago_tokens_path, class: 'link-Ajustes'  do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#Orden-iniciada') %>"></use>
+          </svg>
+          <div class="list-text">
+            <h2>Tokens de Mercado Pago</h2>
+            <span>Administra los tokens de Mercado Pago de forma sencilla y segura</span>
+          </div>
+        <% end %>
+
+
+
+
+
+      </div>
+      </div>
+
+  </div>
+</div>

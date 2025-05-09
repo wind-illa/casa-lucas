@@ -1,0 +1,42 @@
+<div class="settings-menu">
+  <div class="products-navigation">
+    <ol>
+      <li>
+        <%= link_to account_main_path do %>
+          <span>Cuenta</span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+          </svg>
+        <% end %>
+      </li>
+      <li>
+        <span>Configuración de mi cuenta</span>
+      </li>
+    </ol>
+  </div>
+
+  <div class="categories-title">
+    <div class="title">
+      <%= link_to account_main_path, class: 'arrow-back-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+        </svg>
+      <% end %>
+      <h1 class="category-title">Configuración de mi cuenta</h1>
+      <div class="arrow-back-link space"></div>
+    </div>
+  </div>
+
+
+  <div class="settings-container">
+    <div class="settings-options">
+      <%= button_to account_delete_account_settings_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: '¿Estás seguro de que deseas eliminar tu cuenta?' }, class: 'btn-danger-custom' do %>
+        <div class="button-content">
+          <h2>Eliminar mi cuenta</h2>
+          <p>Esto cancelará tu cuenta y eliminará tus datos personales y el historial de compras.</p>
+        </div>
+        <%= image_tag 'logos/Icon-trash-animate.gif', alt: 'Eliminar cuenta', class: 'icon' %>
+      <% end %>
+    </div>
+  </div>
+</div>

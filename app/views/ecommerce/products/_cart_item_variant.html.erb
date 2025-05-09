@@ -1,0 +1,45 @@
+
+
+<% cart_item_variant = cart.cart_items.find_by(product_id: product.id, variant_id: variant&.id) %>
+
+
+<turbo-frame id="cart-item-container-variant-<%= variant&.id %>">
+  <div class="cart-item-container-variant">
+    <% if cart_item_variant %>
+      <% if cart_item_variant.quantity == 1 %>
+        <!-- Formulario para eliminar la variante del carrito -->
+        <%= form_with url: ecommerce_cart_item_path(cart_item_variant), method: :delete, local: true do |f| %>
+          <button type="submit" class="btn btn-remove-from-cart">
+            <svg class="icon">
+              <use href="<%= asset_path('icons/admin.svg#icon-delete-blanco') %>"></use>
+            </svg>
+          </button>
+        <% end %>
+      <% else %>
+        <!-- Formulario para reducir la cantidad -->
+        <%= form_with url: ecommerce_cart_item_path(cart_item_variant), method: :put, local: true do |f| %>
+          <%= f.hidden_field :quantity, value: cart_item_variant.quantity - 1 if cart_item_variant.quantity > 1 %>
+          <%= f.submit "-", class: "btn btn-reduce-quantity" %>
+        <% end %>
+      <% end %>
+
+      <span class="cart-item-quantity">
+        <%= cart_item_variant.quantity %>
+        <%= cart_item_variant.quantity == 1 ? 'unidad' : 'unidades' %>
+      </span>
+
+      <%= form_with url: ecommerce_cart_items_path, method: :post do |f| %>
+        <%= f.hidden_field :product_id, value: product.id %>
+        <%= f.hidden_field :variant_id, value: variant&.id %>
+        <%= f.submit "+", class: "btn btn-add-to-cart" %>
+      <% end %>
+    <% else %>
+      <!-- Formulario para agregar al carrito -->
+      <%= form_with url: ecommerce_cart_items_path, method: :post, class: "add-to-cart-form" do |f| %>
+        <%= f.hidden_field :product_id, value: product.id %>
+        <%= f.hidden_field :variant_id, value: variant&.id %>
+        <%= f.submit "Agregar al carrito", class: "btn btn-add-to-carrito" %>
+      <% end %>
+    <% end %>
+  </div>
+</turbo-frame>

@@ -1,0 +1,19 @@
+<% if resource.errors.any? %>
+  <div id="error_explanation" class="error-container" data-turbo-cache="false">
+    <div class="alert-icon">
+      <%= image_tag "icons/Alert-icon.svg", alt: "Alert icon" %>
+    </div>
+    <div class="error-content">
+      <h2 class="error-title">
+        <%= I18n.t("errors.messages.not_saved",
+                  count: resource.errors.count,
+                  resource: translated_resource_name(resource.class.name.underscore)) %>
+      </h2>
+      <ul class="error-list">
+        <% resource.errors.full_messages.each do |message| %>
+          <li class="error-message"><%= message.split(" ", 2).last %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

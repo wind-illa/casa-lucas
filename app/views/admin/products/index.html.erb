@@ -1,0 +1,281 @@
+<div class="admin-container">
+  <%= render 'admin/shared/sidevar' %>
+  <div class="frame-principal-main">
+    <div class="filter-container"  >
+      <div class="search-container" data-controller="search">
+        <%= form_with url: admin_products_path, method: :get, data: { controller: 'search' } do |form| %>
+          <!-- Icono de búsqueda (no cambia) -->
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-search-button') %>"></use>
+          </svg>
+
+          <div class="search-input-container">
+            <%= form.text_field :query_text, placeholder: "Buscar...", value: params[:query_text], class: 'search-input', data: { search_target: 'input', action: 'input->search#toggleClearButton' } %>
+          </div>
+
+          <button type="button" id="clear-search" class="clear-button" style="display: none;" data-action="click->search#clearSearch" data-search-target="clearButton">
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-clear') %>"></use>
+            </svg>
+          </button>
+
+          <%= form.submit "Buscar", data: { action: "submit->search#submitForm" } %>
+        <% end %>
+      </div>
+
+      <div class="filter-container-modal" data-controller="menu">
+
+        <div class="filter">
+          <%= button_tag type: 'button', class: 'filter-button', data: { action: "click->menu#open" } do %>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-filter') %>"></use>
+            </svg>
+            <span>
+              Filtros
+            </span>
+          <% end %>
+        </div>
+
+        <!-- Modal lateral menu productos -->
+
+        <div class="modal-background" data-menu-target="background" data-action="click->menu#close">
+        </div>
+        <div class="modal-lateral" data-menu-target="modal">
+          <div class="modal-lateral-content">
+            <div class="modal-lateral-header">
+              <h2>Filtrar</h2>
+              <button class="close-modal" data-action="click->menu#close">
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-custom') %>"></use>
+                </svg>
+              </button>
+            </div>
+            <div class="modal-lateral-body">
+              <div class="modal">
+
+                  <div class="stock-filter" >
+                  <ul>
+                    <li>
+                      <%= link_to admin_products_path, class: "stock-filter-link" do %>
+                        Mostrar todo
+                        <svg class="icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icon-flecha-next-button') %>"></use>
+                        </svg>
+                      <% end %>
+                    </li>
+                    <li>
+                      <%= link_to admin_products_path(stock_status: "in_stock"), class: "stock-filter-link" do %>
+                        Mostrar solo con stock
+                        <svg class="icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icon-flecha-next-button') %>"></use>
+                        </svg>
+                      <% end %>
+                    </li>
+                    <li>
+                      <%= link_to admin_products_path(stock_status: "low_stock"), class: "stock-filter-link" do %>
+                        Mostrar con stock bajo
+                        <svg class="icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icon-flecha-next-button') %>"></use>
+                        </svg>
+                      <% end %>
+                    </li>
+                    <li>
+                      <%= link_to admin_products_path(stock_status: "out_of_stock"), class: "stock-filter-link" do %>
+                        Mostrar sin stock
+                        <svg class="icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icon-flecha-next-button') %>"></use>
+                        </svg>
+                      <% end %>
+                    </li>
+                  </ul>
+
+                </div>
+
+                <div class="categories-filter">
+                  <ul class="ul-categories">
+                    <% Category.all.each do |category| %>
+                      <li class="list-categories">
+                        <span class="title-categories"><%= category.category_name %></span>
+                        <ul class="ul-subcategories">
+                          <% category.subcategories.each do |subcategory| %>
+                            <li class="list-subcategories">
+                              <%= link_to admin_products_path(subcategory_id: subcategory.id), class: "subcategory-filter-link" do %>
+                                <div class="subcategory-item">
+                                  <% if subcategory.subcategory_image.attached? %>
+                                    <%= image_tag subcategory.subcategory_image, alt: subcategory.subcategory_name, class: 'subcategory-image' %>
+                                  <% else %>
+                                    <span>Sin imagen</span>
+                                  <% end %>
+                                  <span><%= subcategory.subcategory_name %></span>
+                                </div>
+                              <% end %>
+                            </li>
+                          <% end %>
+                        </ul>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="div-block-9">
+      <h1 class="heading-pantalla-copy">
+        Catálogo / Productos
+      </h1>
+      <div class="wrapper-bottones-tablas">
+        <%= link_to new_admin_product_path, class: "new-product-button" do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-add-product') %>"></use>
+          </svg>
+          <span>Nuevo producto</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="main-container-buscar">
+      <div class="tabla-principal">
+        <div class="scroll-tablas">
+          <table class="tabla-buscador">
+            <tbody>
+              <tr class="tabla-header">
+                <td class="td-sticky-img">Imagen</td>
+                <td>Sku</td>
+                <td>Nombre</td>
+                <td>Código de barras</td>
+                <td>Descripción</td>
+                <td>Categoría</td>
+                <td>Subcategoría</td>
+                <td>Precio</td>
+                <td>Descuento</td>
+                <td>Marca</td>
+                <td>Stock</td>
+                <td>Peso</td>
+                <td>Largo x Ancho x Alto</td>
+                <td>Colores</td>
+                <td></td>
+              </tr>
+              <% @products.each do |product| %>
+
+                <tr class="tabla-item">
+                  <td class="td-sticky-img">
+                    <%= link_to admin_product_path(product), class: "img-show" do %>
+                      <% if product.product_images.attached? %>
+                        <%= image_tag url_for(product.product_images.first), alt: "Imagen de #{product.product_name}", class: "product-thumbnail" %>
+                      <% else %>
+                        <span class="no-image">Sin imagen</span>
+                      <% end %>
+                    <% end %>
+
+                    <% if product.stock_quantity > 10 %>
+                      <span class="stock-indicator green"></span>
+                    <% elsif product.stock_quantity > 0 %>
+                      <span class="stock-indicator yellow"></span>
+                    <% else %>
+                      <span class="stock-indicator red"></span>
+                    <% end %>
+                  </td>
+                  <td><%= product.sku %></td>
+                  <td class="td-product-description"><%= product.product_name %></td>
+                  <td>
+                    <% if product.bar_codes.any? %>
+                      <% product.bar_codes.each do |barcode| %>
+                        <div class="barcode">
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-barras') %>"></use>
+                          </svg>
+                          <%= barcode.code %>
+                        </div>
+                      <% end %>
+                    <% else %>
+                      <span>Sin códigos</span>
+                    <% end %>
+                  </td>
+                  <td class="td-product-description"><%= product.product_description || "" %></td>
+                  <td><%= product.category&.category_name || "Sin categoría" %></td>
+                  <td><%= product.subcategory&.subcategory_name || "Sin subcategoría" %></td>
+                  <td><%= formato_precio(product.price) %></td>
+                  <td><%= product.price_discount.present? ? "#{product.price_discount}%" : "" %></td>
+                  <td><%= product.brand || "" %></td>
+                  <td><%= product.stock_quantity %></td>
+                  <td><%= product.weight.present? ? "#{product.weight} kg" : "" %></td>
+                  <td>
+                    <% if product.length && product.width && product.height %>
+                      <%= "#{product.length} x #{product.width} x #{product.height} cm" %>
+                    <% else %>
+
+                    <% end %>
+                  </td>
+                  <td><%= product.colors || "" %></td>
+
+                  <td class="action-buttons" data-controller="menu">
+
+
+                    <%= button_tag type: 'button', class: "btn-secondary", data: { action: "click->menu#open" } do %>
+                      <svg class="icon">
+                        <use xlink:href="<%= asset_path('icons/admin.svg#icon-menu-togle') %>"></use>
+                      </svg>
+                    <% end %>
+
+
+                    <div class="togle-background" data-menu-target="background" data-action="click->menu#close">
+                    </div>
+
+                    <ul class="togle-drop" data-menu-target="modal">
+                      <li>
+                        <%= link_to admin_product_path(product), class: "dropdown-item" do %>
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-detalle') %>"></use>
+                          </svg>
+                          <span>Ver detalle</span>
+                        <% end %>
+                      </li>
+                      <li>
+                        <%= link_to edit_admin_product_path(product), class: "dropdown-item" do %>
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-edit') %>"></use>
+                          </svg>
+                          <span>Editar</span>
+                        <% end %>
+                      </li>
+                      <li>
+                        <%= button_to admin_product_path(product),
+                                      method: :delete,
+                                      data: { turbo_confirm: "¿Estás seguro?" },
+                                      class: 'dropdown-item btn-delete-category' do %>
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-delete') %>"></use>
+                          </svg>
+                          <span>Eliminar</span>
+                        <% end %>
+                      </li>
+                    </ul>
+                  </td>
+
+
+
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <%= paginate @products, theme: 'custom-pagination' %>
+    </div>
+    <div class="div-block-10">
+      <div class="wrapper-bottones-tablas">
+        <%= link_to new_admin_product_path, class: "btn btn-primary new-product-button" do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-add-product') %>"></use>
+          </svg>
+          <span>Nuevo producto</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<% content_for :title, "Edita tus datos personales | Baratísimo Bazar" %>
+
+
+<div class="profile-edit">
+  <div class="container-edit">
+    <div class="profile-header">
+      <h1 class="profile-title">Ingresa un nuevo correo</h1>
+    </div>
+
+    <div class="profile-form">
+      <%= form_with model: current_user, url: account_profile_path(current_user), method: :patch, local: true do |form| %>
+        <div class="form-group">
+          <%= form.label :edit_email, 'E-mail' %>
+          <%= form.text_field :email, value: current_user.email, class: 'form-control', required: true %>
+        </div>
+
+
+        <div class="form-actions">
+          <%= form.submit 'Guardar Cambios', class: 'btn btn-primary' %>
+          <%= link_to 'Volver', information_account_profiles_path(current_user), class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

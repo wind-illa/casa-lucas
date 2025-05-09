@@ -1,0 +1,71 @@
+<nav class="sidebar" data-controller="sidebar">
+
+  <div class="sidebar-section">
+    <%= link_to admin_root_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+      <div class="barra-active"></div>
+      <svg class="icon">
+        <use xlink:href="<%= asset_path('icons/admin.svg#icon-inicio') %>"></use>
+      </svg>
+      <h2>Inicio</h2>
+    <% end %>
+
+
+    <div class="separador"></div>
+
+
+
+
+    <%= link_to home_admin_orders_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+      <div class="barra-active"></div>
+      <svg class="icon">
+        <use xlink:href="<%= asset_path('icons/admin.svg#icon-carrito') %>"></use>
+      </svg>
+      <h2>Ordenes</h2>
+    <% end %>
+
+    <%= link_to admin_categories_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+      <div class="barra-active"></div>
+      <svg class="icon">
+        <use xlink:href="<%= asset_path('icons/admin.svg#icon-categorias') %>"></use>
+      </svg>
+      <h2>Categorías</h2>
+    <% end %>
+
+    <%= link_to admin_products_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+      <div class="barra-active"></div>
+      <svg class="icon">
+        <use xlink:href="<%= asset_path('icons/admin.svg#icon-productos') %>"></use>
+      </svg>
+      <h2>Productos</h2>
+    <% end %>
+
+
+    <%= link_to clientes_admin_users_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+      <div class="barra-active"></div>
+      <svg class="icon">
+        <use xlink:href="<%= asset_path('icons/admin.svg#icon-clientes') %>"></use>
+      </svg>
+      <h2>usuarios</h2>
+    <% end %>
+
+    <%= link_to admin_settings_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+      <div class="barra-active"></div>
+      <svg class="icon">
+        <use xlink:href="<%= asset_path('icons/admin.svg#icon-settings') %>"></use>
+      </svg>
+      <h2>Configuración</h2>
+    <% end %>
+
+
+    <%= link_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: '¿Estás seguro de que deseas cerrar sesión?' }, class: "link salir" do %>
+      <div class="barra-active"></div>
+      <svg class="icon">
+        <use xlink:href="<%= asset_path('icons/admin.svg#icon-salir') %>"></use>
+      </svg>
+      <h2>Salir</h2>
+    <% end %>
+
+
+
+  </div>
+</nav>

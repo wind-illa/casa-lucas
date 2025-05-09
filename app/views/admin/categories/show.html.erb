@@ -1,0 +1,101 @@
+<div class="admin-container">
+  <%= render 'admin/shared/sidevar' %>
+
+  <div class="banner-content">
+    <div class="arrow-back" >
+      <%= link_to admin_categories_path, class: 'arrow-back-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+        </svg>
+        <span>Atrás</span>
+      <% end %>
+
+
+      <div class="search-container" data-controller="search">
+        <%= form_with url: admin_category_path(@category), method: :get, data: { controller: 'search' } do |form| %>
+          <!-- Icono de búsqueda (no cambia) -->
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-search-button') %>"></use>
+          </svg>
+
+          <div class="search-input-container">
+            <%= form.text_field :query_text,
+              placeholder: "Buscar...",
+              value: params[:query_text],
+              class: 'search-input',
+              data: { search_target: 'input', action: 'input->search#toggleClearButton' }
+            %>
+          </div>
+
+          <button type="button" id="clear-search" class="clear-button" style="display: none;"
+                  data-action="click->search#clearSearch" data-search-target="clearButton">
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-clear') %>"></use>
+            </svg>
+          </button>
+
+          <%= form.submit "Buscar", data: { action: "submit->search#submitForm" } %>
+        <% end %>
+      </div>
+
+
+
+    </div>
+    <div class="categories-container-show">
+      <% @subcategories.each do |subcategory| %>
+        <div class="category-card">
+          <div class="category-card-link">
+            <!-- Imagen de la subcategoría -->
+            <div class="category-photo">
+              <% if subcategory.subcategory_image.attached? %>
+                <%= image_tag subcategory.subcategory_image,
+                              class: 'category-photo-img',
+                              alt: "Imagen de la categoría #{@category.category_name}" %>
+              <% else %>
+                <p class="category-photo-placeholder">Imagen no disponible</p>
+              <% end %>
+            </div>
+
+            <!-- Contenido de la subcategoría -->
+            <div class="category-content">
+              <div class="category-card-header">
+                <h3 class="category-name"><%= subcategory.subcategory_name %></h3>
+                <span class="category-father">Categoría padre: <%= subcategory.category.category_name %></span>
+                <span class="category-father">Artículos disponibles: <%= subcategory.products.count %></span>
+                <span class="category-father">Artículos sin stock: <%= subcategory.products.where(stock_quantity: 0).count %></span>
+
+              </div>
+
+              <!-- Acciones -->
+              <div class="category-actions">
+                <%= link_to edit_admin_category_subcategory_path(@category, subcategory),
+                            class: 'btn-edit-category',
+                            aria: { label: "Editar categoría #{@category.category_name}" } do %>
+                  <svg class="icon">
+                    <use xlink:href="<%= asset_path('icons/admin.svg#icon-edit') %>"></use>
+                  </svg>
+                <% end %>
+
+                <%= button_to admin_category_subcategory_path(@category, subcategory),
+                              method: :delete,
+                              data: { turbo_confirm: "¿Estás seguro?" },
+                              class: 'btn-delete-category' do %>
+                  <svg class="icon">
+                    <use xlink:href="<%= asset_path('icons/admin.svg#icon-delete') %>"></use>
+                  </svg>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Botón para agregar nueva subcategoría -->
+      <%= link_to new_admin_category_subcategory_path(@category), class: 'button primary-button' do %>
+        <svg class="icon" role="img" aria-hidden="true">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar') %>"></use>
+        </svg>
+      <% end %>
+    </div>
+  </div>
+</div>

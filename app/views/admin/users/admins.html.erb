@@ -1,0 +1,164 @@
+<div class="admin-container">
+  <%= render 'admin/shared/sidevar' %>
+  <div class="banner-content">
+
+
+
+    <div class="usuarios-main-container">
+      <div class="container-section">
+
+        <section class="section-header arrow-back">
+
+          <div class="button-container">
+
+            <%= link_to clientes_admin_users_path, class: 'button-operadores' do %>
+              <span>Clientes</span>
+            <% end %>
+
+            <div class="button-cliente">
+              <span>Operadores</span>
+            </div>
+
+
+
+          </div>
+
+          <div class="search-container" data-controller="search">
+            <%= form_with url: admins_admin_users_path, method: :get, data: { controller: 'search' } do |form| %>
+              <!-- Icono de búsqueda (no cambia) -->
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-search-button') %>"></use>
+              </svg>
+
+              <div class="search-input-container">
+                <%= form.text_field :query_text, placeholder: "Buscar...", value: params[:query_text], class: 'search-input', data: { search_target: 'input', action: 'input->search#toggleClearButton' } %>
+              </div>
+
+              <button type="button" id="clear-search" class="clear-button" style="display: none;" data-action="click->search#clearSearch" data-search-target="clearButton">
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-clear') %>"></use>
+                </svg>
+              </button>
+
+              <%= form.submit "Buscar", data: { action: "submit->search#submitForm" } %>
+            <% end %>
+          </div>
+
+        </section>
+
+        <section class="section-body">
+         <div class="card-user-container">
+          <% @users.each do |user| %>
+
+            <div class="card-user">
+
+              <div class="card-user-top">
+                <p class="fecha"><%= I18n.l(user.created_at, format: "%d de %B %H:%M").downcase %></p>
+                <p class="role"><%= user.role %></p>
+              </div>
+
+              <div class="card-user-bottom">
+
+                <div class="avatar-container">
+                  <% if user.profile_picture.attached? %>
+                    <%= image_tag user.profile_picture %>
+                  <% else %>
+                    <img src="default-avatar.jpg" alt="Avatar" class="avatar">
+                  <% end %>
+                </div>
+
+                <div class="user-info">
+                  <p class="name"><%= user.first_name %>.<%= user.last_name.first %></p>
+                  <p class="correo"><%= user.email %></p>
+                  <p class="dni"><%= user.document_type %>: <%= user.document_id %></p>
+
+                  <p class="phone">Telefono: <%= user.phone %></p>
+                </div>
+
+                <div class="filter-container-modal-menu" data-controller="menu">
+                  <div class="filter">
+                    <%= button_tag type: 'button', class: 'filter-button', data: { action: "click->menu#open" } do %>
+                      <svg class="icon">
+                        <use xlink:href="<%= asset_path('icons/admin.svg#icon-custome') %>"></use>
+                      </svg>
+                    <% end %>
+                  </div>
+
+                  <!-- Modal -->
+
+                  <div class="modal-background" data-menu-target="background" data-action="click->menu#close">
+                  </div>
+                  <div class="modal-lateral" data-menu-target="modal">
+                    <div class="modal-lateral-content">
+
+                      <div class="modal-lateral-header">
+                        <button class="close-modal" data-action="click->menu#close">
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-custom') %>"></use>
+                          </svg>
+                        </button>
+                      </div>
+
+                      <div class="modal-lateral-body">
+                        <div class="modal">
+
+                          <%= link_to admin_user_path(user), class: "btn-info btn-detalle" do %>
+                            <svg class="icon">
+                              <use xlink:href="<%= asset_path('icons/admin.svg#icon-perfil-user') %>"></use>
+                            </svg>
+                            <span>Ver el Perfil</span>
+                          <% end %>
+
+                          <%= link_to edit_admin_user_path(user), class: "btn-info btn-detalle" do %>
+                            <svg class="icon">
+                              <use xlink:href="<%= asset_path('icons/admin.svg#icon-editar') %>"></use>
+                            </svg>
+                            <span>Editar</span>
+                          <% end %>
+
+                          <%= button_to admin_user_path(user), method: :delete, data: { confirm: '¿Estás seguro?' }, class: 'btn-info btn-detalle' do %>
+                            <svg class="icon">
+                              <use xlink:href="<%= asset_path('icons/admin.svg#icon-cancelar') %>"></use>
+                            </svg>
+                            <span class="ms-2">Eliminar</span>
+                          <% end %>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+
+
+
+          <% end %>
+
+         </div>
+        </section>
+
+      </div>
+
+
+      <%= paginate @users, theme: 'custom-pagination-user' %>
+    </div>
+
+
+
+
+    <%= link_to new_admin_user_path, class: "btn-add-user" do %>
+      <svg class="icon">
+        <use xlink:href="<%= asset_path('icons/admin.svg#icon-add-user') %>"></use>
+      </svg>
+    <% end %>
+
+
+  </div>
+</div>

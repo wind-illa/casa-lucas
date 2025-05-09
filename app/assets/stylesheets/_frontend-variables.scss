@@ -1,0 +1,83 @@
+.users-index {
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+
+    tbody tr:hover {
+      background-color: #f9f9f9;
+    }
+  }
+
+  .client-users,
+  .admin-users {
+    margin-bottom: 2rem;
+  }
+
+  .user-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .view-btn,
+  .edit-btn,
+  .delete-btn {
+    margin-right: 0.5rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+
+  .view-btn {
+    background-color: #007bff;
+    color: white;
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .edit-btn {
+    background-color: #ffc107;
+    color: white;
+    &:hover {
+      background-color: #e0a800;
+    }
+  }
+
+  .delete-btn {
+    background-color: #dc3545;
+    color: white;
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+}
+
+
+// pruba no olvidar eliminar
+

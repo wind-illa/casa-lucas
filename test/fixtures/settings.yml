@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  iva_percentage: 9.99
+  profit_margin_ecommerce: 9.99
+  profit_margin_business: 9.99
+  dollar_rate: 9.99
+  price_input_type: MyString
+
+two:
+  iva_percentage: 9.99
+  profit_margin_ecommerce: 9.99
+  profit_margin_business: 9.99
+  dollar_rate: 9.99
+  price_input_type: MyString

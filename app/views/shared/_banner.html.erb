@@ -1,0 +1,301 @@
+<div class="banners-mobile" data-controller="carousel" data-carousel-interval-value="3000">
+  <div class="banners">
+    <div class="carousel all-banners-carousel">
+      <div class="carousel-images" data-carousel-target="carouselImages">
+        <% @banners.each do |banner| %>
+          <% banner.mobile_images.each_with_index do |image, index| %>
+            <div class="carousel-item">
+              <%= link_to banner.mobile_links.split(',')[index] do %>
+                <%= image_tag image, alt: "Mobile Banner Image", class: "banner-image" %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="carousel-indicators" data-carousel-target="indicators">
+        <% @banners.each_with_index do |banner, banner_index| %>
+          <% banner.mobile_images.each_with_index do |image, image_index| %>
+            <span class="indicator" data-index="<%= banner_index * banner.mobile_images.size + image_index %>"></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+
+  <% if @mas_vendidos.any? %>
+    <div class="super-offers-products">
+      <% @mas_vendidos.each_with_index do |product, index| %>
+        <div class="product-card">
+          <%= link_to ecommerce_product_path(product), class: "product-link" do %>
+
+            <div class="product-image">
+              <% if product.product_images.attached? %>
+                <%= image_tag product.product_images.first, alt: product.product_name, class: "product-img" %>
+              <% else %>
+                <div class="no-image">
+                  <svg class="icon no-image-icon">
+                    <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar-foto') %>"></use>
+                  </svg>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="product-details">
+              <div class="ofertas">
+                <div class="oferta-relampago">
+                  <span class="ranking"><%= index + 1 %>º Más vendido</span>
+                </div>
+              </div>
+              <span class="name"><%= product.product_name %></span>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="super-offers-none">
+      <p>No hay productos disponibles en este momento.</p>
+    </div>
+  <% end %>
+
+
+
+
+
+</div>
+
+<!-- Banner para escritorio ---------------------------------------------------------------------------------->
+
+<div class="destock-banner-carousel" data-controller="destock">
+  <div class="carousel-container">
+    <div class="carousel">
+      <div class="carousel-images" data-destock-target="carouselImages">
+        <% @banners.each do |banner| %>
+          <% banner.desktop_images.each_with_index do |image, index| %>
+            <div class="carousel-item">
+              <%= link_to banner.desktop_links.split(',')[index] do %>
+                <%= image_tag image, alt: "Destock Banner Image", class: "banner-image" %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="carousel-indicators" data-destock-target="indicators">
+        <% @banners.each_with_index do |banner, banner_index| %>
+          <% banner.desktop_images.each_with_index do |image, image_index| %>
+            <span class="indicator" data-index="<%= banner_index * banner.desktop_images.size + image_index %>"></span>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="carousel-controls">
+        <button class="carousel-btn prev-btn" data-destock-target="prevButton">
+          <%= image_tag "icons/Arrow-left-baner.svg", alt: "Previous" %>
+        </button>
+        <button class="carousel-btn next-btn" data-destock-target="nextButton">
+          <%= image_tag "icons/Arrow-Right-baner.svg", alt: "Next" %>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="cards-home-container">
+    <div class="cards">
+
+
+      <div class="novedades-container-cards">
+        <% if   @ofertas.any? %>
+          <div class="novedades-header">
+            <h1>Ofertas de la casa</h1>
+          </div>
+          <div class="novedades-products">
+            <%   @ofertas.each do |product| %>
+              <div class="product-card">
+                <%= link_to ecommerce_product_path(product), class: "product-link" do %>
+
+                  <div class="product-image">
+                    <% if product.product_images.attached? %>
+                      <%= image_tag product.product_images.first.variant(resize_to_limit: [200, 200]).processed, alt: product.product_name, class: "product-img" %>
+                    <% else %>
+                      <div class="no-image">
+                        <svg class="icon no-image-icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar-foto') %>"></use>
+                        </svg>
+                      </div>
+                    <% end %>
+                  </div>
+
+                  <div class="product-details-ofertas">
+                    <div class="product-meta">
+                      <p>-<%= product.price_discount %>%</p>
+                    </div>
+                    <p class="product-added-date">Oferta Relámpago</p>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <div class="novedades-link">
+            <%= link_to ecommerce_super_offers_path, class: 'link' do %>
+              <span>Mostrar todas la ofertas</span>
+            <% end %>
+          </div>
+
+        <% else %>
+          <div class="history-none">
+            <h3>Aún no hay ofertas.</h3>
+            <p>¡Muy pronto tendremos nuevas ofertas especialmente pensadas para vos! </p>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="novedades-container-cards">
+        <% if  @novedades.any? %>
+          <div class="novedades-header">
+            <h1>Ultimas publicaciones</h1>
+          </div>
+          <div class="novedades-products">
+            <%  @novedades.each do |product| %>
+              <div class="product-card">
+                <%= link_to ecommerce_product_path(product), class: "product-link" do %>
+
+                  <div class="product-image">
+                    <% if product.product_images.attached? %>
+                      <%= image_tag product.product_images.first.variant(resize_to_limit: [200, 200]).processed, alt: product.product_name, class: "product-img" %>
+                    <% else %>
+                      <div class="no-image">
+                        <svg class="icon no-image-icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar-foto') %>"></use>
+                        </svg>
+                      </div>
+                    <% end %>
+                  </div>
+
+                  <div class="product-details">
+                    <div class="product-meta">
+                      <p class="product-added-date">Nuevo</p>
+                    </div>
+                    <p class="product-added-date">Ingresó <%= time_ago_in_days(product.created_at) %></p>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <div class="novedades-link">
+            <%= link_to ecommerce_new_arrivals_path, class: 'link' do %>
+              <span>Mostrar las ultimas publicaciones</span>
+            <% end %>
+          </div>
+
+        <% else %>
+          <div class="novedades-none">
+            <p>No hay novedades disponibles en este momento.</p>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="novedades-container-cards">
+        <% if   @history_products.any? %>
+          <div class="novedades-header">
+            <h1>Historial de navegación</h1>
+          </div>
+          <div class="novedades-products">
+            <%  @history_products.each do |product| %>
+              <div class="product-card">
+                <%= link_to ecommerce_product_path(product), class: "product-link" do %>
+                  <div class="product-image">
+                    <% if product.product_images.attached? %>
+                      <%= image_tag product.product_images.first.variant(resize_to_limit: [200, 200]).processed, alt: product.product_name, class: "product-img" %>
+                    <% else %>
+                      <div class="no-image">
+                        <svg class="icon no-image-icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar-foto') %>"></use>
+                        </svg>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="product-details-history">
+                    <p class="product-added-date"><%= product.product_name %></p>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <div class="novedades-link">
+            <%= link_to ecommerce_history_path, class: 'link' do %>
+              <span>Ver historial de navegación </span>
+            <% end %>
+          </div>
+
+        <% else %>
+          <div class="history-none">
+            <h3>Aún no viste publicaciones.</h3>
+            <p>¡Empezá a descubrir todo lo que tenemos para vos!</p>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="novedades-container-cards">
+        <% if  @mas_vendidos.any? %>
+          <div class="novedades-header">
+            <h1>Los mas vendidos</h1>
+          </div>
+          <div class="novedades-products">
+            <% @mas_vendidos.each_with_index do |product, index| %>
+              <div class="product-card">
+                <%= link_to ecommerce_product_path(product), class: "product-link" do %>
+
+                  <div class="product-image">
+                    <% if product.product_images.attached? %>
+                      <%= image_tag product.product_images.first.variant(resize_to_limit: [200, 200]).processed, alt: product.product_name, class: "product-img" %>
+                    <% else %>
+                      <div class="no-image">
+                        <svg class="icon no-image-icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar-foto') %>"></use>
+                        </svg>
+                      </div>
+                    <% end %>
+                  </div>
+
+                  <div class="product-details-vendidos">
+                    <div class="product-meta">
+                      <p class="product-added-date"><%= index + 1 %>º Más vendido</p>
+                    </div>
+                    <p class="product-added-date vendidos"><%= product.product_name %></p>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <div class="novedades-link">
+            <%= link_to ecommerce_new_arrivals_path, class: 'link' do %>
+              <span>Mostrar todos los mas vendidos</span>
+            <% end %>
+          </div>
+
+        <% else %>
+          <div class="novedades-none">
+            <p>No hay novedades disponibles en este momento.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+</div>

@@ -1,0 +1,52 @@
+<div class="product-new-edit-content" data-controller="uploader-view-image-single">
+  <div class="product-content">
+
+    <%= form_with(model: [:admin, @category, @subcategory], local: true) do |form| %>
+
+      <!-- Mostrar mensajes de error si los hay -->
+      <% if @subcategory.errors.any? %>
+        <div class="error-messages">
+          <h2>Se encontraron errores:</h2>
+          <ul>
+            <% @subcategory.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Campo para el nombre de la subcategoría -->
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= form.text_field :subcategory_name, class: 'form-input', placeholder: 'Nombre de la subcategoría', id: 'subcategory_name' %>
+          <label for="subcategory_name" class="form-label">Nombre de la subcategoría</label>
+        </div>
+      </div>
+
+      <!-- Campo para la imagen de la subcategoría -->
+      <div class="form-images">
+        <div class="complemento-images">
+          <div class="image-preview-item-check" data-action="click->uploader-view-image-single#uploadImage" data-uploader-view-image-single-target="imageContainer">
+            <% if @subcategory.persisted? && @subcategory.subcategory_image.attached? %>
+              <%= image_tag @subcategory.subcategory_image, class: 'image-preview-thumbnail', data: { uploader_view_image_single_target: 'previewImage' } %>
+            <% else %>
+              <div class="no-image-placeholder" data-uploader-view-image-single-target="placeholder">
+                <span>No hay imagen</span>
+              </div>
+            <% end %>
+          </div>
+          <%= form.file_field :subcategory_image, class: 'hidden-oculto', data: { uploader_view_image_single_target: 'fileInput' } %>
+        </div>
+      </div>
+
+      <!-- Botón para enviar el formulario -->
+      <%= form.submit "Crear subcategoría", class: "btn btn-primary" %>
+
+      <!-- Botón para volver -->
+      <div class="space">
+        <%= link_to 'Volver', admin_category_path(@category), class: 'btn btn-secondary' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

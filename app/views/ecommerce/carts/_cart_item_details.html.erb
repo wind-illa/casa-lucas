@@ -1,0 +1,58 @@
+<turbo-frame id="cart-item-details-<%= item.id %>">
+  <div class="cart-item">
+    <div class="item-image">
+      <%= image_tag url_for(item.images.first), alt: item.product.product_name %>
+
+    </div>
+    <div class="item-details">
+      <div class="seccion-uno">
+        <h2 class="name"><%= item.product.product_name %></h2>
+        <span class="color">Color: <%= item.color %></span>
+        <div class="product-pricing">
+          <% if item.product.price_discount.present? && item.product.price_discount > 0 %>
+            <p class="price-original">$<%= number_to_currency(item.product.price, unit: "", separator: ",", delimiter: ".") %></p>
+            <div class="section-price">
+              <p class="price-discounted">$<%= number_to_currency(item.product.price * (1 - (item.product.price_discount.to_f / 100)), unit: "", separator: ",", delimiter: ".") %></p>
+              <p class="discounted"><%= item.product.price_discount %>% Descuento</p>
+            </div>
+          <% else %>
+            <p class="price-normal">$<%= number_to_currency(item.product.price, unit: "", separator: ",", delimiter: ".") %></p>
+          <% end %>
+        </div>
+
+        <%= button_to ecommerce_cart_item_path(item), method: :delete, class: 'link' do %>
+          <span>Eliminar</span>
+        <% end %>
+      </div>
+
+      <div class="seccion-uno-dos">
+        <div class="seccion-dos">
+          <div class="product-actions">
+
+            <!-- Disminuir cantidad -->
+            <%= form_with url: ecommerce_cart_item_path(item), method: :patch, local: true, class: "update-quantity" do |form| %>
+              <%= form.hidden_field :quantity, value: item.quantity - 1 if item.quantity > 1 %>
+              <%= form.submit "-",class:"btn btn-decrease" %>
+            <% end %>
+
+            <p class="cantidad"> <%= item.quantity %></p>
+
+            <!-- Aumentar cantidad -->
+            <%= form_with url: ecommerce_cart_item_path(item), method: :patch, local: true, class: "update-quantity" do |form| %>
+              <%= form.hidden_field :quantity, value: item.quantity + 1 %>
+              <%= form.submit "+", class:"btn btn-increase" %>
+            <% end %>
+          </div>
+        </div>
+        <div class="seccion-tres">
+          <div class="item-total-price">
+            <p class="precio-total-item"><%= number_to_currency(item.total_price_for_item) %></p>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+</turbo-frame>

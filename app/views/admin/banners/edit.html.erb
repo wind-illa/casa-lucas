@@ -1,0 +1,50 @@
+<div class="product-new-edit-content">
+  <div class="product-content">
+    <%= form_for @banner, url: admin_banner_path(@banner), method: :put, html: { class: 'banner-formm' } do |f| %>
+
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= f.text_field :title, class: 'form-input', placeholder: 'Nombre de la categoría', value: @banner.title, id: 'banner.title' %>
+          <label for="product_name" class="form-label">Título</label>
+        </div>
+      </div>
+
+      <div class="form-images" data-controller="image-banner-dual">
+        <div class="complemento-images-banners">
+          <div class="image-preview-item-check" data-action="click->image-banner-dual#openFileInput">
+            <% if @banner.desktop_images.attached? %>
+              <%= image_tag @banner.desktop_images.first, class: 'image-preview-thumbnail', data: { target: 'image-banner-dual.image' } %>
+            <% end %>
+          </div>
+          <%= f.file_field :desktop_images, class: 'hidden-ocultos', data: { target: 'image-banner-dual.fileInput', action: 'change->image-banner-dual#previewImage' } %>
+          <div class="form-label-wrapper">
+            <%= f.text_area :desktop_links, class: 'form-input', placeholder: 'Ejemplo: http://ejemplo.com', value: @banner.desktop_links, id: 'banner.desktop_links' %>
+            <label for="product_name" class="form-label">Link</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-images" data-controller="image-banner-dual">
+        <div class="complemento-images-banners">
+          <div class="image-preview-item-check" data-action="click->image-banner-dual#openFileInput">
+            <% if @banner.mobile_images.attached? %>
+              <%= image_tag @banner.mobile_images.first, class: 'image-preview-thumbnail', data: { target: 'image-banner-dual.image' } %>
+            <% end %>
+          </div>
+
+          <%= f.file_field :mobile_images, class: 'hidden-ocultos', data: { target: 'image-banner-dual.fileInput', action: 'change->image-banner-dual#previewImage' } %>
+          <div class="form-label-wrapper">
+            <%= f.text_area :mobile_links, class: 'form-input', placeholder: 'Ejemplo: http://ejemplo.com', value: @banner.mobile_links, id: 'banner.mobile_links' %>
+            <label for="product_name" class="form-label">Link</label>
+          </div>
+        </div>
+      </div>
+
+      <%= f.submit "Actualizar Banner", class: "btn btn-primary" %>
+      <div class="space">
+        <%= link_to 'Volver', admin_banners_path, class: 'btn btn-secondary' %>
+      </div>
+
+    </div>
+  <% end %>
+</div>

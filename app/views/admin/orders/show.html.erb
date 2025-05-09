@@ -1,0 +1,197 @@
+
+<div class="order-details-container-admin-show">
+  <div class="order-container">
+    <div class="order-container-primero">
+      <div class="order-products">
+
+        <div class="arrow-back">
+          <%= link_to request.referer || home_admin_orders_path, class: 'arrow-back-link' do %>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+            </svg>
+            <span>Atrás</span>
+          <% end %>
+        </div>
+
+        <% @order.order_items.each do |item| %>
+          <div class="order-item">
+            <div class="order-image">
+              <% if item.images.attached? %>
+                <%= image_tag url_for(item.images.first), alt: item.product.product_name, class: "product-image" %>
+              <% else %>
+                <div class="no-image">Sin imagen</div>
+              <% end %>
+            </div>
+
+            <div class="order-info">
+              <h4 class="order-product-name"><%= item.product.product_name %></h4>
+              <div class="order-item-details">
+                <span class="order-item-color">Color: <%= item.color %></span>
+                <span class="order-item-price"><%= number_to_currency(item.price) %></span>
+                <span class="order-item-quantity"><%= item.quantity %> unidades</span>
+                <span class="order-item-total">
+                  <%= number_to_currency(item.quantity * item.price) %>
+                </span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="order-actions">
+        <%#= link_to "Descargar PDF", pdf_ecommerce_order_path(@order), class: "btn-download", target: "_blank" %>
+        <%= link_to "Imprimir", print_admin_order_path(@order), class: "btn-download", target: "_blank" %>
+      </div>
+
+    </div>
+
+    <div class="order-container-segundo">
+
+
+      <div class="order-summary">
+        <h1 class="order-summary-title">Detalle de la compra</h1>
+        <div class="order-summary-header">
+          <p class="order-date"><%= @order.created_at.strftime("%d/%m/%Y") %></p> |
+          <p class="order-id">#<%= @order.id %></p> |
+          <p class="order-id"><%= @order.payment_method&.name %></p>
+
+
+        </div>
+        <div class="barra-separadora"></div>
+
+        <div class="order-summary-details">
+          <% if @order.discount_percentage.to_f.positive? %>
+            <div class="summary-item">
+              <span class="summary-label">Productos (<%= @order.order_items.sum(:quantity) %>)</span>
+              <span class="summary-value"><%= number_to_currency(@order.subtotal) %></span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Descuento por cantidad</span>
+              <span class="summary-value discount">-<%= @order.discount_percentage.to_i %>%</span>
+            </div>
+            <div class="barra-separadora"></div>
+          <% end %>
+
+          <div class="summary-item">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value"><%= number_to_currency(@order.subtotal_with_discount) %></span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Envío</span>
+            <span class="summary-value"><%= number_to_currency(@order.shipping_cost) %></span>
+          </div>
+
+          <div class="barra-separadora"></div>
+          <div class="summary-item total">
+            <span class="summary-label">Total</span>
+            <span class="summary-value"><%= number_to_currency(@order.total_price) %></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-summary">
+        <h1 class="order-summary-title">Datos del cliente</h1>
+        <div class="barra-separadora"></div>
+        <div class="order-summary-details">
+          <div class="summary-item">
+            <span class="summary-label">Nombre:</span>
+            <span class="summary-value"><%= @user.first_name %> <%= @user.last_name %></span>
+          </div>
+          <% if @user.email.present? %>
+            <div class="summary-item">
+              <span class="summary-label">Email:</span>
+              <span class="summary-value discount"><%= @user.email %></span>
+            </div>
+          <% end %>
+
+          <% if @user.phone.present? %>
+            <div class="summary-item">
+              <span class="summary-label">Teléfono:</span>
+              <span class="summary-value discount"><%= @user.phone %></span>
+            </div>
+          <% end %>
+
+          <% if @user.document_type.present? && @user.document_id.present? %>
+            <div class="summary-item">
+              <span class="summary-label"><%= @user.document_type %>:</span>
+              <span class="summary-value discount"><%= @user.document_id %></span>
+            </div>
+          <% end %>
+
+
+
+          <% if @order.payment_method.present? %>
+            <% if @order.payment_method.code == "mercado_pago" %>
+              <div class="summary-item">
+                <span class="summary-label">N° Transacción:</span>
+                <span class="summary-value discount"><%= @order.mercado_pago_transaction_id %></span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Mercado Pago:</span>
+                <% case @order.mercado_pago_payment_method %>
+                  <% when "credit_card" %>
+                    <span class="summary-value discount">Tarjeta de Crédito</span>
+                  <% when "debit_card" %>
+                    <span class="summary-value discount">Tarjeta de Débito</span>
+                  <% when "account_money" %>
+                    <span class="summary-value discount">Saldo disponible</span>
+                  <% when "pagofacil" %>
+                    Pago Fácil
+                  <% when "ticket" %>
+                    <span class="summary-value discount">Rapipago / Pago Fácil</span>
+                  <% else %>
+                    <span class="summary-value discount"><%= @order.mercado_pago_payment_method %></span>
+                <% end %>
+                </div>
+            <% end %>
+          <% end %>
+
+        </div>
+      </div>
+
+      <% if @shipping_method.present? %>
+        <div class="order-summary">
+          <h1 class="order-summary-title"><%= @shipping_method.name %></h1>
+          <div class="barra-separadora"></div>
+
+          <% if @shipping_method.name == "Envío" %>
+            <div class="order-summary-details">
+              <div class="summary-item">
+                <span class="summary-label">Dirección:</span>
+                <span class="summary-value"><%= @address.street_name %> <%= @address.street_number %></span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Departamento:</span>
+                <span class="summary-value discount"><%= @address.apartment %> - piso <%= @address.floor %></span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Localidad:</span>
+                <span class="summary-value discount"><%= @address.locality %></span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Ciudad:</span>
+                <span class="summary-value discount"><%= @address.city %></span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Postal:</span>
+                <span class="summary-value discount"><%= @address.postal_code %></span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Indicaciones:</span>
+                <span class="summary-value discount"><%= @address.indications %></span>
+              </div>
+            </div>
+          <% elsif @shipping_method.name == "Retiro" %>
+            <div class="order-summary-details">
+              <div class="summary-item">
+                <span class="summary-value">BARATISIMO bazar, 20 de junio</span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+
+    </div>
+  </div>
+</div>

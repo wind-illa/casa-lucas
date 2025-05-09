@@ -1,0 +1,250 @@
+<div class="admin-container-show">
+  <div class="frame-principal-show">
+
+
+    <div class="div-block-9">
+      <div class="wrapper-bottones-tablas">
+        <div class="header-title">
+
+          <%= link_to admin_products_path, class: 'arrow-back-link' do %>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+            </svg>
+            <span>Atrás</span>
+          <% end %>
+
+          <div class="title-content">
+            <h1 class="title">Detalles del producto</h1>
+            <p>Ingreso: <%= @product.created_at.strftime('%d/%m/%Y') %></p>
+            <p>Vendidos: 0</p>
+
+            <div class="separacion"></div>
+
+            <%= link_to  new_admin_product_product_variant_path(@product), class: "btn btn-primary" do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-add-color') %>"></use>
+              </svg>
+              <span>Agregar variante</span>
+            <% end %>
+
+            <%= link_to edit_admin_product_path(@product), class: "btn btn-primary" do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-edit-color') %>"></use>
+              </svg>
+              <span>Editar producto</span>
+            <% end %>
+
+            <%= button_to admin_product_path(@product),
+                          method: :delete,
+                          data: { turbo_confirm: "¿Estás seguro que deseas eliminar este producto?" },
+                          class: 'btn btn-danger' do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-delete-red') %>"></use>
+              </svg>
+              <span>Eliminar producto</span>
+            <% end %>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="main-container-show">
+
+      <div class="product-detail-container" data-controller="gallery">
+        <!-- Galería de imágenes -->
+        <div class="product-image-gallery">
+          <div class="product-name">
+            <h2><%= @product.product_name %></h2>
+          </div>
+          <% if @product.product_images.attached? %>
+            <div class="main-image">
+              <%= image_tag url_for(@product.product_images.first),
+                            alt: "Imagen principal de #{@product.product_name}",
+                            class: "product-main-image",
+                            data: { gallery_target: "mainImage" } %>
+            </div>
+            <div class="thumbnail-gallery">
+              <% @product.product_images.each_with_index do |image, index| %>
+
+
+
+                <div class="<%= ['content-image', ('active' if index.zero?)].compact.join(' ') %>"
+                    data-gallery-target="thumbnail"
+                    data-action="click->gallery#changeImage"
+                    data-image-url="<%= url_for(image) %>">
+                  <%= image_tag url_for(image),
+                                alt: "Miniatura #{index + 1} de #{@product.product_name}",
+                                class: "product-thumbnail" %>
+                </div>
+
+
+
+
+              <% end %>
+            </div>
+          <% else %>
+            <div class="no-image">Sin imágenes</div>
+          <% end %>
+          <div class="product-detail">
+            <span class="detail-label">Descripción</span>
+            <p class="detail-value"><%= @product.product_description || "Sin descripción" %></p>
+          </div>
+        </div>
+
+
+        <div class="product-info">
+
+
+          <% if @product_variants.present? %>
+            <div class="product-variants-section">
+
+              <div id="variant-name" class="variant-name">
+                <span>
+                  Color: <%= @product.colors %>
+                </span>
+              </div>
+
+
+              <div class="variant-content">
+                <!-- Miniatura del producto principal -->
+                <div class="variant-thumbnail main-product-thumbnail"
+
+                    data-gallery-target="variant"
+                    data-action="click->gallery#changeVariant"
+                    data-images='<%= @product.product_images.map { |image| url_for(image.variant(resize_to_limit: [300, 300])) }.to_json %>'
+                    data-color=" Color: <%= @product.colors %>">
+                  <% if @product.product_images.attached? %>
+                    <%= image_tag @product.product_images.first.variant(resize_to_limit: [40, 40]).processed, alt: "Miniatura del producto principal" %>
+                  <% else %>
+                    <div class="no-image">Sin imagen</div>
+                  <% end %>
+                </div>
+
+                <!-- Variantes del producto -->
+                <% @product_variants.each do |variant| %>
+                  <div class="variant-thumbnail"
+                      data-gallery-target="variant"
+                      data-action="click->gallery#changeVariant"
+                      data-images='<%= variant.images.map { |image| url_for(image.variant(resize_to_limit: [300, 300])) }.to_json %>'
+                      data-color=" Color: <%= variant.color %>">
+
+                    <% if variant.images.attached? %>
+                      <%= image_tag variant.images.first.variant(resize_to_limit: [48, 48]).processed, alt: "Miniatura de variante #{variant.color}" %>
+                    <% else %>
+                      <div class="no-image">Sin imagen</div>
+                    <% end %>
+
+                    <div class="variant-actions">
+                      <%= link_to edit_admin_product_product_variant_path(@product, variant), class: "btn btn-sm btn-secondary" do %>
+                        <svg class="icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icon-edit') %>"></use>
+                        </svg>
+                      <% end %>
+                      <%= button_to admin_product_product_variant_path(@product, variant),
+                                    method: :delete,
+                                    data: { turbo_confirm: "¿Estás seguro de eliminar esta variante?", turbo: true },
+                                    class: "btn btn-sm btn-danger" do %>
+                        <svg class="icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icon-delete') %>"></use>
+                        </svg>
+                      <% end %>
+                    </div>
+
+                  </div>
+
+                <% end %>
+
+              </div>
+
+            </div>
+          <% end %>
+
+
+
+
+          <div class="product-details">
+            <div class="product-detail">
+              <span class="detail-label">SKU</span>
+              <p class="detail-value"><%= @product.sku %></p>
+            </div>
+
+            <div class="product-detail">
+              <span class="detail-label">Código de barras</span>
+              <% if @product.bar_codes.any? %>
+                <ul class="detail-list">
+                  <% @product.bar_codes.each do |barcode| %>
+                    <li class="detail-list-item"><%= barcode.code %></li>
+                  <% end %>
+                </ul>
+              <% else %>
+                <p class="detail-value">Sin códigos</p>
+              <% end %>
+            </div>
+
+            <div class="product-detail">
+              <span class="detail-label">Categoría padre</span>
+              <p class="detail-value"><%= @product.category&.category_name || "Sin categoría" %></p>
+            </div>
+
+            <div class="product-detail">
+              <span class="detail-label">Subcategoría</span>
+              <p class="detail-value"><%= @product.subcategory&.subcategory_name || "Sin subcategoría" %></p>
+            </div>
+
+            <div class="product-detail">
+              <span class="detail-label">Precio</span>
+              <p class="detail-value"><%= formato_precio(@product.price) %></p>
+            </div>
+
+            <div class="product-detail">
+              <span class="detail-label">Descuento</span>
+              <p class="detail-value"><%= @product.price_discount.present? ? "#{@product.price_discount}%" : "Sin descuento" %></p>
+            </div>
+
+            <div class="product-detail">
+              <span class="detail-label">Marca</span>
+              <p class="detail-value"><%= @product.brand || "Sin marca" %></p>
+            </div>
+
+            <div class="product-detail-stock">
+              <span class="detail-label-stock">Stock</span>
+              <div class="product-stock">
+                <p class="detail-value-p"><%= @product.stock_quantity %></p>
+                <% if @product.stock_quantity > 10 %>
+                  <p class="detail-value stock-indicator green">En stock</p>
+                <% elsif @product.stock_quantity > 0 %>
+                  <p class="detail-value stock-indicator yellow">Stock bajo</p>
+                <% else %>
+                  <p class="detail-value stock-indicator red">Sin stock</p>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="product-detail">
+              <span class="detail-label">Peso</span>
+              <p class="detail-value"><%= @product.weight.present? ? "#{@product.weight} kg" : "No especificado" %></p>
+            </div>
+
+            <div class="product-detail">
+              <span class="detail-label">Dimensiones</span>
+              <% if @product.length && @product.width && @product.height %>
+                <p class="detail-value"><%= "#{@product.length} x #{@product.width} x #{@product.height} cm" %></p>
+              <% else %>
+                <p class="detail-value">No especificado</p>
+              <% end %>
+            </div>
+
+            <div class="product-detail descripcion">
+              <span class="detail-label">Descripción</span>
+              <p class="detail-value"><%= @product.product_description || "Sin descripción" %></p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

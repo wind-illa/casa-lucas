@@ -1,0 +1,178 @@
+
+<div class="product-new-edit-content">
+  <div class="product-content">
+    <%= form_with model: @product, url: admin_products_path, method: :post, data: { turbo: false, controller: "category-select" } do |form| %>
+
+      <% if @product.errors.any? %>
+        <div class="alert alert-danger">
+          <ul>
+            <% @product.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.select :category_id,
+                          options_from_collection_for_select(@categories, :id, :category_name),
+                          { prompt: "Selecciona una categoría" },
+                          data: { action: "change->category-select#loadSubcategories" },
+                          class: 'form-input', id: 'category_id', required: true %>
+        </div>
+      </div>
+
+      <div class="form-group form-subcategory">
+        <div class="form-label-wrapper">
+          <%= form.select :subcategory_id,
+                          options_for_select([["Selecciona una subcategoría", ""]]),
+                          { prompt: "Selecciona una subcategoría", disabled: true },
+                          class: 'form-input form-categories', id: 'subcategory_id', data: { category_select_target: "subcategorySelect" }, style: "display: none;", required: true %>
+        </div>
+      </div>
+
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= form.text_field :product_name, class: 'form-input', placeholder: 'Nombre del producto', id: 'product_name' %>
+          <label for="product_name" class="form-label">Nombre del producto</label>
+        </div>
+      </div>
+
+      <div class="form-barcode" data-controller="barcode" data-barcode-target="container">
+        <template data-barcode-target="template">
+          <div class="barcode-fields">
+
+            <%= form.fields_for :bar_codes do |barcode_form| %>
+              <%= barcode_form.text_field :code, class: 'form-input', placeholder: 'Código de barras' %>
+
+              <%= barcode_form.hidden_field :_destroy %>
+              <button type="button" class="remove-barcode" data-action="click->barcode#remove">
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-delete') %>"></use>
+                </svg>
+              </button>
+            <% end %>
+          </div>
+        </template>
+        <button type="button" id="add-barcode-btn" data-action="click->barcode#add">
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-barcode') %>"></use>
+          </svg>
+          <span>
+            Agregar
+          </span>
+        </button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.text_field :sku,
+                                value: @product.sku || '',
+                                class: 'form-input',
+                                placeholder: 'SKU',
+                                id: 'sku',
+                                required: true %>
+            <label for="sku" class="form-label">Sku</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.number_field :price, step: '0.01', class: 'form-input', placeholder: 'Precio', id: 'price' %>
+            <label for="price" class="form-label">Precio</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.number_field :price_discount, class: 'form-input', placeholder: 'Descuento (%)', id: 'price_discount' %>
+            <label for="price_discount" class="form-label">Descuento %</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.text_field :brand, class: 'form-input', placeholder: 'Marca', id: 'brand' %>
+            <label for="brand" class="form-label">Marca</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group text-area">
+        <div class="form-label-wrapper">
+          <%= form.text_area :product_description, class: 'form-input', placeholder: 'Descripción del producto', id: 'product_description' %>
+          <label for="product_description" class="form-label">Descripción del producto</label>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.text_field :colors, class: 'form-input', placeholder: 'Colores', id: 'colors' %>
+            <label for="colors" class="form-label">Color</label>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.number_field :weight, step: '0.01', class: 'form-input', placeholder: 'Peso (kg)', id: 'weight' %>
+            <label for="weight" class="form-label">Peso (kg)</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.number_field :height, step: '0.01', class: 'form-input', placeholder: 'Altura (cm)', id: 'height' %>
+            <label for="height" class="form-label">Altura (cm)</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.number_field :width, step: '0.01', class: 'form-input', placeholder: 'Ancho (cm)', id: 'width' %>
+            <label for="width" class="form-label">Ancho (cm)</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.number_field :length, step: '0.01', class: 'form-input', placeholder: 'Largo (cm)', id: 'length' %>
+            <label for="length" class="form-label">Largo (cm)</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.number_field :stock_quantity, class: 'form-input', placeholder: 'Cantidad en stock', id: 'stock_quantity' %>
+            <label for="stock_quantity" class="form-label">Cantidad en stock</label>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="form-images" data-controller="image-upload">
+        <div class="new-images image-preview"
+            data-image-upload-target="imagePreview">
+          <div class="upload-image-btn" data-action="click->image-upload#triggerUpload">
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-add-color') %>"></use>
+            </svg>
+          </div>
+          <%= form.file_field :product_images,
+                              multiple: true,
+                              accept: "image/*",
+                              class: 'hidden-upload-field',
+                              data: { image_upload_target: "fileInput", action: "change->image-upload#handleImageUpload" } %>
+        </div>
+      </div>
+      <%= form.submit 'Crear Producto', class: 'btn btn-primary' %>
+      <div class="space">
+        <%= link_to 'Volver', admin_products_path, class: 'btn btn-secondary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

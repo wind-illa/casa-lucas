@@ -1,0 +1,7 @@
+# app/views/admin/products/_load_subcategories.html.erb
+<select name="subcategory_id" id="subcategory_id">
+  <option value="">Selecciona una subcategoría</option>
+  <% @subcategories.each do |subcategory| %>
+    <option value="<%= subcategory.id %>"><%= subcategory.subcategory_name %></option>
+  <% end %>
+</select>

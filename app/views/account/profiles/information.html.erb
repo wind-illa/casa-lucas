@@ -1,0 +1,91 @@
+<% content_for :title, "Información Personal | Baratísimo Bazar" %>
+
+
+<div class="profile-info-show">
+  <div class="profile-info-container">
+
+
+    <div class="products-navigation">
+      <ol>
+
+
+        <li>
+          <%= link_to account_main_path do %>
+            <span>Cuenta</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to account_profile_path(current_user) do %>
+            <span>Mi perfil</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+
+        <li>
+          <span>Información Personal</span>
+        </li>
+
+      </ol>
+    </div>
+
+    <div class="categories-title">
+      <div class="title">
+        <%= link_to account_profile_path(current_user), class: 'arrow-back-link' do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+          </svg>
+        <% end %>
+        <h1 class="category-title">Información Personal</h1>
+        <div class="arrow-back-link space"></div>
+      </div>
+    </div>
+
+
+
+    <div class="profile-personal-info">
+
+      <div class="profile-info-item profile-name-info">
+        <div class="profile-info-detail">
+          <h4 class="profile-info-label">Nombre elegido</h4>
+          <p class="profile-info-value"><%= "#{current_user.first_name} #{current_user.last_name}" %></p>
+        </div>
+        <%= link_to 'Modificar', edit_name_account_profiles_path(current_user.id), class: 'profile-info-edit-link' %>
+      </div>
+
+      <div class="profile-info-item profile-email-info">
+        <div class="profile-info-detail">
+          <h4 class="profile-info-label">E-mail</h4>
+          <p class="profile-info-value"><%= current_user.email %></p>
+        </div>
+        <%= link_to 'Modificar', edit_email_account_profiles_path(current_user.id), class: 'profile-info-edit-link' %>
+      </div>
+
+      <div class="profile-info-item profile-telephone-info">
+        <div class="profile-info-detail">
+          <h4 class="profile-info-label">Teléfono</h4>
+          <p class="profile-info-value">
+            <%= current_user.phone.present? ? current_user.phone : "<span class='missing-data'>Actualiza tu teléfono</span>".html_safe %>
+          </p>
+        </div>
+        <%= link_to 'Modificar', edit_phone_account_profiles_path(current_user.id), class: 'profile-info-edit-link' %>
+      </div>
+
+      <div class="profile-info-item profile-dni-info">
+        <div class="profile-info-detail">
+          <h4 class="profile-info-label">Datos de tu DNI</h4>
+          <p class="profile-info-value">
+            <%= current_user.document_id.present? ? current_user.document_id : "<span class='missing-data'>Actualiza tu DNI.</span>".html_safe %>
+          </p>
+        </div>
+        <%= link_to 'Modificar', edit_dni_account_profiles_path(current_user.id), class: 'profile-info-edit-link' %>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render 'shared/footer' %>

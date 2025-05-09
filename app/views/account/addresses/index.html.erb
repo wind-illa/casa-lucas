@@ -1,0 +1,136 @@
+<% content_for :title, "Mis direcciones | Baratísimo Bazar" %>
+
+<section class="user-addresses section-selected hidden" data-toggle-sections-target="addresses">
+
+
+  <div class="products-navigation">
+    <ol>
+
+
+      <li>
+        <%= link_to account_main_path do %>
+          <span>Cuenta</span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+          </svg>
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to account_profile_path(current_user) do %>
+          <span>Mi perfil</span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+          </svg>
+        <% end %>
+      </li>
+
+      <li>
+        <span>Mis Direcciones</span>
+      </li>
+
+    </ol>
+  </div>
+
+  <div class="categories-title">
+    <div class="title">
+      <%= link_to account_profile_path(current_user), class: 'arrow-back-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+        </svg>
+      <% end %>
+      <h1 class="category-title">Mis Direcciones</h1>
+      <div class="arrow-back-link space"></div>
+    </div>
+  </div>
+
+  <div class="card-user-container">
+    <% if current_user.addresses.any? %>
+      <% current_user.addresses.order(created_at: :desc).each do |address| %>
+        <div class="card-user">
+          <div class="card-user-bottom">
+            <div class="icon-container">
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#casa-icono') %>"></use>
+              </svg>
+            </div>
+            <div class="user-info">
+              <p class="name"><%= address.street_name %> <%= address.street_number %></p>
+              <p class="correo">Código postal <%= address.postal_code %> - <%= address.locality %> - <%= address.city %></p>
+              <p class="dni">
+                <% if address.floor.present? %>
+                  Piso <%= address.floor %>
+                <% end %>
+                <% if address.apartment.present? %>
+                  - Departamento <%= address.apartment %>
+                <% end %>
+              </p>
+              <% if address.indications.present? %>
+                <p class="phone"><%= address.indications %></p>
+              <% end %>
+            </div>
+            <div class="filter-container-modal-menu" data-controller="menu">
+              <div class="filter">
+                <%= button_tag type: 'button', class: 'filter-button', data: { action: "click->menu#open" } do %>
+                  <svg class="icon">
+                    <use xlink:href="<%= asset_path('icons/admin.svg#menu-icon-adreses') %>"></use>
+                  </svg>
+                <% end %>
+              </div>
+
+              <!-- Modal -->
+
+              <div class="modal-background" data-menu-target="background" data-action="click->menu#close"></div>
+              <div class="modal-lateral" data-menu-target="modal">
+                <div class="modal-lateral-content">
+
+                  <div class="modal-lateral-header">
+                    <button class="close-modal" data-action="click->menu#close">
+                      <svg class="icon">
+                        <use xlink:href="<%= asset_path('icons/admin.svg#icon-custom') %>"></use>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div class="modal-lateral-body">
+                    <div class="modal">
+                      <%= link_to edit_account_address_path(address), class: "btn-info btn-detalle" do %>
+                        <svg class="icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icon-perfil-user') %>"></use>
+                        </svg>
+                        <span>Editar</span>
+                      <% end %>
+
+                      <% if current_user.orders.where(address: address).empty? %>
+                        <%= button_to account_address_path(address), method: :delete, data: { confirm: '¿Estás seguro?' }, class: 'btn-info btn-detalle' do %>
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-cancelar') %>"></use>
+                          </svg>
+                          <span class="ms-2">Eliminar</span>
+                        <% end %>
+                      <% else %>
+                        <div class="btn-info btn-detalle disabled">
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-cancelar') %>"></use>
+                          </svg>
+                          <span class="ms-2">Eliminar</span>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      <% end %>
+    <% end %>
+
+    <%= link_to new_account_address_path, class: "add-new-adresess" do %>
+      <span>Agregar Nueva Dirección</span>
+    <% end %>
+  </div>
+</section>
+<%= render 'shared/footer' %>

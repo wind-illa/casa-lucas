@@ -1,0 +1,52 @@
+<div class="product-new-edit-content" data-controller="uploader-view-image-single">
+  <div class="product-content">
+
+    <!-- Mostrar mensajes de error si existen -->
+    <% if @category.errors.any? %>
+      <div class="alert alert-danger">
+        <h4>Se encontraron errores:</h4>
+        <ul>
+          <% @category.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @category, url: admin_categories_path, method: :post, local: true do |form| %>
+
+      <!-- Campo para el nombre de la categoría -->
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= form.text_field :category_name, class: 'form-input', placeholder: 'Nombre de la categoría', id: 'category_name' %>
+          <label for="category_name" class="form-label">Nombre de la categoría</label>
+        </div>
+      </div>
+
+      <!-- Campo para la imagen de la categoría -->
+      <div class="form-images">
+        <div class="complemento-images">
+          <div class="image-preview-item-check" data-action="click->uploader-view-image-single#uploadImage" data-uploader-view-image-single-target="imageContainer">
+            <% if @category.persisted? && @category.category_image.attached? %>
+              <%= image_tag @category.category_image, class: 'image-preview-thumbnail', data: { uploader_view_image_single_target: 'previewImage' } %>
+            <% else %>
+              <div class="no-image-placeholder" data-uploader-view-image-single-target="placeholder">
+                <span>No hay imagen</span>
+              </div>
+            <% end %>
+          </div>
+          <%= form.file_field :category_image, class: 'hidden-oculto', data: { uploader_view_image_single_target: 'fileInput' } %>
+        </div>
+      </div>
+
+      <!-- Botón para enviar el formulario -->
+      <%= form.submit "Crear categoría", class: "btn btn-primary" %>
+
+      <!-- Botón para volver -->
+      <div class="space">
+        <%= link_to 'Volver', admin_categories_path, class: 'btn btn-secondary' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

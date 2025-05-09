@@ -1,0 +1,24 @@
+
+<table class="order-items-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+
+  <tbody>
+    <% @order_items.each do |item| %>
+      <tr class="order-item">
+        <td class="product-name" style="padding: 10px 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;"><%= item.product.product_name %></td>
+        <td class="product-color" style="padding: 10px 15px;"><%= item.color %></td>
+        <td class="product-quantity" style="padding: 10px 15px;"><%= item.quantity %></td>
+        <td class="product-price" style="padding: 10px 15px; text-align: right;"><%= number_to_currency(item.price) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  // Este script abre el cuadro de impresión automáticamente
+  window.print();
+
+  // Event listener para cerrar la ventana después de la impresión
+  window.onafterprint = function() {
+    window.close();  // Cierra la ventana después de imprimir o cancelar
+  };
+</script>

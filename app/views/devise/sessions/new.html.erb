@@ -1,0 +1,53 @@
+<div class="login-page">
+  <div class="login-container">
+    <div class="login-header">
+      <h2 class="login-title">Ingresá a tu cuenta</h2>
+    </div>
+
+    <div class="login-form-container">
+      <% if flash[:alert] %>
+        <div class="alert alert-danger">
+          <div class="alert-icon">
+           <%= image_tag "icons/Alert-icon.svg", alt: "Alert icon" %>
+          </div>
+          <div class="alert-icon">
+            <h2>Se produjo un problema</h2>
+            <p><%= flash[:alert] %></p>
+          </div>
+        </div>
+      <% end %>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "login-form" }) do |f| %>
+        <div class="form-group">
+          <%= f.label :email, class: "form-label" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-input" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :contraseña, class: "form-label" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-input" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="form-group form-remember">
+            <%= f.check_box :remember_me, class: "form-checkbox" %>
+            <%= f.label :Recuérdame, class: "checkbox-label" %>
+          </div>
+        <% end %>
+
+        <div class="form-actions">
+          <%= f.submit "Iniciar sesión", class: "button button-primary" %>
+        </div>
+      <% end %>
+
+      <div class="apartado">
+        <div></div>
+        <p>¿Eres nuevo en el baratisimo?</p>
+        <div></div>
+      </div>
+      <div class="login-links">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,184 @@
+es:
+  errors:
+    messages:
+      blank: "no puede estar vacío"
+      taken: "ya está en uso"
+      invalid: "no es válido"
+      confirmation: "no coincide con la confirmación"
+      not_a_number: "Debe ser un número válido"
+      too_short: "es demasiado corto (mínimo %{count} caracteres)"
+      not_saved:
+        one: "Hubo 1 error al guardar este registro:"
+        other: "Hubo %{count} errores al guardar este registro:"
+
+  number:
+    currency:
+      format:
+        unit: "$ "
+        format: "%u%n"
+        delimiter: "."
+        separator: ","
+        precision: 0
+
+  datetime:
+    distance_in_words:
+      today: "hoy"
+      yesterday: "ayer"
+      x_days:
+        one: "hace 1 día"
+        other: "hace %{count} días"
+
+  date:
+    formats:
+      default: "%d de %B %Y"
+      long: "%d de %B de %Y"
+      short: "%d/%m/%Y"
+    day_names:
+      - "domingo"
+      - "lunes"
+      - "martes"
+      - "miércoles"
+      - "jueves"
+      - "viernes"
+      - "sábado"
+    abbr_day_names:
+      - "dom"
+      - "lun"
+      - "mar"
+      - "mié"
+      - "jue"
+      - "vie"
+      - "sáb"
+    month_names:
+      - ""
+      - "enero"
+      - "febrero"
+      - "marzo"
+      - "abril"
+      - "mayo"
+      - "junio"
+      - "julio"
+      - "agosto"
+      - "septiembre"
+      - "octubre"
+      - "noviembre"
+      - "diciembre"
+    abbr_month_names:
+      - ""
+      - "ene"
+      - "feb"
+      - "mar"
+      - "abr"
+      - "may"
+      - "jun"
+      - "jul"
+      - "ago"
+      - "sep"
+      - "oct"
+      - "nov"
+      - "dic"
+
+  helpers:
+    select:
+      prompt: "Por favor selecciona"
+    submit:
+      create: "Crear %{model}"
+      update: "Actualizar %{model}"
+
+  activerecord:
+    models:
+      user: "Usuario"
+      product: "Producto"
+      address: "Dirección"
+      bank_account: "Cuenta bancaria"
+
+    attributes:
+      user:
+        email: "Correo"
+        password: "Contraseña"
+        password_confirmation: "Confirmación de contraseña"
+        first_name: "Nombre"
+        last_name: "Apellido"
+        phone: "Teléfono"
+        profile_picture: "Foto de perfil"
+      product:
+        price: "Precio"
+        stock_quantity: "Cantidad en stock"
+      address:
+        street_name: "Calle"
+        street_number: "Número"
+        postal_code: "Código postal"
+        locality: "Provincia"
+        city: "Ciudad"
+      bank_account:
+        numero: "Número de cuenta"
+
+    errors:
+      models:
+        user:
+          attributes:
+            first_name:
+              blank: "El nombre no puede estar vacío"
+            last_name:
+              blank: "El apellido no puede estar vacío"
+            phone:
+              blank: "El número de teléfono no puede estar vacío"
+            email:
+              blank: "El correo electrónico no puede estar vacío"
+              taken: "Ya hay una cuenta con este correo electrónico."
+            password:
+              blank: "La contraseña no puede estar vacía"
+            password_confirmation:
+              confirmation: "Las contraseñas no coinciden"
+
+        product:
+          attributes:
+            price:
+              blank: "El precio no puede estar vacío"
+              not_a_number: "El precio debe ser un número válido"
+            stock_quantity:
+              blank: "La cantidad en stock no puede estar vacía"
+              not_a_number: "Debes ingresar una cantidad en el stock"
+          blank: "El producto no puede estar vacío"
+        address:
+          attributes:
+            street_name:
+              blank: "La calle no puede estar vacía"
+            street_number:
+              blank: "El número no puede estar vacío"
+            postal_code:
+              blank: "El código postal no puede estar vacío"
+            locality:
+              blank: "La provincia no puede estar vacía"
+            city:
+              blank: "La ciudad no puede estar vacía"
+        bank_account:
+          attributes:
+            numero:
+              wrong_length: "El número de cuenta debe tener %{count} dígitos"
+      messages:
+        wrong_length: "Debe tener exactamente %{count} caracteres"
+
+  devise:
+    registrations:
+      signed_up: "Bienvenido! Te has registrado con éxito."
+      user:
+        signed_up: "Bienvenido! Te has registrado con éxito."
+    sessions:
+      signed_out: "Has cerrado sesión."
+      user:
+        signed_out: "Has cerrado sesión."
+      signed_in: "Has iniciado sesión."
+      user:
+        signed_in: "Has iniciado sesión."
+    failure:
+      invalid: "Correo electrónico o contraseña inválidos."
+      user:
+        invalid: "Correo electrónico o contraseña inválidos."
+      not_found_in_database: "No se encontró ningún usuario con esas credenciales."
+      user:
+        not_found_in_database: "No se encontró ningún usuario con esas credenciales."
+
+  categories:
+    show:
+      query_text: "Buscar..."

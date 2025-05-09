@@ -1,0 +1,83 @@
+<div class="admin-container">
+  <%= render 'admin/shared/sidevar' %>
+
+  <div class="banner-content banner-container">
+    <section class="section-header arrow-back">
+      <div class="button-container settings-button">
+        <%= link_to admin_settings_path, class: 'arrow-back-link' do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+          </svg>
+          <span>Atrás</span>
+        <% end %>
+      </div>
+    </section>
+
+    <div class="banner-header">
+      <h2 class="banner-title">Banners</h2>
+      <%= link_to new_admin_banner_path, class: 'button primary-button' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icon-add-product') %>"></use>
+        </svg>
+        <spam>Agregar</spam>
+      <% end %>
+    </div>
+
+    <div class="banner-list">
+      <% @banners.each do |banner| %>
+        <div class="banner-card">
+
+          <div class="banner-title">
+            <h3 class="banner-item-title">
+              <%= banner.title %>
+            </h3>
+          </div>
+
+          <div class="desktop">
+            <% if banner.desktop_images.attached? %>
+              <% banner.desktop_images.each do |image| %>
+                <div class="image-container">
+                  <%= image_tag image, class: 'desktop-image' %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+
+          <div class="mobile">
+            <% if banner.mobile_images.attached? %>
+              <% banner.mobile_images.each do |image| %>
+                <div class="image-container">
+                  <%= image_tag image, width: 100, class: 'mobile-image' %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+
+          <div class="banner-actions">
+
+            <%= link_to edit_admin_banner_path(banner), class: 'link' do %>
+              <h2>Editar</h2>
+            <% end %>
+
+            <%= button_to admin_banner_path(banner), method: :delete, data: { turbo_confirm: '¿Estás seguro de que deseas eliminar este banner?' }, class: 'link' do %>
+              <h2>Eliminar</h2>
+            <% end %>
+
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="div-block-10">
+      <div class="wrapper-bottones-tablas">
+        <%= link_to new_admin_banner_path, class: "btn btn-primary new-product-button" do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-add-product') %>"></use>
+          </svg>
+          <span>Nuevo banner</span>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>

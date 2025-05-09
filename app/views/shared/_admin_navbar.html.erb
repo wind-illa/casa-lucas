@@ -1,0 +1,183 @@
+<header class="admin-header-mobile">
+  <nav class="admin-nav" data-controller="menu">
+
+    <div class="header-menu">
+      <%= button_tag type: 'button', class: 'menu-link', data: { action: "click->menu#open" } do %>
+        <%= image_tag 'icons/menu-open.svg', alt: 'Icono de menú abierto', class: 'menu-icon' %>
+      <% end %>
+    </div>
+
+    <div class="modal-background" data-menu-target="background" data-action="click->menu#close">
+      <button class="close-modal" data-action="click->menu#close">
+        <%= image_tag 'icons/menu-close.svg', alt: 'Cerrar menú', class: 'icono-cerrar' %>
+      </button>
+    </div>
+
+    <div class="modal-lateral" data-menu-target="modal">
+      <div class="modal-lateral-content">
+
+        <div class="admin-profile">
+          <% if current_user.profile_picture.attached? %>
+            <div class="profile-avatar">
+              <%= image_tag current_user.profile_picture, alt: 'User Avatar', class: 'avatar-img' %>
+            </div>
+          <% else %>
+            <div class="profile-avatar">
+              <%= image_tag 'icons/user.svg', alt: 'User Avatar', class: 'avatar-img' %>
+            </div>
+          <% end %>
+
+
+
+          <div class="profile-info">
+            <%= link_to admin_user_path(current_user.id), class: 'profile-link' do %>
+              <p class="profile-name"><%= "#{current_user.first_name.first.upcase}#{current_user.first_name[1..-1].downcase}" %>.<%= current_user.last_name.first.upcase %></p>
+              <p class="profile-action">
+                Mi perfil <%= image_tag 'icons/Arrow-primari.svg', alt: 'Ir a Mi Perfil', class: 'profile-arrow-icon' %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="modal-lateral-body">
+          <nav class="sidebar-mobile" data-controller="sidebar">
+            <div class="sidebar-section">
+
+              <%= link_to admin_root_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+                <div class="barra-active"></div>
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-inicio') %>"></use>
+                </svg>
+                <h2>Inicio</h2>
+              <% end %>
+
+              <div class="separador"></div>
+
+              <%= link_to home_admin_orders_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+                <div class="barra-active"></div>
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-carrito') %>"></use>
+                </svg>
+                <h2>Ordenes</h2>
+              <% end %>
+
+              <%= link_to admin_categories_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+                <div class="barra-active"></div>
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-categorias') %>"></use>
+                </svg>
+                <h2>Categorías</h2>
+              <% end %>
+
+              <%= link_to admin_products_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+                <div class="barra-active"></div>
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-productos') %>"></use>
+                </svg>
+                <h2>Productos</h2>
+              <% end %>
+
+
+              <%= link_to clientes_admin_users_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+                <div class="barra-active"></div>
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-clientes') %>"></use>
+                </svg>
+                <h2>usuarios</h2>
+              <% end %>
+
+              <%= link_to admin_settings_path, class: 'link', data: { action: "click->sidebar#activate", sidebar_target: "link" } do %>
+                <div class="barra-active"></div>
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-settings') %>"></use>
+                </svg>
+                <h2>Configuración</h2>
+              <% end %>
+
+
+              <%= link_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: '¿Estás seguro de que deseas cerrar sesión?' }, class: "link salir" do %>
+                <div class="barra-active"></div>
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-salir') %>"></use>
+                </svg>
+                <h2>Salir</h2>
+              <% end %>
+
+
+            </div>
+
+          </nav>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="admin-section">
+      <div class="section-title">
+        <h2><%= @navbar_title || "Inicio" %></h2>
+      </div>
+
+      <div class="section-notification">
+        <%= link_to root_path, class: 'notification-link' do %>
+          <%= image_tag 'icons/tienda-icon.svg', alt: 'Notificaciones', class: 'tienda-icon' %>
+        <% end %>
+        <%= link_to "#", class: 'notification-link' do %>
+          <%= image_tag 'icons/Notification.svg', alt: 'Notificaciones', class: 'notification-icon' %>
+          <p class="notification-count">3</p>
+        <% end %>
+      </div>
+    </div>
+
+  </nav>
+</header>
+
+
+
+
+<header class="admin-header-destop">
+  <nav class="admin-nav">
+
+    <div class="admin-profile">
+      <% if current_user.profile_picture.attached? %>
+        <div class="profile-avatar">
+          <%= image_tag current_user.profile_picture, alt: 'User Avatar', class: 'avatar-img' %>
+        </div>
+      <% else %>
+        <div class="profile-avatar">
+          <%= image_tag 'icons/user.svg', alt: 'User Avatar', class: 'avatar-img' %>
+        </div>
+      <% end %>
+
+
+
+
+      <div class="profile-info">
+        <%= link_to admin_user_path(current_user.id), class: 'profile-link' do %>
+          <p class="profile-name"><%= "#{current_user.first_name.first.upcase}#{current_user.first_name[1..-1].downcase}" %>.<%= current_user.last_name.first.upcase %></p>
+          <p class="profile-action">
+            Mi perfil <%= image_tag 'icons/Arrow-primari.svg', alt: 'Ir a Mi Perfil', class: 'profile-arrow-icon' %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="section-title">
+        <h2><%= @navbar_title || "Inicio" %></h2>
+      </div>
+
+      <div class="section-notification">
+        <%= link_to root_path, class: 'notification-link' do %>
+          <%= image_tag 'icons/tienda-icon.svg', alt: 'Notificaciones', class: 'tienda-icon' %>
+        <% end %>
+
+        <%= link_to "#", class: 'notification-link' do %>
+          <%= image_tag 'icons/Notification.svg', alt: 'Notificaciones', class: 'notification-icon' %>
+          <p class="notification-count">3</p>
+        <% end %>
+      </div>
+    </div>
+
+  </nav>
+</header>

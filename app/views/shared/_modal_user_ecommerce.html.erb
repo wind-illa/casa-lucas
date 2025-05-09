@@ -1,0 +1,106 @@
+
+<div class="modal-lateral-content">
+  <div class="modal-lateral-header">
+    <header class="<%= user_signed_in? ? 'header-logged-in' : 'header-logged-out' %>">
+      <% if user_signed_in? %>
+        <% if current_user.profile_picture.attached? %>
+          <div class="user-avatar">
+            <%= image_tag current_user.profile_picture %>
+          </div>
+        <% else %>
+          <%= image_tag 'icons/user.svg', alt: 'User Avatar', width: '40', height: '40' %>
+        <% end %>
+        <div class="user-name-perfil">
+          <%= link_to account_profile_path(current_user), class: 'profile-link' do %>
+            <p class="user-name"><%= "#{current_user.first_name.first.upcase}#{current_user.first_name[1..-1].downcase}" %>.<%= current_user.last_name.first.upcase %></p>
+            <p class="user-perfil">
+              Mi perfil <%= image_tag('icons/Arrow-primari.svg', alt: 'Ir a Mi Perfil', class: 'profile-icon') %>
+            </p>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="user-welcome">Ingresa a tu cuenta para ver tus compras.</p>
+        <div class="user-links">
+          <%= link_to 'Ingresá', new_user_session_path, class: "login-link" %>
+          <%= link_to 'Creá tu cuenta', new_user_registration_path, class: "register-link" %>
+        </div>
+      <% end %>
+    </header>
+  </div>
+
+
+  <div class="modal-lateral-body">
+    <ul class="menu-principal">
+      <li>
+        <%= link_to root_path, class: "link-cuenta" do %>
+          <%= image_tag "icons/Home.svg", alt: "Inicio", class: "icono-cuenta" %>
+          Inicio
+        <% end %>
+      </li>
+      <% if user_signed_in? && current_user.administrador? %>
+        <li>
+          <%= link_to admin_root_path, class: "link-cuenta" do %>
+            <%= image_tag "icons/administracion-icon.svg", alt: "Inicio", class: "icono-cuenta" %>
+            Administración
+          <% end %>
+        </li>
+      <% end %>
+
+
+        <li>
+          <%= link_to account_main_path, class: "link-cuenta" do %>
+            <%= image_tag "icons/User-li.svg", alt: "Mi Cuenta", class: "icono-cuenta" %>
+            Mi Cuenta
+          <% end %>
+        </li>
+
+
+
+      <li>
+        <%= link_to ecommerce_orders_path, class: "link-cuenta" do %>
+          <%= image_tag "icons/mis-compras.svg", alt: "Mis Compras", class: "icono-cuenta" %>
+          Mis compras
+        <% end %>
+      </li>
+
+
+
+      <li>
+        <%= link_to "#", class: "link-cuenta" do %>
+          <%= image_tag "icons/Headphone.svg", alt: "Ayuda", class: "icono-cuenta" %>
+          Centro de ayuda
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to "#", class: "link-cuenta" do %>
+          <%= image_tag "icons/Store.svg", alt: "¿Dónde estamos?", class: "icono-cuenta" %>
+          ¿Dónde estamos?
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to account_settings_path, class: "link-cuenta" do %>
+          <%= image_tag "icons/ajustes.svg", alt: "Ajustes", class: "icono-cuenta" %>
+          Ajustes
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to ecommerce_history_path, class: "link-cuenta" do %>
+          <%= image_tag "icons/navegacion.svg", alt: "Ajustes", class: "icono-cuenta" %>
+          Historial de navegación
+        <% end %>
+      </li>
+
+    </ul>
+  </div>
+
+  <% if user_signed_in? %>
+    <div class="separador"></div>
+    <%= link_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: '¿Estás seguro de que deseas cerrar sesión?' }, class: "salir" do %>
+      <%= image_tag "icons/salir.svg", alt: "Cerrar sesión", class: "icono-cerrar" %>
+      Salir
+    <% end %>
+  <% end %>
+</div>

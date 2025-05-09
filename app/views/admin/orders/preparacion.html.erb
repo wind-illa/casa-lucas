@@ -1,0 +1,180 @@
+<div class="admin-container">
+  <%= render 'admin/shared/sidevar' %>
+  <div class="banner-content">
+    <div class="ordenes-container-full">
+
+
+
+
+      <div class="arrow-back">
+        <%= link_to home_admin_orders_path, class: 'arrow-back-link' do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+          </svg>
+          <span>Atrás</span>
+        <% end %>
+
+
+
+        <div class="search-container" data-controller="search">
+          <%= form_with url: preparacion_admin_orders_path, method: :get, data: { controller: 'search' } do |form| %>
+
+            <!-- Icono de búsqueda (no cambia) -->
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-search-button') %>"></use>
+            </svg>
+
+            <div class="search-input-container">
+              <%= form.text_field :query_text, placeholder: "Nº de orden...", value: params[:query_text], class: 'search-input', data: { search_target: 'input', action: 'input->search#toggleClearButton' } %>
+            </div>
+
+            <button type="button" id="clear-search" class="clear-button" style="display: none;" data-action="click->search#clearSearch" data-search-target="clearButton">
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-clear') %>"></use>
+              </svg>
+            </button>
+
+            <%= form.submit "Buscar", data: { action: "submit->search#submitForm" } %>
+          <% end %>
+        </div>
+      </div>
+
+
+
+
+
+      <div class="main-container-orders">
+        <% @orders.each do |order| %>
+          <div class="order-item-card">
+            <div class="order-item-header">
+            <span class="header-card fecha">
+              <%= I18n.l(order.created_at, format: "%d de %B %H:%M").downcase %>
+            </span>
+              <span class="header-card id"># <%= order.id %></span>
+            </div>
+
+            <div class="order-item-body">
+              <div class="order-item-info">
+                <div class="img-container-order">
+
+                  <% items_count = order.order_items.first(3).size %>
+                  <div class="order-images images-<%= items_count %>">
+                    <% order.order_items.first(3).each do |item| %>
+                      <div class="img-product-order">
+                        <% if item.images.attached? %>
+                          <%= image_tag url_for(item.images.first), alt: item.product.product_name, class: "product-thumbnail" %>
+                        <% else %>
+                          <div class="no-image">Sin imagen</div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                    <% if items_count > 1 %>
+                      <div class="product-info">
+                        <span class="summary-label"><%= order.order_items.sum(:quantity) %></span>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="order-item-status">
+                  <span class="status <%= status_class(order.status) %>">
+                    <%= order.status.humanize %>
+                  </span>
+                  <span class="user-name"><%= order.user.first_name %> <%= order.user.last_name %></span>
+                </div>
+                <div class="filter-container-modal-menu" data-controller="menu">
+
+                  <div class="filter">
+                    <%= button_tag type: 'button', class: 'filter-button', data: { action: "click->menu#open" } do %>
+                      <svg class="icon">
+                        <use xlink:href="<%= asset_path('icons/admin.svg#icon-custome') %>"></use>
+                      </svg>
+                    <% end %>
+                  </div>
+
+                  <!-- Modal -->
+
+                  <div class="modal-background" data-menu-target="background" data-action="click->menu#close">
+                  </div>
+                  <div class="modal-lateral" data-menu-target="modal">
+                    <div class="modal-lateral-content">
+
+                      <div class="modal-lateral-header">
+                        <button class="close-modal" data-action="click->menu#close">
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-custom') %>"></use>
+                          </svg>
+                        </button>
+                      </div>
+
+                      <div class="modal-lateral-body">
+                        <div class="modal">
+
+                          <%= link_to admin_order_path(order), class: "btn-info btn-detalle" do %>
+                            <svg class="icon">
+                              <use xlink:href="<%= asset_path('icons/admin.svg#icon-detalles') %>"></use>
+                            </svg>
+                            <span>Ver el detalle</span>
+                          <% end %>
+
+
+                          <% if order.status == "listo_para_retirar" || order.status == "enviado" %>
+                            <%= button_to cambiar_estado_admin_order_path(order, status: :entregado), method: :patch, class: "btn-info btn-retirar" do %>
+                              <svg class="icon">
+                                <use xlink:href="<%= asset_path('icons/admin.svg#icon-aprobar-pago') %>"></use>
+                              </svg>
+                              <span>Entregado</span>
+                            <% end %>
+                          <% else %>
+                            <% if order.shipping_method&.name == "Retiro" %>
+                              <%= button_to cambiar_estado_admin_order_path(order, status: :listo_para_retirar), method: :patch, class: "btn-info btn-retirar" do %>
+                                <svg class="icon">
+                                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-enviarr') %>"></use>
+                                </svg>
+                                <span>Listo para ser retirado</span>
+                              <% end %>
+                            <% elsif order.shipping_method&.name == "Envío" %>
+                              <%= button_to cambiar_estado_admin_order_path(order, status: :enviado), method: :patch, class: "btn-info btn-retirar" do %>
+                                <svg class="icon">
+                                  <use xlink:href="<%= asset_path('icons/admin.svg#icon-enviarr') %>"></use>
+                                </svg>
+                                <span>Enviar</span>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+
+
+
+
+
+                          <!-- Botón universal para cancelar el pedido -->
+                          <%= button_to cambiar_estado_admin_order_path(order, status: :cancelado), method: :patch, class: "btn-info btn-cancelar" do %>
+                            <svg class="icon">
+                              <use xlink:href="<%= asset_path('icons/admin.svg#icon-cancelar') %>"></use>
+                            </svg>
+                            <span>Cancelar Orden</span>
+                          <% end %>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="order-item-detail">
+                <span><%= number_to_currency(order.total_price) %></span>
+                <% if order.payment_method.code == "mercado_pago" %>
+                  <span class="bank-detail"><%= order.mercado_pago_transaction_id %></span>
+                <% else %>
+                  <span></span>
+                <% end %>
+                <span><%= order.payment_method&.name %> - <%= order.shipping_method&.name %></span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>

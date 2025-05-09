@@ -1,0 +1,69 @@
+<% content_for :title, "Más vendidos | Baratísimo Bazar" %>
+
+<div class="super-vendidos-container">
+  <% if @products.any? %>
+
+
+    <div class="categories-title">
+      <div class="title">
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/ecommerce.svg#icon-circles') %>"></use>
+        </svg>
+        <div class="title-mas-vendidos">
+          <h1>Descubrí los artículos más vendidos en el Baratísimo</h1>
+          <p class="subtitle">Nuestros productos más populares según las ventas. Se actualizan con frecuencia.</p>
+        </div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/ecommerce.svg#icon-circles') %>"></use>
+        </svg>
+      </div>
+    </div>
+
+
+    <div class="super-offers-products">
+      <% @products.each_with_index do |product, index| %>
+        <div class="product-card">
+          <%= link_to ecommerce_product_path(product), class: "product-link" do %>
+
+            <div class="product-image">
+              <% if product.product_images.attached? %>
+                <%= image_tag product.product_images.first, alt: product.product_name, class: "product-img" %>
+              <% else %>
+                <div class="no-image">
+                  <svg class="icon no-image-icon">
+                    <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar-foto') %>"></use>
+                  </svg>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="product-details">
+              <div class="ofertas">
+                <div class="oferta-relampago">
+                  <span class="ranking"><%= index + 1 %>º Más vendido</span>
+                </div>
+              </div>
+
+
+              <span class="name"><%= product.product_name %></span>
+
+              <div class="precio-anterior">
+                <p class="span-original">Precio anterior</p>
+                <p class="price-original"><%= number_to_currency(product.price) %></p>
+              </div>
+
+              <p class="price-discounted"><%= number_to_currency(product.discounted_price) %></p>
+
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="super-offers-none">
+      <p>No hay productos disponibles en este momento.</p>
+    </div>
+  <% end %>
+</div>
+<%= render 'shared/whatsApp' %>
+<%= render 'shared/footer' %>

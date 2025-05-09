@@ -1,0 +1,42 @@
+<div class="product-new-edit-content edit-variant">
+  <div class="product-content">
+    <%= form_with(model: [:admin, @product, @product_variant], local: true) do |form| %>
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= form.text_field :color,
+                              class: 'form-input',
+                              placeholder: 'Nombre del producto',
+                              value: @product_variant.color,
+                              id: 'product_name' %>
+          <label for="product_name" class="form-label">Color de la variante</label>
+        </div>
+      </div>
+
+      <div class="form-images" data-controller="image-upload">
+        <div class="new-images image-preview" data-image-upload-target="imagePreview">
+
+
+
+
+          <div class="upload-image-btn" data-action="click->image-upload#triggerUpload">
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-add-color') %>"></use>
+            </svg>
+          </div>
+
+          <%= form.file_field :images,
+                              multiple: true,
+                              accept: "image/*",
+                              class: 'hidden-upload-field',
+                              data: { image_upload_target: "fileInput", action: "change->image-upload#handleImageUpload" } %>
+        </div>
+      </div>
+
+      <%= form.submit "Actualizar Variante", class: "btn btn-primary" %>
+      <div class="space">
+        <%= link_to 'Volver', admin_product_path(@product), class: 'btn btn-secondary' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<% content_for :title, "Mi Cuenta | Baratísimo Bazar" %>
+
+<div class="account-menu">
+  <div class="menu-container">
+    <h1 class="account-title">
+      Mi Cuenta
+    </h1>
+
+    <div class="account-options">
+
+      <% if current_user %>
+        <%= link_to account_profile_path(current_user), class: 'account-link' do %>
+          <%= image_tag('icons/Icon-perfil.svg', alt: 'Mi Perfil', class: 'icon') %>
+          <div>
+            <h2>Mi Perfil</h2>
+            <p>Administrá o editá los datos de tu perfil.</p>
+          </div>
+          <%= image_tag 'icons/Icon-arrrow-rigt.svg', alt: 'Ir', class: 'icon-end' %>
+        <% end %>
+      <% else %>
+        <span class="disabled-option">Mi Perfil</span>
+      <% end %>
+
+
+
+      <%= link_to ecommerce_orders_path, class: 'account-link' do %>
+        <%= image_tag('icons/Icon-compras.svg', alt: 'compras', class: 'icon') %>
+        <div>
+          <h2>Mis compras</h2>
+          <p>Devolver, cancelar o comprar de nuevo.</p>
+        </div>
+        <%= image_tag 'icons/Icon-arrrow-rigt.svg', alt: 'Ir', class: 'icon-end' %>
+      <% end %>
+
+
+
+
+      <%= link_to account_settings_path, class: 'account-link' do %>
+        <%= image_tag('icons/Icon-ajustes.svg', alt: 'Ajustes', class: 'icon') %>
+        <div>
+          <h2>Ajustes</h2>
+          <p>Elimina tu cuenta.</p>
+        </div>
+        <%= image_tag 'icons/Icon-arrrow-rigt.svg', alt: 'Ir', class: 'icon-end' %>
+      <% end %>
+
+    </div>
+
+  </div>
+  <%= link_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: '¿Estás seguro de que deseas cerrar sesión?' }, class: "salir" do %>
+    <%= image_tag "icons/Icon-salir-color.svg", alt: "Cerrar sesión", class: "icono-cerrar" %>
+    Salir
+  <% end %>
+</div>
+<%= render 'shared/footer' %>

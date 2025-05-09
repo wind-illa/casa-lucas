@@ -1,0 +1,73 @@
+<div class="admin-container">
+  <%= render 'admin/shared/sidevar' %>
+  <div class="banner-content">
+
+    <div class="arrow-back">
+
+      <div class="search-container" data-controller="search">
+        <%= form_with url: admin_categories_path, method: :get, data: { controller: 'search' } do |form| %>
+          <!-- Icono de búsqueda (no cambia) -->
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-search-button') %>"></use>
+          </svg>
+
+          <div class="search-input-container">
+            <%= form.text_field :query_text, placeholder: "Buscar...", value: params[:query_text], class: 'search-input', data: { search_target: 'input', action: 'input->search#toggleClearButton' } %>
+          </div>
+
+          <button type="button" id="clear-search" class="clear-button" style="display: none;" data-action="click->search#clearSearch" data-search-target="clearButton">
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-clear') %>"></use>
+            </svg>
+          </button>
+
+          <%= form.submit "Buscar", data: { action: "submit->search#submitForm" } %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="categories-container">
+      <% @categories.each do |category| %>
+        <div class="category-card">
+          <%= link_to admin_category_path(category), class: 'category-card-link', aria: { label: "Ver categoría: #{category.category_name}" } do %>
+            <div class="category-card-header">
+              <h3 class="category-name"><%= category.category_name %></h3>
+              <span class="category-father">Subcategorias: <%= category.subcategories.count %></span>
+
+            </div>
+            <div class="category-photo">
+              <% if category.category_image.attached? %>
+                <%= image_tag category.category_image, class: 'category-photo-img', alt: "Imagen de la categoría #{category.category_name}" %>
+              <% else %>
+                <p class="category-photo-placeholder">Imagen no disponible</p>
+              <% end %>
+            </div>
+
+          <% end %>
+          <div class="category-actions">
+
+            <%= link_to edit_admin_category_path(category), class: 'btn-edit-category', aria: { label: "Editar categoría #{category.category_name}" } do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-edit') %>"></use>
+              </svg>
+            <% end %>
+
+            <%= button_to admin_category_path(category),
+                          method: :delete,
+                          data: { turbo_confirm: "¿Estás seguro?" },
+                          class: 'btn-delete-category' do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-delete') %>"></use>
+              </svg>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <%= link_to new_admin_category_path, class: 'button primary-button' do %>
+        <svg class="icon" role="img" aria-hidden="true">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar') %>"></use>
+        </svg>
+      <% end %>
+    </div>
+  </div>
+</div>

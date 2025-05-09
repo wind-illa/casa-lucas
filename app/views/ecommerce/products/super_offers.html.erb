@@ -1,0 +1,57 @@
+<% content_for :title, "Súper ofertas | Baratísimo Bazar" %>
+
+<div class="super-offers-container">
+  <% if @products.any? %>
+    <div class="super-offers-header">
+      <h1>Súper ofertas</h1>
+    </div>
+    <div class="super-offers-products">
+      <% @products.each do |product| %>
+        <div class="product-card">
+          <%= link_to ecommerce_product_path(product), class: "product-link" do %>
+
+            <div class="product-image">
+              <% if product.product_images.attached? %>
+                <%= image_tag product.product_images.first, alt: product.product_name, class: "product-img" %>
+              <% else %>
+                <div class="no-image">
+                  <svg class="icon no-image-icon">
+                    <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar-foto') %>"></use>
+                  </svg>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="product-details">
+              <div class="ofertas">
+                <div class="oferta-relampago">
+                  <span>-<%= product.price_discount %>%</span>
+                </div>
+                <span>Oferta Relámpago</span>
+              </div>
+
+
+              <span class="name"><%= product.product_name %></span>
+
+              <div class="precio-anterior">
+                <p class="span-original">Precio anterior</p>
+                <p class="price-original"><%= number_to_currency(product.price) %></p>
+              </div>
+
+              <p class="price-discounted"><%= number_to_currency(product.discounted_price) %></p>
+
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="super-offers-none">
+      <p>No hay ofertas disponibles en este momento.</p>
+    </div>
+  <% end %>
+</div>
+
+<%= paginate @products, theme: 'custom-pagination-ecommerce' %>
+<%= render 'shared/whatsApp' %>
+<%= render 'shared/footer' %>

@@ -1,0 +1,616 @@
+
+// Estilos para el header de devise ----------------------------------
+
+.header-devise {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background: linear-gradient(to right, #A60B4C, #DA0E5F);
+  background: linear-gradient(to right,  #F702F5,  #F702F5);
+  border-bottom: 1px solid #e9ecef;
+  width: 100%;
+  height: 48px;
+  .header-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 16px;
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      margin-right: auto;
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img{
+          height: 36px;
+        }
+      }
+    }
+  }
+}
+
+// Estilos para Iniciar sesión  devise ----------------------------------
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  width: 100%;
+  height: calc(100vh - 48px);
+  padding: 16px;
+
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    width: 100%;
+
+
+    .login-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 32px;
+
+      h2 {
+        width: 100%;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        font-size: 24px;
+      }
+    }
+
+    .login-form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      .alert {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #c40000;
+        border-radius: 5px;
+        background-color: #fff;
+        color:#c40000 ;
+        width: 100%;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+        .alert-icon {
+          margin-right: 15px;
+          font-size: 24px;
+        }
+
+        h2 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: 400;
+          color: #c40000;
+        }
+
+        p {
+          margin: 5px 0 0;
+          font-size: 14px;
+          color: #111;
+        }
+      }
+
+
+      .login-form {
+        width: 100%;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+
+        .form-label {
+          font-size: 14px;
+          font-weight: 400;
+          color: #333;
+          margin-bottom: 6px;
+        }
+
+        .form-input {
+          padding: 0.75rem;
+          font-size: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          transition: border-color 0.3s;
+          background-color: white !important;
+
+          &:focus {
+            border-color: #DA0E5F;
+            outline: none;
+          }
+
+        }
+      }
+
+      .form-remember {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: center;
+
+        .form-checkbox {
+          width: 1rem;
+          height: 1rem;
+          accent-color: #DA0E5F;
+        }
+
+        .checkbox-label {
+          font-size: 0.9rem;
+          color: #666;
+        }
+      }
+
+
+      .form-actions {
+        margin-top: 1rem;
+
+        .button-primary {
+          width: 100%;
+          padding: 0.75rem;
+          font-size: 1rem;
+          background-color: #DA0E5F;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #c40000;
+          }
+        }
+      }
+
+      .apartado {
+        margin-top: 20px;
+        max-width: 400px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        div {
+          width: 100%;
+          background-color: #e7e7e7;
+          height: 1px;
+        }
+        p {
+          display: flex;
+          margin: 0 1rem;
+          font-size: 0.9rem;
+          color: #666;
+          width: 100%;
+          white-space: nowrap;
+        }
+
+
+      }
+
+      .login-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+    }
+  }
+}
+
+// Estilos para el parseo de links en devise ----------------------------------
+
+.link-register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  color: #0F1111;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #D5D9D9;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  height: 30px;
+  font-size: 14px;
+  margin-top: 20px;
+
+  &:hover {
+    background-color:rgba(0, 0, 0, 0.04);
+  }
+}
+
+.link-recover {
+  color: #DA0E5F;
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 14px;
+  margin-top: 16px;
+
+  &:hover {
+    color: darken(#DA0E5F, 10%);
+    text-decoration: underline;
+  }
+}
+
+// Estilos para el registro o creacion de cuenta iniciar sesion ----------------------------------
+
+.signup-page {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  width: 100%;
+  height: calc(100vh - 48px);
+  padding: 16px;
+
+  .signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    width: 100%;
+
+    .devise-shared-error-messages {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #c40000;
+      border-radius: 5px;
+      background-color: #fff;
+      color:#c40000 ;
+      width: 100%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      .alert-icon {
+        margin-right: 15px;
+        font-size: 24px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 400;
+        color: #c40000;
+      }
+
+      p {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #111;
+      }
+    }
+
+    .signup-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 32px;
+
+      h2 {
+        width: 100%;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        font-size: 24px;
+      }
+    }
+
+    .signup-form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+        width: 100%;
+
+        label {
+          font-size: 14px;
+          font-weight: 400;
+          color: #333;
+          margin-bottom: 6px;
+        }
+        .pass-container {
+          margin-bottom: 6px;
+          em {
+            margin-left: 4px;
+            font-size: 14px;
+          }
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+          padding: 0.75rem;
+          font-size: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          transition: border-color 0.3s;
+          width: 100%;
+
+          &:focus {
+            border-color: #DA0E5F;
+            outline: none;
+          }
+        }
+      }
+
+      .actions {
+        margin-top: 1rem;
+        width: 100%;
+
+        .button-primary {
+          width: 100%;
+          padding: 0.75rem;
+          font-size: 1rem;
+          background-color: #DA0E5F;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #c40000;
+          }
+        }
+      }
+    }
+    .apartado {
+      margin-top: 20px;
+      max-width: 400px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      div {
+        width: 100%;
+        background-color: #e7e7e7;
+        height: 1px;
+      }
+
+      p {
+        display: flex;
+        margin: 0 1rem;
+        font-size: 0.9rem;
+        color: #666;
+        white-space: nowrap;
+      }
+    }
+
+    .signup-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+  }
+}
+
+
+// Estilos para devise/passwords/new.html.erb  --------------------------------------
+
+.error-container {
+  display: flex;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #c40000;
+  border-radius: 5px;
+  background-color: #fff;
+  color:#c40000 ;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .alert-icon {
+    margin-right: 15px;
+    font-size: 24px;
+  }
+
+  .error-content {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    .error-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 400;
+      color: #c40000;
+    }
+
+    .error-list {
+      list-style-type: none; // Sin viñetas
+      padding-left: 0; // Sin padding a la izquierda
+
+      .error-message {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #111;
+      }
+    }
+  }
+}
+
+// Estilos para devise/shared/_error_messages.html.erb  --------------------------------------// Estilos para la página de recuperación de contraseña
+
+.forgot-password-page {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  width: 100%;
+  height: calc(100vh - 48px);
+  padding: 16px;
+
+  .forgot-password-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    width: 100%;
+
+    .devise-shared-error-messages {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #c40000;
+      border-radius: 5px;
+      background-color: #fff;
+      color: #c40000;
+      width: 100%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      .alert-icon {
+        margin-right: 15px;
+        font-size: 24px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 400;
+        color: #c40000;
+      }
+
+      p {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #111;
+      }
+    }
+
+    .forgot-password-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 32px;
+
+      h2 {
+        width: 100%;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        font-size: 24px;
+      }
+    }
+
+    .forgot-password-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      .forgot-password-instructions {
+        margin-bottom: 16px;
+        p {
+          font-size: 14px;
+          color: #333;
+          margin: 12px 0;
+        }
+      }
+
+      .form-field {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+        width: 100%;
+
+        .field-with_errors {
+          margin-top: 6px;
+        }
+        label {
+          font-size: 14px;
+          font-weight: 400;
+          color: #333;
+          margin-bottom: 6px;
+        }
+
+        input[type="email"] {
+          padding: 0.75rem;
+          font-size: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          transition: border-color 0.3s;
+          width: 100%;
+
+          &:focus {
+            border-color: #DA0E5F;
+            outline: none;
+          }
+        }
+      }
+
+      .form-actions {
+        margin-top: 1rem;
+        width: 100%;
+
+        .button-primary {
+          width: 100%;
+          padding: 0.75rem;
+          font-size: 1rem;
+          background-color: #DA0E5F;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #c40000;
+          }
+        }
+      }
+    }
+
+    .forgot-password-help {
+      width: 100%;
+      padding: 20px;
+      p {
+        margin: 5px 0;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      .title {
+        font-weight: 600;
+        font-size: 16px;
+        margin-bottom: 5px;
+        color: #333;
+      }
+    }
+  }
+}

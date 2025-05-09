@@ -1,0 +1,91 @@
+<div class="admin-container">
+  <%= render 'admin/shared/sidevar' %>
+  <div class="banner-content">
+
+
+    <div class="ordenes-container-home">
+
+      <div class="container-ajustes-link">
+
+        <%= link_to pagos_admin_orders_path, class: 'link-Ajustes link-pagos'  do %>
+          <div class="icon-container pagos">
+            <%= image_tag "logos/pagado.png", alt: "Super Ofertas", class: "icon" %>
+            <% if @pagos_count > 0 %>
+              <div class="badge-alert"></div>
+            <% end %>
+          </div>
+          <div class="list-text">
+            <h2>Órdenes recientes</h2>
+            <div class="title-proceso">
+              <% if @pagos_count == 0 %>
+                <span>No hay órdenes nuevas</span>
+              <% elsif @pagos_count == 1 %>
+                <span>Hay una orden pendiente de aprobación</span>
+              <% else %>
+                <span>Hay <%= @pagos_count %> órdenes pendientes de aprobación</span>
+              <% end %>
+            </div>
+          </div>
+          <svg class="iconi">
+            <use xlink:href="<%= asset_path('icons/admin.svg#arrow-right') %>"></use>
+          </svg>
+        <% end %>
+
+        <%= link_to preparacion_admin_orders_path, class: 'link-Ajustes'  do %>
+          <div class="icon-container preparacion">
+            <%= image_tag "logos/en preparacion opcion 2.png", alt: "Super Ofertas", class: "icon" %>
+            <% if @preparacion_count > 0 %>
+              <div class="badge-alert"></div>
+            <% end %>
+          </div>
+          <div class="list-text">
+            <h2>Órdenes en preparación</h2>
+            <div class="title-proceso">
+              <% if @preparacion_count == 0 %>
+                <span>No hay órdenes en preparación</span>
+              <% elsif @preparacion_count == 1 %>
+                <span>hay una orden en preparacion</span>
+              <% else %>
+                <span>hay <%= @preparacion_count %> órdenes en praparacion</span>
+              <% end %>
+            </div>
+          </div>
+          <svg class="iconi">
+            <use xlink:href="<%= asset_path('icons/admin.svg#arrow-right') %>"></use>
+          </svg>
+        <% end %>
+
+        <%= link_to finalizadas_admin_orders_path, class: 'link-Ajustes'  do %>
+          <div class="icon-container finalizadas">
+            <%= image_tag "logos/finalizadas.png", alt: "Super Ofertas", class: "icon" %>
+          </div>
+          <div class="list-text">
+            <h2>Órdenes finalizadas</h2>
+            <div class="title-proceso">
+              <span>Historial</span>
+            </div>
+          </div>
+          <svg class="iconi">
+            <use xlink:href="<%= asset_path('icons/admin.svg#arrow-right') %>"></use>
+          </svg>
+        <% end %>
+
+        <%= link_to pendientes_admin_orders_path, class: 'link-Ajustes'  do %>
+          <div class="icon-container finalizadas">
+            <%= image_tag "logos/pendiente.png", alt: "Super Ofertas", class: "icon" %>
+          </div>
+          <div class="list-text">
+            <h2>Órdenes en curso</h2>
+            <div class="title-proceso">
+              <span>Órdenes iniciadas pendientes de completar el proceso de compra</span>
+            </div>
+          </div>
+          <svg class="iconi">
+            <use xlink:href="<%= asset_path('icons/admin.svg#arrow-right') %>"></use>
+          </svg>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>

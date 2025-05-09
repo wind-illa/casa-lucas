@@ -1,0 +1,286 @@
+
+<header class="header-destock" data-controller="menu">
+  <nav class="header-nav" aria-label="Header Navigation">
+    <div class="header-top">
+
+
+      <div class="header-container">
+
+        <div class="header-menu-logo">
+          <div class="header-menu">
+            <%= button_tag type: 'button', class: 'menu-link', data: { action: "click->menu#open" } do %>
+              <%= image_tag 'icons/menu-open copy.svg', alt: 'Icono de menú abierto', class: 'menu-icon' %>
+            <% end %>
+          </div>
+          <div class="header-logo">
+            <%= link_to image_tag('logos/BaratisimoBazar-V11.png', alt: 'Logo de [Nombre de la Tienda]'), root_path %>
+
+          </div>
+        </div>
+
+        <div class="header-adresses-logo">
+          <div class="header-logo">
+            <%= link_to image_tag('logos/BaratisimoBazar-V11.png', alt: 'Logo de [Nombre de la Tienda]'), root_path %>
+          </div>
+
+          <div class="header-menu">
+            <%= button_tag type: 'button', class: 'menu-link' do %>
+              <svg class="menu-icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-location') %>"></use>
+              </svg>
+
+              <div class="adresses">
+                <p class="user-name">
+                  Enviar a
+                  <% if user_signed_in? %>
+                    <%= "#{current_user.first_name.first.upcase}#{current_user.first_name[1..-1].downcase}" %>
+                  <% else %>
+                    visitante
+                  <% end %>
+                </p>
+
+                <% if user_signed_in? && current_user.addresses.present? %>
+                  <% if current_user.addresses.any? %>
+                    <span><%= current_user.addresses.first.street_name %> <%= current_user.addresses.first.street_number %></span>
+                  <% end %>
+                <% else %>
+                  <%= link_to account_addresses_path, class: 'link' do %>
+                    <span>Agrega una dirección</span>
+                  <% end %>
+                <% end %>
+
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="header-search">
+          <%= form_with url: ecommerce_search_products_path, method: :get, local: true do |form| %>
+            <%= form.text_field :query_text, placeholder: "Buscar productos...", value: params[:query_text], class: 'search-input' %>
+            <div class="search-button-container">
+              <%= form.submit "", class: 'search-button' %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-search-button') %>"></use>
+              </svg>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="header-user-cart">
+
+          <div class="header-user-mobile">
+            <%= button_tag type: 'button', class: 'user-link', data: { action: "click->menu#openUser" } do %>
+              <%= image_tag 'icons/user.svg', alt: 'Icono de menú abierto', class: 'menu-icon' %>
+            <% end %>
+          </div>
+
+
+          <div class="header-user">
+            <%= button_tag type: 'button', class: 'user-link', data: { action: "click->menu#openUser" } do %>
+
+              <% if user_signed_in? %>
+                <% if current_user.profile_picture.attached? %>
+                  <div class="user-avatar">
+                    <%= image_tag current_user.profile_picture %>
+                  </div>
+                <% else %>
+                  <%= image_tag 'icons/user.svg', alt: 'Icono de menú abierto', class: 'menu-icon' %>
+                <% end %>
+                <div class="user-name-perfil">
+                    <p class="user-name">Hola <%= "#{current_user.first_name.first.upcase}#{current_user.first_name[1..-1].downcase}" %></p>
+                    <p class="user-perfil">Cuenta y compras</p>
+                </div>
+              <% else %>
+                <%= image_tag 'icons/user.svg', alt: 'Icono de menú abierto', class: 'menu-icon' %>
+                <div class="user-name-perfil">
+                  <p class="user-name">Bienvenido</p>
+                  <span class="user-perfil">Ingresá o registrate</span>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+
+
+          <div class="header-cart">
+            <%= link_to ecommerce_cart_path do %>
+              <%= image_tag('icons/super-cart.svg', alt: 'Icono de carrito de compras', class: 'cart-icon') %>
+              <turbo-frame id="cart-item-quantity-nav">
+                <p class="cart-quantity-nav">
+                  <%= @cart&.total_items || 0 %>
+                </p>
+              </turbo-frame>
+
+              <span class="cart-text">Carrito</span>
+            <% end %>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="header-bottom">
+      <div class="bottom-container">
+
+        <div class="header-search">
+          <%= form_with url: ecommerce_search_products_path, method: :get, local: true do |form| %>
+            <%= form.text_field :query_text, placeholder: "Buscar productos...", value: params[:query_text], class: 'search-input' %>
+            <div class="search-button-container">
+              <%= form.submit "", class: 'search-button' %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-search-button') %>"></use>
+              </svg>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="header-menu">
+          <%= button_tag type: 'button', class: 'menu-link', data: { action: "click->menu#open" } do %>
+            <%= image_tag 'icons/menu-open.svg', alt: 'Icono de menú abierto', class: 'menu-icon' %>
+            <span class="category">Categorías</span>
+          <% end %>
+        </div>
+
+        <div class="header-menu">
+          <%= link_to ecommerce_super_offers_path, class: 'menu-link' do %>
+            <span>Super ofertas</span>
+          <% end %>
+        </div>
+
+        <div class="header-menu">
+          <%= link_to ecommerce_new_arrivals_path, class: 'menu-link' do %>
+            <span>Novedades</span>
+          <% end %>
+        </div>
+
+        <div class="header-menu">
+          <%= link_to ecommerce_best_sellers_path, class: 'menu-link' do %>
+            <span>Más vendidos</span>
+          <% end %>
+        </div>
+
+        <div class="header-menu">
+          <%= link_to ecommerce_history_path, class: 'menu-link' do %>
+            <span>Historial de navegación</span>
+          <% end %>
+        </div>
+
+        <div class="header-menu header-margin">
+          <%= link_to '#', class: 'menu-link' do %>
+            <span>Centro de ayuda</span>
+          <% end %>
+        </div>
+
+        <div class="header-menu">
+          <%= link_to ecommerce_orders_path, class: 'menu-link' do %>
+            <span>Mis compras</span>
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+
+
+
+
+
+
+
+
+
+  <!-- Modal lateral menu productos -->
+
+  <div class="modal-background" data-menu-target="background" data-action="click->menu#close">
+    <button class="close-modal" data-action="click->menu#close">
+      <%= image_tag 'icons/menu-close.svg', alt: 'Cerrar menú', class: 'icono-cerrar' %>
+    </button>
+  </div>
+	<div class="modal-lateral" data-menu-target="modal">
+    <div class="modal-lateral-content">
+
+    <div class="modal-lateral-header-menu">
+      <%= image_tag 'icons/user copy.svg', alt: 'Icono de menú abierto', class: 'icon' %>
+      <span>
+        <% if current_user %>
+          Hola, <%= current_user.first_name %>
+        <% else %>
+          Hola, Inicia sesión o registrate para comprar
+        <% end %>
+      </span>
+    </div>
+
+
+
+    <div class="modal-lateral-body-menu">
+      <ul class="referencias">
+        <li>
+          <%= link_to ecommerce_super_offers_path, class: "opcion-link super-ofertas" do %>
+            <%= image_tag "icons/Icon-oferta.png", alt: "Super Ofertas", class: "icon" %>
+            <span>Super ofertas</span>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to ecommerce_new_arrivals_path, class: "opcion-link novedades" do %>
+            <%= image_tag "icons/Icon-nuevos.svg", alt: "Novedades", class: "icon" %>
+            <span>Novedades</span>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to ecommerce_best_sellers_path, class: "opcion-link mas-vendidos" do %>
+            <%= image_tag "icons/Icon-mas-vendidos.svg", alt: "Más Vendidos", class: "icon" %>
+            <span class="texto">Más vendidos</span>
+          <% end %>
+        </li>
+      </ul>
+
+      <div class="barra-separacion"></div>
+
+      <div class="departamentos">
+        <h2>Buscar por departamento</h2>
+        <%= link_to ecommerce_categories_path do %>
+          <span>Ver todo</span>
+        <% end %>
+      </div>
+
+      <ul class="list">
+        <% @categories.each do |category| %>
+          <li>
+
+            <%= link_to ecommerce_category_path(category) do %>
+              <div class="category-item">
+
+
+                <% if category.category_image.attached? %>
+                  <%= image_tag category.category_image, class: 'category-image', alt: "Imagen de la categoría #{category.category_name}" %>
+                <% else %>
+                  <p class="category-photo-placeholder">Imagen no disponible</p>
+                <% end %>
+
+              </div>
+              <span><%= category.category_name %></span>
+            <% end %>
+
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    </div>
+  </div>
+
+
+  <!-- Modal lateral menu user -->
+
+  <div class="modal-background-user" data-menu-target="backgrounduser" data-action="click->menu#closeUser">
+    <button class="close-modal" data-action="click->menu#closeUser">
+      <%= image_tag 'icons/menu-close.svg', alt: 'Cerrar menú', class: 'icono-cerrar' %>
+    </button>
+  </div>
+	<div class="modal-lateral-user" data-menu-target="modaluser">
+    <%= render "shared/modal_user_ecommerce" %>
+  </div>
+</header>

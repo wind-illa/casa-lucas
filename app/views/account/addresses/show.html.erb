@@ -1,0 +1,30 @@
+<div class="address-show">
+  <div class="address-container">
+    <div class="address-header">
+      <h1 class="address-title">Detalles de la Dirección</h1>
+    </div>
+
+    <div class="address-details">
+      <p><strong>Calle:</strong> <%= @address.street_name %> <%= @address.street_number %></p>
+      <% if @address.floor.present? %>
+        <p><strong>Piso:</strong> <%= @address.floor %></p>
+      <% end %>
+      <% if @address.apartment.present? %>
+        <p><strong>Departamento:</strong> <%= @address.apartment %></p>
+      <% end %>
+      <p><strong>Localidad:</strong> <%= @address.locality %></p>
+      <p><strong>Ciudad:</strong> <%= @address.city %></p>
+      <p><strong>Código de Provincia:</strong> <%= @address.province_code %></p>
+      <p><strong>Código Postal:</strong> <%= @address.postal_code %></p>
+      <% if @address.indications.present? %>
+        <p><strong>Indicaciones:</strong> <%= @address.indications %></p>
+      <% end %>
+    </div>
+
+    <div class="address-actions">
+      <%= link_to 'Editar', edit_account_address_path(@address), class: 'btn btn-edit' %>
+      <%= link_to 'Eliminar', account_address_path( @address), method: :delete, data: { turbo_confirm: '¿Estás seguro de que deseas eliminar esta dirección?' }, class: 'btn btn-delete' %>
+      <%= link_to 'Volver a la lista', account_addresses_path, class: 'btn btn-back' %>
+    </div>
+  </div>
+</div>

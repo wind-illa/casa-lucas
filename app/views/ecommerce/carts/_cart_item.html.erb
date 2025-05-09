@@ -1,0 +1,14 @@
+<!-- app/views/ecommerce/cart_items/_cart_item.html.erb -->
+
+
+
+
+<div class="quantity-controls">
+  <%= form_with url: ecommerce_cart_item_path(item), method: :patch, local: true, data: { action: "cart-quantity#update" } do |form| %>
+    <div class="quantity-buttons">
+      <button type="button" data-action="cart-quantity#decrease" class="quantity-decrease">-</button>
+      <%= number_field_tag :quantity, item.quantity, min: 1, class: "quantity-input", data: { cart_quantity_target: "quantityInput" } %>
+      <button type="button" data-action="cart-quantity#increase" class="quantity-increase">+</button>
+    </div>
+  <% end %>
+</div>

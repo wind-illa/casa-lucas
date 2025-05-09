@@ -1,0 +1,555 @@
+<% content_for :title, "Detalles de la compra | Baratísimo Bazar" %>
+
+
+<div class="order-details-container">
+  <div class="order-container">
+    <div class="order-container-primero">
+
+      <div class="products-navigation">
+        <ol>
+          <li>
+            <%= link_to account_main_path do %>
+              <span>Mi Cuenta</span>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+              </svg>
+            <% end %>
+          </li>
+
+          <li>
+            <%= link_to ecommerce_orders_path do %>
+              <span>Mis compras</span>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+              </svg>
+            <% end %>
+          </li>
+
+          <li>
+            <span>Detalles de la compra</span>
+          </li>
+
+        </ol>
+      </div>
+
+      <div class="order-products">
+        <h3 class="order-products-title">
+          <%= pluralize(@order.order_items.count, 'Producto') %> en tu compra
+        </h3>
+
+        <% @order.order_items.each do |item| %>
+          <div class="order-item">
+            <div class="order-image">
+              <% if item.images.attached? %>
+                <%= image_tag url_for(item.images.first), alt: item.product.product_name, class: "product-image" %>
+              <% else %>
+                <div class="no-image">Sin imagen</div>
+              <% end %>
+            </div>
+
+            <div class="order-info">
+              <h4 class="order-product-name"><%= item.product.product_name %></h4>
+              <div class="order-item-details">
+                <span class="order-item-color">Color: <%= item.color %></span>
+                <span class="order-item-price"><%= number_to_currency(item.price) %></span>
+                <span class="order-item-quantity"><%= item.quantity %> unidades</span>
+                <span class="order-item-total">
+                  <%= number_to_currency(item.quantity * item.price) %>
+                </span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="order-actions">
+        <% if @order.status == "pago_pendiente" %>
+          <%= button_to "Cancelar Orden", cancel_ecommerce_order_path(@order), method: :post, data: { turbo_confirm: '¿Estás seguro de que deseas cancelar esta compra?' }, class: "btn-cancel" %>
+
+        <% end %>
+
+        <%= link_to "Descargar PDF", pdf_ecommerce_order_path(@order), class: "btn-download", target: "_blank" %>
+
+      </div>
+
+
+
+
+
+
+    </div>
+
+    <div class="order-container-segundo">
+      <div class="order-summary">
+        <h1 class="order-summary-title">Detalle de la compra</h1>
+        <div class="order-summary-header">
+          <p class="order-date"><%= @order.created_at.strftime("%d/%m/%Y") %></p> |
+          <p class="order-id">Referencia #<%= @order.id %></p>
+        </div>
+        <div class="barra-separadora"></div>
+
+        <div class="order-summary-details">
+          <% if @order.discount_percentage.to_f.positive? %>
+            <div class="summary-item">
+              <span class="summary-label">Productos (<%= @order.order_items.sum(:quantity) %>)</span>
+              <span class="summary-value"><%= number_to_currency(@order.subtotal) %></span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Descuento por cantidad</span>
+              <span class="summary-value discount">-<%= @order.discount_percentage.to_i %>%</span>
+            </div>
+            <div class="barra-separadora"></div>
+          <% end %>
+
+          <div class="summary-item">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value"><%= number_to_currency(@order.subtotal_with_discount) %></span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-label">Envío</span>
+            <span class="summary-value"><%= number_to_currency(@order.shipping_cost) %></span>
+          </div>
+
+          <div class="barra-separadora"></div>
+          <div class="summary-item total">
+            <span class="summary-label">Total</span>
+            <span class="summary-value"><%= number_to_currency(@order.total_price) %></span>
+          </div>
+
+          <div class="summary-item-payment">
+            <% if @order.payment_method.present? %>
+              <span class="summary-label">
+                <% if @order.payment_method.code == "mercado_pago" %>
+
+                <% case @order.mercado_pago_payment_method %>
+                  <% when "credit_card" %>
+                    Tarjeta de Crédito
+                  <% when "debit_card" %>
+                    Tarjeta de Débito
+                  <% when "account_money" %>
+                    Cuenta de Mercado Pago
+                  <% when "pagofacil" %>
+                    Pago Fácil
+                  <% when "ticket" %>
+                    Rapipago / Pago Fácil
+                  <% else %>
+                    Método de pago desconocido
+                <% end %>
+
+                <% else %>
+                  <%= @order.payment_method.name %>
+                <% end %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <% case @order.status %>
+      <% when "pendiente" %>
+        <div class="order-status-container">
+          <div class="status-bar gris ">
+          </div>
+          <div class="status-info">
+            <div class="info-header">
+              <h3 class="header-status status <%= status_class(@order.status) %>">
+                <%= @order.status.humanize %>
+              </h3>
+            </div>
+            <div class="info-body">
+              <h3 class="body-title">Aún no has finalizado tu compra.</h3>
+            </div>
+          </div>
+        </div>
+
+      <% when "pago_pendiente" %>
+        <% if @order.payment_method.code == "efectivo" %>
+          <div class="order-status-container">
+            <div class="status-bar naranja">
+            </div>
+            <div class="status-info">
+              <div class="info-header">
+                <%= image_tag('logos/efectivo.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <h3 class="header-status status <%= status_class(@order.status) %>">
+                  <%= @order.status.humanize %>
+                </h3>
+              </div>
+              <div class="info-body">
+                <h3 class="body-title">Realizá el pago en nuestra sucursal para completar tu compra.</h3>
+                <div class="reference-info">
+                  <h2 class="data-reference">Necesitarás estos datos:</h2>
+                  <h4 class="reference-title">N° de orden</h4>
+                  <p class="reference-number"># <%= @order.id %></p>
+                  <h4 class="reference-title">Monto a pagar</h4>
+                  <p class="reference-number"><%= number_to_currency(@order.total_price) %></p>
+                  <h4 class="reference-title">Sucursal</h4>
+                  <p class="reference-number">20 de junio 45, Santa Rosa, Perico, Jujuy</p>
+                  <div class="time-info">
+                    <svg class="icon icon-lock">
+                      <use xlink:href="<%= asset_path('icons/admin.svg#clock-icon') %>"></use>
+                    </svg>
+                    <p class="bank-note">Pagás y se acredita al instante.</p>
+                  </div>
+                </div>
+
+                <div class="filterr">
+                  <%= link_to 'Ver mapa de la sucursal', 'https://maps.app.goo.gl/K6YMAVLgPLcKb5ZE8', target: '_blank', class: 'filter-button' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% elsif @order.payment_method.code == "transferencia" %>
+          <div class="order-status-container">
+            <div class="status-bar naranja">
+            </div>
+            <div class="status-info">
+              <div class="info-header">
+                <%= image_tag('logos/transferencia.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <h3 class="header-status"><%= @order.status.humanize %></h3>
+              </div>
+              <div class="info-body">
+                <% if @order.comprobante.attached? %>
+                  <h3 class="body-title">Tu comprobante fue enviado con éxito. Lo verificaremos y te avisaremos cuando esté aprobado.</h3>
+                <% else %>
+                  <h3 class="body-title">Realizá el pago por transferencia para completar tu compra.</h3>
+                <% end %>
+                <div class="bank-info">
+                  <% if BankAccount.activo.any? %>
+                    <% BankAccount.activo.each do |bank_account| %>
+                      <h2 class="bank-reference">Necesitarás estos datos:</h2>
+                      <h4 class="bank-title"><%= bank_account.tipo.titleize %></h4>
+                      <p class="bank-detail"><%= bank_account.numero %></p>
+                      <h4 class="bank-title">Alias</h4>
+                      <p class="bank-detail"><%= bank_account.alias %></p>
+                    <% end %>
+                  <% else %>
+                    <h4 class="bank-title">CBU/CVU</h4>
+                    <p class="bank-detail">No hay una cuenta disponible, comuníquese con soporte</p>
+                  <% end %>
+
+                  <h4 class="bank-title">Monto a pagar</h4>
+                  <p class="bank-detail"><%= number_to_currency(@order.total_price) %></p>
+
+                  <div class="time-info">
+                    <svg class="icon icon-lock">
+                      <use xlink:href="<%= asset_path('icons/admin.svg#clock-icon') %>"></use>
+                    </svg>
+                    <p class="bank-note">Pagás y se acredita en 2 a 48 horas.</p>
+                  </div>
+                </div>
+                <div class="filter-container-modal" data-controller="menu">
+
+                  <div class="filter">
+                    <%= button_tag type: 'button', class: 'filter-button', data: { action: "click->menu#open" } do %>
+                      <span>
+                        Subir comprobante
+                      </span>
+                    <% end %>
+                  </div>
+
+                  <!-- Modal subir comprobante -->
+
+                  <div class="modal-background" data-menu-target="background" data-action="click->menu#close">
+                  </div>
+                  <div class="modal-lateral" data-menu-target="modal">
+                    <div class="modal-lateral-content">
+                      <div class="modal-lateral-header">
+                        <% if @order.persisted? && @order.comprobante.attached? %>
+                          <h2 class="comprobante">Hacé click en la imagen para cambiar el comprobante</h2>
+                        <% else %>
+                          <h2 class="comprobante">Hacé click o arrastrá para subir un comprobante</h2>
+                        <% end %>
+
+                        <button class="close-modal" data-action="click->menu#close">
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-custom') %>"></use>
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="modal-lateral-body">
+
+
+                        <div class="product-new-edit-content" data-controller="uploader-view-image-single">
+                          <div class="product-content">
+                            <% if @order.errors.any? %>
+                              <div class="alert alert-danger">
+                                <h4>Se encontraron errores:</h4>
+                                <ul>
+                                  <% @order.errors.full_messages.each do |message| %>
+                                    <li><%= message %></li>
+                                  <% end %>
+                                </ul>
+                              </div>
+                            <% end %>
+
+                            <%= form_with model: @order, url: upload_comprobante_ecommerce_order_path(@order), method: :patch do |form| %>
+                              <div class="form-images">
+                                <div class="complemento-images">
+                                  <div class="image-preview-item-check" data-action="click->uploader-view-image-single#uploadImage" data-uploader-view-image-single-target="imageContainer">
+                                    <% if @order.persisted? && @order.comprobante.attached? %>
+                                      <%= image_tag @order.comprobante, class: 'image-preview-thumbnail', data: { uploader_view_image_single_target: 'previewImage' } %>
+                                    <% else %>
+                                      <div class="no-image-placeholder" data-uploader-view-image-single-target="placeholder">
+                                        <span>No hay imagen</span>
+                                      </div>
+                                    <% end %>
+                                  </div>
+                                  <%= form.file_field :comprobante, class: 'hidden-oculto', data: { uploader_view_image_single_target: 'fileInput' } %>
+                                </div>
+                              </div>
+                              <!-- Botón para enviar el formulario -->
+                              <%= form.submit "Enviar Comprobantte", class: "btn btn-primary" %>
+                            <% end %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% elsif @order.payment_method.code == "mercado_pago" %>
+          <div class="order-status-container">
+            <div class="status-bar naranja">
+            </div>
+            <div class="status-info">
+              <div class="info-header">
+                <%= image_tag('logos/mercado pago.png', alt: 'Logo de [Nombre de la Tienda]', class: 'icon icon-lock') %>
+                <h3 class="header-status status <%= status_class(@order.status) %>">
+                  <%= @order.status.humanize %>
+                </h3>
+              </div>
+              <div class="info-body">
+                <h3 class="body-title">Realizá el pago por Rapipago / Pago Fácil para completar tu compra.</h3>
+                <div class="bank-info">
+                  <h2 class="bank-reference">¿Dónde puedo pagar?</h2>
+                  <h4 class="bank-title"></h4>
+                  <p class="bank-detail">MercadoPago te envio esa información por e-mail así la tenés a mano.</p>
+                  <h4 class="bank-title">Número de transacción</h4>
+                  <p class="bank-detail"><%= @order.mercado_pago_transaction_id %></p>
+
+                  <h4 class="bank-title">Monto a pagar</h4>
+                  <p class="bank-detail"><%= number_to_currency(@order.total_price) %></p>
+
+                  <div class="time-info">
+                    <svg class="icon icon-lock">
+                      <use xlink:href="<%= asset_path('icons/admin.svg#clock-icon') %>"></use>
+                    </svg>
+                    <p class="bank-note">Pagás y se acredita al instante.</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <p>no hay pagos regristrados</p>
+        <% end %>
+
+
+      <% when "pagado" %>
+        <div class="order-status-container">
+          <div class="status-bar verde">
+          </div>
+          <div class="status-info">
+            <div class="info-header">
+              <% if @order.payment_method.code == "efectivo" %>
+                <%= image_tag('logos/efectivo.png', alt: 'Logo de [Nombre de la Tienda]') %>
+              <% elsif @order.payment_method.code == "transferencia" %>
+                <%= image_tag('logos/transferencia.png', alt: 'Logo de [Nombre de la Tienda]') %>
+              <% elsif @order.payment_method.code == "mercado_pago" %>
+                <%= image_tag('logos/mercado pago.png', alt: 'Logo de [Nombre de la Tienda]') %>
+              <% else %>
+                  <span>Metodo de pago no especificado</span>
+              <% end %>
+              <h3 class="header-status status <%= status_class(@order.status) %>">
+                <%= @order.status.humanize %>
+              </h3>
+            </div>
+            <div class="info-body">
+              <h3 class="body-title">Tu pago ha sido confirmado.</h3>
+              <% if @order.payment_method.code == "mercado_pago" %>
+                <div class="bank-info">
+                  <h2 class="bank-reference"></h2>
+                  <h4 class="bank-title">Número de transacción</h4>
+                  <p class="bank-detail"><%= @order.mercado_pago_transaction_id %></p>
+                </div>
+              <% else %>
+                <p></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+
+      <% when "en_preparacion" %>
+        <div class="order-status-container">
+          <div class="status-bar verde">
+          </div>
+          <div class="status-info">
+            <div class="info-header">
+              <% if @order.payment_method.code == "efectivo" %>
+                <%= image_tag('logos/efectivo.png', alt: 'Logo de [Nombre de la Tienda]') %>
+              <% elsif @order.payment_method.code == "transferencia" %>
+                <%= image_tag('logos/transferencia.png', alt: 'Logo de [Nombre de la Tienda]') %>
+              <% elsif @order.payment_method.code == "mercado_pago" %>
+                <%= image_tag('logos/mercado pago.png', alt: 'Logo de [Nombre de la Tienda]') %>
+              <% else %>
+                  <span>Metodo de pago no especificado</span>
+              <% end %>
+              <h3 class="header-status status <%= status_class(@order.status) %>">
+                <%= @order.status.humanize %>
+              </h3>
+            </div>
+              <div class="info-body">
+                <h3 class="body-title">Estamos preparando tu paquete.</h3>
+                <% if @order.payment_method.code == "mercado_pago" %>
+                  <div class="bank-info">
+                    <h2 class="bank-reference"></h2>
+                    <h4 class="bank-title">Número de transacción</h4>
+                    <p class="bank-detail"><%= @order.mercado_pago_transaction_id %></p>
+
+
+                  </div>
+                <% else %>
+                  <p></p>
+                <% end %>
+              </div>
+          </div>
+        </div>
+      <% when "listo_para_retirar" %>
+          <div class="order-status-container">
+            <div class="status-bar verde">
+            </div>
+            <div class="status-info">
+              <div class="info-header">
+                <% if @order.payment_method.code == "efectivo" %>
+                  <%= image_tag('logos/efectivo.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <% elsif @order.payment_method.code == "transferencia" %>
+                  <%= image_tag('logos/transferencia.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <% elsif @order.payment_method.code == "mercado_pago" %>
+                  <%= image_tag('logos/mercado pago.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <% else %>
+                    <span>Metodo de pago no especificado</span>
+                <% end %>
+                <h3 class="header-status status <%= status_class(@order.status) %>">
+                  <%= @order.status.humanize %>
+                </h3>
+              </div>
+              <div class="info-body">
+                <h3 class="body-title">¡Tu paquete ya está listo!</h3>
+                <div class="reference-info">
+                  <h2 class="data-reference"></h2>
+                  <div class="time-info">
+                    <p class="bank-note">Podés acercarte a nuestra tienda durante nuestros horarios de atención para retirarlo</p>
+                  </div>
+                  <h4 class="reference-title">Horario:</h4>
+                  <p class="reference-number">Lunes a viernes de 9:00 a 18:00 hs.</p>
+                  <h4 class="reference-title">Documentación requerida:</h4>
+                  <p class="reference-number">Número de referencia de compra y DNI.</p>
+                </div>
+                <div class="filterr">
+                  <%= link_to 'Ver mapa de la sucursal', 'https://www.google.com/maps/dir//BARATISIMO+bazar,+20+de+junio+4+barrio+santa+rosa,+Y4610+Perico,+Jujuy/@-24.374769,-65.1243455,16z/data=!4m8!4m7!1m0!1m5!1m1!1s0x941badee45653b4f:0x39ff2348b407fb68!2m2!1d-65.1148183!2d-24.374769?entry=ttu&g_ep=EgoyMDI1MDIxMi4wIKXMDSoASAFQAw%3D%3D', target: '_blank', class: 'filter-button' %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+      <% when "enviado" %>
+        <div class="order-status-container">
+            <div class="status-bar verde">
+            </div>
+            <div class="status-info">
+              <div class="info-header">
+                <% if @order.payment_method.code == "efectivo" %>
+                  <%= image_tag('logos/efectivo.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <% elsif @order.payment_method.code == "transferencia" %>
+                  <%= image_tag('logos/transferencia.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <% elsif @order.payment_method.code == "mercado_pago" %>
+                  <%= image_tag('logos/mercado pago.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <% else %>
+                    <span>Metodo de pago no especificado</span>
+                <% end %>
+                <h3 class="header-status status <%= status_class(@order.status) %>">
+                  <%= @order.status.humanize %>
+                </h3>
+              </div>
+              <div class="info-body">
+                <h3 class="body-title">¡Tu compra ya está en camino!</h3>
+                <div class="reference-info">
+                  <h2 class="data-reference"></h2>
+                  <div class="time-info">
+                    <p class="bank-note">Tu compra ya está en camino y pronto la recibirás en la dirección indicada.</p>
+                  </div>
+                  <h4 class="reference-title">Dirección:</h4>
+                  <p class="reference-number"> <%= @order.address&.full_address || "No especificada" %></p>
+                  <h4 class="reference-title">Referencia:</h4>
+                  <p class="reference-number"><%= @order.address&.indications || "No especificada" %></p>
+                </div>
+              </div>
+            </div>
+        </div>
+
+      <% when "entregado" %>
+          <div class="order-status-container">
+            <div class="status-bar verde">
+            </div>
+            <div class="status-info">
+              <div class="info-header">
+                <% if @order.payment_method.code == "efectivo" %>
+                  <%= image_tag('logos/efectivo.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <% elsif @order.payment_method.code == "transferencia" %>
+                  <%= image_tag('logos/transferencia.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <% elsif @order.payment_method.code == "mercado_pago" %>
+                  <%= image_tag('logos/mercado pago.png', alt: 'Logo de [Nombre de la Tienda]') %>
+                <% else %>
+                    <span>Metodo de pago no especificado</span>
+                <% end %>
+                <h3 class="header-status status <%= status_class(@order.status) %>">
+                  <%= @order.status.humanize %>
+                </h3>
+              </div>
+              <div class="info-body">
+                <h3 class="body-title">¡Gracias por tu compra!</h3>
+                <% if @order.payment_method.code == "mercado_pago" %>
+                  <div class="bank-info">
+                    <h2 class="bank-reference"></h2>
+                    <h4 class="bank-title">Número de transacción</h4>
+                    <p class="bank-detail"><%= @order.mercado_pago_transaction_id %></p>
+
+
+                  </div>
+                <% else %>
+                  <p></p>
+                <% end %>
+
+              </div>
+            </div>
+          </div>
+
+      <% else %>
+
+        <div class="order-status-container">
+          <div class="status-bar rojo ">
+          </div>
+          <div class="status-info">
+            <div class="info-header">
+              <h3 class="header-status status <%= status_class(@order.status) %>">
+                <%= @order.status.humanize %>
+              </h3>
+            </div>
+            <div class="info-body">
+              <h3 class="body-title">Tu compra ha sido cancelada.</h3>
+            </div>
+          </div>
+        </div>
+
+      <% end %>
+
+
+    </div>
+  </div>
+</div>
+<%= render 'shared/whatsApp' %>

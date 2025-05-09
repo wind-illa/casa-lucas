@@ -1,0 +1,54 @@
+
+
+
+
+<% start = (@products.current_page - 1) * @products.limit_value + 1 %>
+<% finish = start + @products.count - 1 %>
+<% total = @products.total_count %>
+
+<div class="pagination-container">
+  <%= form_tag admin_products_path, method: :get, class: "per-page-form" do %>
+
+    <%= select_tag :per_page, options_for_select([10, 20, 30, 50, 100], params[:per_page] || 20),
+        class: "per-page-select", onchange: 'this.form.submit();' %>
+  <% end %>
+
+  <p class="product-count">Mostrando <%= start %> a <%= finish %> de <%= total %> resultados</p>
+
+  <div class="pagination">
+    <ul class="custom-pagination">
+      <!-- Link para ir a la primera página -->
+      <% if @products.current_page > 1 %>
+        <li class="page-item"><%= link_to '<<', url_for(page: 1), class: "page-link" %></li>
+      <% else %>
+        <li class="page-item disabled"><<</li>
+      <% end %>
+
+      <!-- Link para ir a la página anterior -->
+      <% if @products.current_page > 1 %>
+        <li class="page-item"><%= link_to '<', url_for(page: @products.prev_page), class: "page-link" %></li>
+      <% else %>
+        <li class="page-item disabled"><</li>
+      <% end %>
+
+      <!-- Página actual -->
+      <li class="page-item active">
+        <span class="page-link"><%= @products.current_page %></span>
+      </li>
+
+      <!-- Link para ir a la página siguiente -->
+      <% if @products.current_page < @products.total_pages %>
+        <li class="page-item"><%= link_to '>', url_for(page: @products.next_page), class: "page-link" %></li>
+      <% else %>
+        <li class="page-item disabled">></li>
+      <% end %>
+
+      <!-- Link para ir a la última página -->
+      <% if @products.current_page < @products.total_pages %>
+        <li class="page-item"><%= link_to '>>', url_for(page: @products.total_pages), class: "page-link" %></li>
+      <% else %>
+        <li class="page-item disabled">>></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

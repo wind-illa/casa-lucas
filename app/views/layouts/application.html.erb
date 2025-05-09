@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es"> <!-- Especifica el idioma de la página -->
+  <head>
+    <meta charset="UTF-8"> <!-- Especifica la codificación de caracteres -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : 'Compra productos al mejor precio en Baratisimo Bazar Argentina, la tienda en línea con los mejores precios para el hogar.' %>">
+
+    <title><%= content_for?(:title) ? yield(:title) : "Baratísimo Bazar Argentina - Los mejores precios para el Hogar" %></title>
+
+    <%= favicon_link_tag 'logos/miniatura.png', type: 'image/jpeg' %>
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+  </head>
+
+  <!----------------------->
+
+  <body>
+
+    <% unless @hide_navbar %>
+      <% if controller_path.start_with?("admin") %>
+        <%= render 'shared/admin_navbar' %>
+      <% elsif controller_path.start_with?("ecommerce", "main") %>
+        <%= render 'shared/ecommerce_navbar' %>
+      <% elsif controller_path.start_with?("business") %>
+        <%= render 'shared/business_navbar' %>
+      <% elsif devise_controller? %>
+        <%= render 'shared/devise_navbar' %>
+      <% else %>
+        <%= render 'shared/ecommerce_navbar' %>
+      <% end %>
+    <% end %>
+
+    <!---------------------->
+
+    <main>
+      <%= yield %>
+    </main>
+
+
+    <div data-controller="flash" class="flash-messages" data-flash-target="flashMessages">
+      <% if notice %>
+        <div class="notice-content">
+          <p class="notice"><%= notice %></p>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="alert-content">
+          <p class="alert"><%= alert %></p>
+        </div>
+      <% end %>
+    </div>
+
+  </body>
+
+</html>

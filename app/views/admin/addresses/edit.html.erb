@@ -1,0 +1,88 @@
+<div class="product-new-edit-content">
+  <div class="product-content">
+    <%= form_with(model: [@user, @address], url: admin_user_address_path(@user, @address), method: :patch, local: true) do |form| %>
+
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.text_field :street_name, class: 'form-input', placeholder: 'Calle' %>
+          <%= form.label :street_name, 'Calle', class: 'form-label' %>
+        </div>
+        <% if @address.errors[:street_name].any? %>
+          <div class="error-message"><%= @address.errors[:street_name].first %></div>
+        <% end %>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.number_field :street_number, class: 'form-input', placeholder: 'Número' %>
+            <%= form.label :street_number, 'Número', class: 'form-label' %>
+          </div>
+          <% if @address.errors[:street_number].any? %>
+            <div class="error-message"><%= @address.errors[:street_number].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.number_field :postal_code, class: 'form-input', placeholder: 'Código Postal' %>
+            <%= form.label :postal_code, 'Código Postal', class: 'form-label' %>
+          </div>
+          <% if @address.errors[:postal_code].any? %>
+            <div class="error-message"><%= @address.errors[:postal_code].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.text_field :locality, class: 'form-input', placeholder: 'Provincia' %>
+            <%= form.label :locality, 'Provincia', class: 'form-label' %>
+          </div>
+          <% if @address.errors[:locality].any? %>
+            <div class="error-message"><%= @address.errors[:locality].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.text_field :city, class: 'form-input', placeholder: 'Ciudad' %>
+            <%= form.label :city, 'Ciudad', class: 'form-label' %>
+          </div>
+
+          <% if @address.errors[:city].any? %>
+            <div class="error-message"><%= @address.errors[:city].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.text_field :apartment, class: 'form-input', placeholder: 'Departamento (opcional)' %>
+            <%= form.label :apartment, 'Departamento (opcional)', class: 'form-label' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.text_field :floor, class: 'form-input', placeholder: 'Piso (opcional)' %>
+            <%= form.label :floor, 'Piso (opcional)', class: 'form-label' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group text-area">
+        <div class="form-label-wrapper">
+          <%= form.text_area :indications, class: 'form-input', placeholder: 'Indicaciones para la entrega (opcional)' %>
+          <%= form.label :indications, 'Indicaciones para la entrega (opcional)', class: 'form-label' %>
+        </div>
+      </div>
+
+      <%= form.submit 'Actualizar Dirección', class: 'btn btn-primary' %>
+
+      <div class="space">
+        <%= link_to 'Volver', [:admin, @user], class: 'btn btn-secondary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

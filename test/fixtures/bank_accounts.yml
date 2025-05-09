@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tipo: MyString
+  numero: MyString
+  account_number: MyString
+  alias: MyString
+
+two:
+  tipo: MyString
+  numero: MyString
+  account_number: MyString
+  alias: MyString

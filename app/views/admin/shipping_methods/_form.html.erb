@@ -1,0 +1,44 @@
+<div class="product-new-edit-content">
+  <div class="product-content">
+    <%= form_with model: @shipping_method, url: (@shipping_method.new_record? ? admin_shipping_methods_path : admin_shipping_method_path(@shipping_method)), method: (@shipping_method.new_record? ? :post : :patch), local: true do |form| %>
+
+      <!-- Campo: Nombre -->
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= form.text_field :name, class: 'form-input', placeholder: 'Nombre del método de envío', id: 'shipping_method_name' %>
+          <label for="shipping_method_name" class="form-label">Nombre</label>
+        </div>
+      </div>
+
+      <!-- Campo: Descripción -->
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= form.text_area :description, class: 'form-input', placeholder: 'Descripción del método de envío', id: 'shipping_method_description' %>
+          <label for="shipping_method_description" class="form-label">Descripción</label>
+        </div>
+      </div>
+
+      <!-- Campo: Costo -->
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= form.number_field :cost, step: '0.01', class: 'form-input', placeholder: 'Costo del método de envío', id: 'shipping_method_cost' %>
+          <label for="shipping_method_cost" class="form-label">Costo</label>
+        </div>
+      </div>
+
+      <!-- Campo: Tipo de Cálculo -->
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= form.select :calculation_type, ['static', 'correo_argentino', 'andreani'], {}, class: 'form-input', id: 'shipping_method_calculation_type' %>
+          <label for="shipping_method_calculation_type" class="form-label">Tipo de Cálculo</label>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+      <div class="space">
+        <%= link_to 'Volver', admin_shipping_methods_path, class: 'btn btn-secondary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

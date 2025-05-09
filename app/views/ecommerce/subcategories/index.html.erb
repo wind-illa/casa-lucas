@@ -1,0 +1,25 @@
+
+<% provide(:title, @category.name) %>
+<section class="subcategories-index">
+  <div class="container">
+    <h1 class="subcategories-index__title">Subcategorías de <%= @category.name %></h1>
+
+    <% if @subcategories.any? %>
+      <div class="subcategories-list">
+        <% @subcategories.each do |subcategory| %>
+          <div class="subcategory-item">
+            <%= link_to subcategory.name, ecommerce_category_subcategory_path(@category, subcategory), class: "subcategory-item__link" %>
+            <p class="subcategory-item__description"><%= subcategory.description %></p>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert--info">
+        <p>No se encontraron subcategorías para esta categoría.</p>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+
+<%= render 'shared/footer' %>

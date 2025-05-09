@@ -1,0 +1,31 @@
+<div class="forgot-password-page">
+  <div class="forgot-password-container">
+    <div class="forgot-password-header">
+      <h2>¿Olvidaste tu contraseña?</h2>
+    </div>
+
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <div class="forgot-password-form">
+        <div class="forgot-password-instructions">
+          <p>Ingresa la dirección de correo electrónico asociada a tu cuenta de El Baratisimo.</p>
+        </div>
+
+        <div class="form-field">
+          <%= f.label :email, "Dirección de correo electrónico" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input-email" %>
+        </div>
+
+        <div class="form-actions">
+          <%= f.submit "Enviar instrucciones", class: "button-primary" %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="forgot-password-help">
+      <p class="title">¿Cambiaste tu dirección de correo electrónico o número de teléfono móvil?</p>
+      <p>Si ya no usas la dirección de correo electrónico asociada a tu cuenta de El Baratisimo, puedes comunicarte con el Servicio al cliente para obtener ayuda y restaurar el acceso a tu cuenta.</p>
+    </div>
+  </div>
+</div>

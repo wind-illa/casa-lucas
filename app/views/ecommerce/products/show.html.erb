@@ -1,0 +1,253 @@
+<% content_for :title, "#{@product.product_name} | Baratísimo Bazar" %>
+
+<div class="product-show" data-controller="reload-on-page-show">
+
+  <!-- Navegación de breadcrumbs -->
+  <div class="products-navigation">
+    <ol>
+      <li>
+        <%= link_to root_path do %>
+          <span>Inicio</span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+          </svg>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to ecommerce_categories_path do %>
+          <span>Categorías</span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+          </svg>
+        <% end %>
+      </li>
+      <% if @category.present? %>
+        <li>
+          <%= link_to ecommerce_category_path(@category) do %>
+            <span><%= @category.category_name %></span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+      <% end %>
+      <% if @category.present? && @subcategory.present? %>
+        <li>
+          <%= link_to ecommerce_category_subcategory_products_path(@category, @subcategory) do %>
+            <span><%= @subcategory.subcategory_name %></span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+      <% end %>
+      <li>
+        <span><%= @product.product_name %></span>
+      </li>
+    </ol>
+  </div>
+
+  <div class="show-content">
+    <!-- Contenedor principal -->
+    <div class="product-details" data-controller="ecommerce-product-show-gallery">
+      <div class="product-info-left">
+        <p class="product-brand"><%= @product.brand %></p>
+        <h1 class="product-name"><%= @product.product_name %></h1>
+
+        <div class="product-images">
+          <% if @product.product_images.attached? %>
+            <%= image_tag @product.product_images.first, alt: @product.product_name, class: "product-img-main", data: { ecommerce_product_show_gallery_target: "mainImage", product_main_image: url_for(@product.product_images.first)} %>
+
+          <% else %>
+            <div class="no-image">
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar-foto') %>"></use>
+              </svg>
+            </div>
+          <% end %>
+
+          <div class="product-images-thumbnails">
+            <% @product.product_images.each do |image| %>
+              <div class="product-img-thumbnail">
+                <%= image_tag image, alt: @product.product_name, data: { ecommerce_product_show_gallery_target: "thumbnail", thumbnail_image: url_for(image), action: "click->ecommerce-product-show-gallery#changeMainImage" } %>
+              </div>
+            <% end %>
+          </div>
+
+          <% if @product.product_images.count > 1 %>
+            <div class="image-indicators">
+              <% @product.product_images.each_with_index do |_, index| %>
+                <span class="indicator <%= 'active' if index == 0 %>"></span>
+              <% end %>
+            </div>
+          <% end %>
+
+        </div>
+
+      </div>
+
+      <div class="product-info-right">
+        <p class="product-brand"><%= @product.brand %></p>
+        <h1 class="product-name"><%= @product.product_name %></h1>
+        <div class="product-price">
+          <% if @product.price_discount.present? && @product.price_discount > 0 %>
+            <p class="price-original">$<%= number_to_currency(@product.price, unit: "", separator: ",", delimiter: ".") %></p>
+            <p class="price-discounted">$<%= number_to_currency(@product.price - @product.price_discount, unit: "", separator: ",", delimiter: ".") %></p>
+          <% else %>
+            <p class="price-normal">$<%= number_to_currency(@product.price, unit: "", separator: ",", delimiter: ".") %></p>
+          <% end %>
+        </div>
+
+        <!-- Mostrar Variantes del Producto -->
+        <div class="product-variant">
+
+          <% if @product_variants.any? %>
+            <!-- Opción para resetear a la imagen del producto principal -->
+            <%= link_to "#", class: "reset-images-btn variant selected-variant", data: { action: "click->ecommerce-product-show-gallery#resetToProductImages click->ecommerce-product-show-gallery#highlightSelectedVariant" } do %>
+              <p><%= @product.colors %></p>
+              <div class="variant-images">
+                <%= image_tag @product.product_images.first, alt: @product.product_name, class: "variant-image" %>
+              </div>
+            <% end %>
+
+            <!-- Variantes del producto -->
+            <% @product_variants.each do |variant| %>
+              <div class="variant"
+                   data-action="click->ecommerce-product-show-gallery#changeVariantImages click->ecommerce-product-show-gallery#highlightSelectedVariant"
+                   data-variant-id="<%= variant.id %>" data-variant-color="<%= variant.color %>">
+                <p><%= variant.color %></p>
+
+                <% if variant.images.attached? %>
+                  <div class="variant-images" data-ecommerce-product-show-gallery-target="variantImages" data-variant-id="<%= variant.id %>">
+                    <%= image_tag url_for(variant.images.first), alt: "Imagen de variante", class: "variant-image" %>
+                    <div class="variant-thumbnails">
+                      <% variant.images.each do |image| %>
+                        <%= image_tag url_for(image), alt: "Miniatura de variante", class: "variant-thumbnail-image" %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% else %>
+                  <p>No hay imágenes disponibles para esta variante.</p>
+                <% end %>
+
+                <% if user_signed_in? && @cart %>
+                  <turbo-frame id="cart-item-container-variant-<%= variant&.id %>">
+                    <div class="cart-item-container-variant">
+                      <!-- Formulario para agregar la variante al carrito -->
+                      <% @cart_item_variant = @cart.cart_items.find_by(product_id: @product.id, variant_id: variant.id) %>
+                      <% if @cart_item_variant %>
+                        <% if @cart_item_variant.quantity == 1 %>
+                          <!-- Formulario para eliminar la variante del carrito -->
+                          <%= form_with url: ecommerce_cart_item_path(@cart_item_variant), method: :delete, local: true do |f| %>
+                            <button type="submit" class="btn btn-remove-from-cart">
+                              <!-- SVG Icono -->
+                              <svg class="icon">
+                                <use href="<%= asset_path('icons/admin.svg#icon-delete-blanco') %>"></use>
+                              </svg>
+                            </button>
+                          <% end %>
+                        <% else %>
+                          <!-- Formulario para reducir la cantidad de 1 artículo variante del carrito -->
+                          <%= form_with url: ecommerce_cart_item_path(@cart_item_variant), method: :put, local: true do |f| %>
+                            <%= f.hidden_field :quantity, value: @cart_item_variant.quantity - 1 if @cart_item_variant.quantity > 1 %>
+                            <%= f.submit "-", class: "btn btn-reduce-quantity" %>
+                          <% end %>
+                        <% end %>
+
+                        <span class="cart-item-quantity">
+                          <%= @cart_item_variant.quantity %>
+                          <%= @cart_item_variant.quantity == 1 ? 'unidad' : 'unidades' %>
+                        </span>
+
+                        <%= form_with url: ecommerce_cart_items_path, method: :post do |f| %>
+                          <%= f.hidden_field :product_id, value: @product.id %>
+                          <%= f.hidden_field :variant_id, value: variant.id %>
+                          <%= f.submit "+", class: "btn btn-add-to-cart" %>
+                        <% end %>
+                      <% else %>
+                        <!-- Formulario para agregar la variante al carrito -->
+                        <%= form_with url: ecommerce_cart_items_path, method: :post, class: "add-to-cart-form" do |f| %>
+                          <%= f.hidden_field :product_id, value: @product.id %>
+                          <%= f.hidden_field :variant_id, value: variant.id %>
+                          <%= f.submit "Agregar al carrito", class: "btn btn-add-to-carrito" %>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </turbo-frame>
+                <% end %>
+              </div>
+            <% end %>
+
+
+
+          <% else %>
+            <p></p>
+          <% end %>
+          <% if user_signed_in? && @cart %>
+            <turbo-frame id="cart-item-container">
+              <div class="cart-item-container">
+                <% if @cart_item %>
+                  <% if @cart_item.quantity == 1 %>
+                    <!-- Formulario para eliminar el producto del carrito -->
+                    <%= form_with url: ecommerce_cart_item_path(@cart_item), method: :delete, local: true do |f| %>
+                      <button type="submit" class="btn btn-remove-from-cart">
+                        <!-- SVG Icono -->
+                        <svg class="icon">
+                          <use href="<%= asset_path('icons/admin.svg#icon-delete-blanco') %>"></use>
+                        </svg>
+                      </button>
+                    <% end %>
+                  <% else %>
+                    <!-- Formulario para reducir la cantidad de 1 artículo del carrito -->
+                    <%= form_with url: ecommerce_cart_item_path(@cart_item), method: :put, local: true do |f| %>
+                      <%= f.hidden_field :quantity, value: @cart_item.quantity - 1 if @cart_item.quantity > 1 %>
+                      <%= f.submit "-", class: "btn btn-reduce-quantity" %>
+                    <% end %>
+                  <% end %>
+
+                  <span class="cart-item-quantity">
+                    <%= @cart_item.quantity %>
+                    <%= @cart_item.quantity == 1 ? 'unidad' : 'unidades' %>
+                  </span>
+
+                  <%= form_with url: ecommerce_cart_items_path, method: :post do |f| %>
+                    <%= f.hidden_field :product_id, value: @product.id %>
+                    <%= f.hidden_field :variant_id, value: nil, id: "main-product-variant-id" %>
+                    <%= f.submit "+", class: "btn btn-add-to-cart" %>
+                  <% end %>
+                <% else %>
+                  <%= form_with url: ecommerce_cart_items_path, method: :post, class: "add-to-cart-form" do |f| %>
+                    <%= f.hidden_field :product_id, value: @product.id %>
+                    <%= f.hidden_field :variant_id, value: nil, id: "main-product-variant-id" %>
+                    <%= f.submit "Agregar al carrito", class: "btn btn-add-to-carrito" %>
+                  <% end %>
+                <% end %>
+              </div>
+            </turbo-frame>
+          <% else %>
+            <%= link_to new_user_session_path, class: 'agregar-sin-usuario' do %>
+              <span>Agregar al carrito</span>
+            <% end %>
+          <% end %>
+
+        </div>
+
+        <!-- Opciones adicionales -->
+        <% if @category.present? && @subcategory.present? %>
+          <div class="product-details-links">
+            <%= link_to ecommerce_category_subcategory_products_path(@category, @subcategory), class: "view-more-products" do %>
+              <span>Ver mas en <%= @subcategory.subcategory_name %></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Descripción del producto -->
+    <div class="product-description">
+      <h2>Descripción</h2>
+      <p><%= @product.product_description %></p>
+    </div>
+  </div>
+</div>
+<%= render 'shared/footer' %>

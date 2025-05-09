@@ -1,0 +1,10 @@
+{
+  "name": "baratisimo-ecommerce",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {},
+  "main": "index.js",
+  "repository": "git@github.com:wind-illa/baratisimo-ecommerce.git",
+  "author": "wind peña <nirvanavid@gmail.com>",
+  "license": "MIT"
+}

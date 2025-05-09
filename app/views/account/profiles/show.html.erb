@@ -1,0 +1,77 @@
+<% content_for :title, "Mi perfil | Baratísimo Bazar" %>
+
+<div class="profile-show">
+  <div class="products-navigation">
+    <ol>
+      <li>
+        <%= link_to account_main_path do %>
+          <span>Cuenta</span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+          </svg>
+        <% end %>
+      </li>
+      <li>
+        <span>Mi perfil</span>
+      </li>
+    </ol>
+  </div>
+
+  <div class="categories-title">
+    <div class="title">
+      <%= link_to account_main_path, class: 'arrow-back-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+        </svg>
+      <% end %>
+      <h1 class="category-title">Mi perfil</h1>
+      <div class="arrow-back-link space"></div>
+    </div>
+  </div>
+
+  <div class="profile-container">
+
+    <div class="profile-pictures">
+      <%= form_with model: @user, url: profile_picture_account_profile_path(@user), method: :patch, local: true, html: { class: "profile-form", data: { controller: "avatar-profiles" } } do |f| %>
+
+        <div class="field profile-picture-field">
+
+          <%= f.file_field :profile_picture, accept: "image/*", data: { action: "change->avatar-profiles#preview", avatar_profiles_target: "input" }, class: 'profile-file-input', style: "display: none;" %>
+
+          <div class="profile-picture-preview" data-action="click->avatar-profiles#selectFile">
+            <%= image_tag(@user.profile_picture.attached? ? url_for(@user.profile_picture) : 'icons/Icon-user-photo.svg', id: "profilePreview", alt: "Vista previa de la foto de perfil", class: 'preview-image') %>
+          </div>
+
+          <%= image_tag 'icons/Icon-camera.svg', alt: 'Subir Imagen', class: 'icon-camera' %>
+        </div>
+      <% end %>
+
+      <div class="user-info">
+        <p class="user-name"><%= "#{@user.first_name} #{@user.last_name}".capitalize %></p>
+        <p class="user-email"><%= @user.email %></p>
+        <p class="user-status">Cliente regular</p>
+      </div>
+    </div>
+
+    <div class="profile-links">
+      <%= link_to information_account_profiles_path, class: 'profile-link' do %>
+        <%= image_tag 'icons/myInformations.svg', alt: 'Información Personal', class: 'icon-start' %>
+        <div class="link-content">
+          <h2 class="link-title">Información Personal</h2>
+          <p class="link-description">Información de tu documento de identidad y actividad fiscal.</p>
+        </div>
+        <%= image_tag 'icons/Icon-arrrow-rigt.svg', alt: 'Ir', class: 'icon-end' %>
+      <% end %>
+
+      <%= link_to account_addresses_path, class: 'profile-link' do %>
+        <%= image_tag 'icons/myAddresses.svg', alt: 'Mis Direcciones', class: 'icon-start' %>
+        <div class="link-content">
+          <h2 class="link-title">Mis Direcciones</h2>
+          <p class="link-description">Consulta y actualiza tus direcciones</p>
+        </div>
+        <%= image_tag 'icons/Icon-arrrow-rigt.svg', alt: 'Ir', class: 'icon-end' %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= render 'shared/footer' %>

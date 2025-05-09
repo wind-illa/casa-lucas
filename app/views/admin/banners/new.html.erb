@@ -1,0 +1,58 @@
+<div class="product-new-edit-content">
+  <div class="product-content">
+
+    <%= form_with(model: @banner, url: admin_banners_path, method: :post, local: true, html: { class: 'banner-formm' }) do |f| %>
+
+
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= f.text_field :title, class: 'form-input', placeholder: 'Nombre de la categoría', id: 'banner_title' %>
+          <label for="banner_title" class="form-label">Título</label>
+        </div>
+      </div>
+
+      <div class="form-images" data-controller="image-banner-dual">
+        <div class="complemento-images-banners">
+          <div class="image-preview-item-check" data-action="click->image-banner-dual#openFileInput">
+
+            <div class="no-image">
+              <img data-image-banner-dual-target="image" src="<%= asset_path('logos/subir-imagen.avif') %>" alt="Vista previa" class="image-preview-thumbnail hidden" />
+            </div>
+
+          </div>
+
+
+          <%= f.file_field :desktop_images, multiple: true, class: 'hidden-ocultos', data: { "image-banner-dual-target": 'fileInput', action: 'change->image-banner-dual#previewImage' } %>
+          <div class="form-label-wrapper">
+            <%= f.text_area :desktop_links, class: 'form-input', placeholder: 'Ejemplo: http://ejemplo.com', id: 'banner_desktop_links' %>
+            <label for="banner_desktop_links" class="form-label">Link</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-images" data-controller="image-banner-dual">
+        <div class="complemento-images-banners">
+          <div class="image-preview-item-check" data-action="click->image-banner-dual#openFileInput">
+
+            <div class="no-image">
+              <img data-image-banner-dual-target="image" src="<%= asset_path('logos/subir-imagen.avif') %>" alt="Vista previa" class="image-preview-thumbnail hidden" />
+            </div>
+
+          </div>
+          <%= f.file_field :mobile_images, multiple: true, class: 'hidden-ocultos', data: { "image-banner-dual-target": 'fileInput', action: 'change->image-banner-dual#previewImage' } %>
+
+          <div class="form-label-wrapper">
+            <%= f.text_area :mobile_links, class: 'form-input', placeholder: 'Ejemplo: http://ejemplo.com', id: 'banner_mobile_links' %>
+            <label for="banner_mobile_links" class="form-label">Link</label>
+          </div>
+        </div>
+      </div>
+
+      <%= f.submit "Crear Banner", class: "btn btn-primary" %>
+      <div class="space">
+        <%= link_to 'Volver', admin_banners_path, class: 'btn btn-secondary' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

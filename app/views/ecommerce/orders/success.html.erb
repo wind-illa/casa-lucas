@@ -1,0 +1,158 @@
+
+
+<%= render 'ecommerce/orders/navbar' %>
+
+<div class="success-container">
+  <div class="color-dual">
+    <% if @order.payment_method.code == "efectivo" %>
+
+      <div class="container">
+        <div class="message">
+          <h1 class="success-title">¡Gracias por elegirnos!</h1>
+          <div class="icon-container">
+            <svg class="icon icon-lock">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-cartera-pago') %>"></use>
+            </svg>
+          </div>
+        </div>
+        <div class="payment-details">
+          <h3 class="payment-instructions">Datos para tu pago</h3>
+          <div class="reference-info">
+            <h4 class="reference-title">Número de referencia</h4>
+            <p class="reference-number">N° <%= @order.id %></p>
+            <h4 class="reference-title">Total a pagar</h4>
+            <p class="reference-number"><%= number_to_currency(@order.total_price) %></p>
+            <p class="reference-note">Solo necesitarás este número para realizar tu pago en sucursal.</p>
+          </div>
+          <div class="actions">
+            <%= link_to "Volver al inicio", root_path, class: "btn btn-primary" %>
+            <%= link_to "Ver mis compras", ecommerce_orders_path, class: "btn btn-secondary" %>
+          </div>
+        </div>
+      </div>
+
+    <% elsif @order.payment_method.code == "transferencia" %>
+      <div class="container">
+        <div class="message">
+          <h1 class="success-title">¡Gracias por elegirnos!</h1>
+          <div class="icon-container">
+            <svg class="icon icon-lock">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-cartera-pago') %>"></use>
+            </svg>
+          </div>
+        </div>
+
+        <div class="payment-details">
+          <h3 class="payment-instructions">Datos para tu transferencia</h3>
+          <div class="bank-info">
+            <% if BankAccount.activo.any? %>
+              <% BankAccount.activo.each do |bank_account| %>
+                <h4 class="bank-title"><%= bank_account.tipo.titleize %></h4>
+                <p class="bank-detail"><%= bank_account.numero %></p>
+                <h4 class="bank-title">Alias</h4>
+                <p class="bank-detail"><%= bank_account.alias %></p>
+              <% end %>
+            <% else %>
+              <h4 class="bank-title">CBU/CVU</h4>
+              <p class="bank-detail">No hay una cuenta disponible, comuníquese con soporte</p>
+            <% end %>
+
+            <h4 class="bank-title">Total a transferir</h4>
+            <p class="bank-detail"><%= number_to_currency(@order.total_price) %></p>
+            <p class="bank-note">No olvides enviarnos el comprobante de transferencia desde Mis compras.</p>
+          </div>
+
+          <div class="actions">
+            <%= link_to "Volver al inicio", root_path, class: "btn btn-primary" %>
+            <%= link_to "Ver mis compras", ecommerce_orders_path, class: "btn btn-secondary" %>
+          </div>
+        </div>
+      </div>
+    <% elsif @order.payment_method.code == "mercado_pago" %>
+
+      <% if @order.status == "pagado" %>
+        <div class="container">
+          <div class="message">
+            <h1 class="success-title">¡Gracias por confiar en nosotros!</h1>
+            <div class="icon-container">
+              <%= image_tag('logos/mercado pago.png', alt: 'Logo de [Nombre de la Tienda]', class: 'icon icon-lock') %>
+            </div>
+          </div>
+          <div class="payment-details">
+            <h3 class="payment-instructions">¡Listo! Tu pago ya se acreditó</h3>
+            <div class="bank-info">
+              <h4 class="bank-title">Numero de compra</h4>
+              <p class="bank-detail"><%= @order.id %></p>
+              <p class="bank-note">Puedes hacer el seguimiento de tu compra en la sección "Mis compras".</p>
+            </div>
+            <div class="actions">
+              <%= link_to "Volver al inicio", root_path, class: "btn btn-primary" %>
+              <%= link_to "Ver mis compras", ecommerce_orders_path, class: "btn btn-secondary" %>
+            </div>
+          </div>
+        </div>
+      <% elsif @order.status == "pago_pendiente"%>
+        <div class="container">
+          <div class="message">
+            <h1 class="success-title">¡Gracias por confiar en nosotros!</h1>
+            <div class="icon-container">
+              <%= image_tag('logos/mercado pago.png', alt: 'Logo de [Nombre de la Tienda]', class: 'icon icon-lock') %>
+            </div>
+          </div>
+          <div class="payment-details">
+            <h3 class="payment-instructions">¿Dónde puedo pagar?</h3>
+            <div class="bank-info">
+              <p class="bank-note">MercadoPago te envio esa información por e-mail así la tenés a mano.</p>
+            </div>
+            <div class="actions">
+              <%= link_to "Volver al inicio", root_path, class: "btn btn-primary" %>
+              <%= link_to "Ver mis compras", ecommerce_orders_path, class: "btn btn-secondary" %>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="container">
+          <div class="message">
+            <h1 class="success-title">¡Gracias por confiar en nosotros!</h1>
+            <div class="icon-container">
+              <%= image_tag('logos/mercado pago.png', alt: 'Logo de [Nombre de la Tienda]', class: 'icon icon-lock') %>
+            </div>
+          </div>
+          <div class="payment-details">
+            <h3 class="payment-instructions">Noy hay informacion respecto a tu pago</h3>
+            <div class="bank-info">
+              <h4 class="bank-title">Numero de compra</h4>
+              <p class="bank-detail"><%= @order.id %></p>
+              <p class="bank-note">Contactate con soporte.</p>
+            </div>
+            <div class="actions">
+              <%= link_to "Volver al inicio", root_path, class: "btn btn-primary" %>
+              <%= link_to "Ver mis compras", ecommerce_orders_path, class: "btn btn-secondary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="container">
+        <div class="message">
+          <h1 class="success-title">¡Gracias por confiar en nosotros!</h1>
+          <div class="icon-container">
+            <%= image_tag('logos/mercado pago.png', alt: 'Logo de [Nombre de la Tienda]', class: 'icon icon-lock') %>
+          </div>
+        </div>
+        <div class="payment-details">
+          <h3 class="payment-instructions">Noy hay informacion respecto a tu pago</h3>
+          <div class="bank-info">
+            <h4 class="bank-title">Numero de compra</h4>
+            <p class="bank-detail"><%= @order.id %></p>
+            <p class="bank-note">Contactate con soporte.</p>
+          </div>
+          <div class="actions">
+            <%= link_to "Volver al inicio", root_path, class: "btn btn-primary" %>
+            <%= link_to "Ver mis compras", ecommerce_orders_path, class: "btn btn-secondary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

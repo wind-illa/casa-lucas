@@ -1,0 +1,24 @@
+
+
+<turbo-frame id="cart-summary">
+  <div class="resumen-dinamica">
+
+    <div class="cantidad-productos">
+      <span>Productos (<%= @cart.total_items %>)</span>
+      <span><%= number_to_currency((@total_price || 0) + (@discount_amount || 0)) %></span>
+    </div>
+
+    <div class="cantidad-productos">
+      <% if @discount_percentage && @discount_percentage.positive? %>
+        <span>Descuento por cantidad </span>
+        <span class="descuento-color">-<%= @discount_percentage.to_i %>%</span>
+
+      <% end %>
+    </div>
+
+    <div class="total">
+      <span>Total</span>
+      <span><%= number_to_currency(@total_price) %></span>
+    </div>
+  </div>
+</turbo-frame>

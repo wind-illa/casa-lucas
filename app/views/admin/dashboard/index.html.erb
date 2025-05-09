@@ -1,0 +1,43 @@
+
+<div class="admin-container">
+  <%= render 'admin/shared/sidevar' %>
+
+
+  <div class="banner-content">
+
+    <div class="dashboard-overviews">
+      <div class="overview-cards">
+        <div class="card">
+          <h3>Categorías</h3>
+          <p><%= Category.count %> Categorías</p>
+          <%= link_to 'Gestionar Categorías', admin_categories_path, class: 'btn btn-primary' %>
+        </div>
+
+        <div class="card">
+          <h3>Subcategorías</h3>
+          <p><%= Subcategory.count %> Subcategorías</p>
+          <%= link_to 'Gestionar Subcategorías', "#", class: 'btn btn-primary' %>
+        </div>
+
+        <div class="card">
+          <h3>Productos</h3>
+          <p><%= Product.count %> Productos</p>
+          <%= link_to 'Gestionar Productos', admin_products_path, class: 'btn btn-primary' %>
+        </div>
+
+        <div class="card">
+          <h3>Banners</h3>
+          <p><%= Banner.count %> Banners</p>
+          <%= link_to 'Gestionar Banners', admin_banners_path, class: 'btn btn-primary' %>
+        </div>
+
+        <div class="card">
+          <h3>Usuarios</h3>
+          <p><%= User.count %> Usuarios</p>
+          <%= link_to 'Gestionar Usuarios', clientes_admin_users_path, class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

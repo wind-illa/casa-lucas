@@ -1,0 +1,156 @@
+<% content_for :title, "Revisá y confirmá tu compra | Baratísimo Bazar" %>
+
+
+<%= render 'ecommerce/orders/navbar' %>
+<div class="order-details-container-summary">
+  <div class="order-container">
+    <div class="order-container-primero">
+      <div class="order-products">
+
+        <div class="categories-title">
+          <div class="title">
+            <%= link_to payment_ecommerce_order_path(@order), class: 'arrow-back-link' do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+              </svg>
+            <% end %>
+            <h1 class="category-title">Revisá y confirmá tu compra</h1>
+          </div>
+        </div>
+
+        <div class="order-products-header">
+          <h3 class="order-products-title">Revisá y confirmá tu compra</h3>
+        </div>
+
+        <div class="section-data">
+          <h3 class="order-data-title">Información de envío</h3>
+          <div class="order-data-container">
+            <div class="order-arguments">
+              <div class="order-icon">
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#history-icon') %>"></use>
+                </svg>
+              </div>
+              <div class="order-data">
+                <span class="order-title">Datos de facturación</span>
+                <span class="order-descripcion"><%= current_user.first_name %> <%= current_user.last_name %> | <%= current_user.document_type %> <%= current_user.document_id %></span>
+              </div>
+            </div>
+            <%= link_to information_account_profiles_path, class: 'profile-link' do %>
+              <span class="link-description">Edita o cambia tus datos</span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="section-data">
+          <h3 class="order-data-title">Método de envío</h3>
+          <div class="order-data-container">
+            <div class="order-arguments">
+              <div class="order-icon">
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#truck-icon') %>"></use>
+                </svg>
+              </div>
+              <div class="order-data">
+                <span class="order-title"><%= @order.shipping_method.name %></span>
+                <span class="order-descripcion"><%= @order.shipping_method.description %></span>
+              </div>
+            </div>
+            <%= link_to shipping_ecommerce_order_path(@order), class: 'profile-link' do %>
+              <span class="link-description">Edita tu método de envío</span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="section-data">
+          <h3 class="order-data-title">Medio de pago</h3>
+          <div class="order-data-container">
+            <div class="order-arguments">
+              <div class="order-icon">
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/admin.svg#wallet-icon') %>"></use>
+                </svg>
+              </div>
+              <div class="order-data">
+                <span class="order-title"><%= @order.payment_method.name %></span>
+                <span class="order-descripcion"><%= @order.payment_method.description %></span>
+              </div>
+            </div>
+            <%= link_to payment_ecommerce_order_path(@order), class: 'profile-link' do %>
+              <span class="link-description">Cambia tu medio de pago</span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="section-data-product">
+          <h3 class="order-title-product">Productos elegidos</h3>
+          <div class="order-container">
+            <% @order.order_items.each do |item| %>
+              <div class="order-item">
+                <div class="order-image">
+                  <% if item.images.attached? %>
+                    <%= image_tag url_for(item.images.first), alt: item.product.product_name, class: "product-image" %>
+                  <% else %>
+                    <div class="no-image">Sin imagen</div>
+                  <% end %>
+                </div>
+                <div class="order-info">
+                  <h4 class="order-product-name"><%= item.product.product_name %></h4>
+                  <div class="order-item-details">
+                    <span class="order-item-color">Color: <%= item.color %></span>
+                    <span class="order-item-quantity"><%= item.quantity %> unidades</span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="order-container-segundo">
+      <div class="order-summary">
+        <h1 class="order-summary-title">Resumen de la compra</h1>
+        <div class="barra-separadora"></div>
+
+        <div class="order-summary-details">
+          <% if @order.discount_percentage.to_f.positive? %>
+            <div class="summary-item">
+              <span class="summary-label">Productos (<%= @order.order_items.sum(:quantity) %>)</span>
+              <span class="summary-value"><%= number_to_currency(@order.subtotal) %></span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Descuento por cantidad</span>
+              <span class="summary-value discount">-<%= @order.discount_percentage.to_i %>%</span>
+            </div>
+            <div class="barra-separadora"></div>
+          <% end %>
+
+          <div class="summary-item">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value"><%= number_to_currency(@order.subtotal_with_discount) %></span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Envío</span>
+            <span class="summary-value"><%= number_to_currency(@order.shipping_cost) %></span>
+          </div>
+
+          <div class="barra-separadora"></div>
+          <div class="summary-item total">
+            <span class="summary-label">Total</span>
+            <span class="summary-value"><%= number_to_currency(@order.total_price) %></span>
+          </div>
+        </div>
+      </div>
+
+      <%= button_to finalize_ecommerce_order_path(@order), method: :post, class: 'profile-link', form_class: 'inline-form', data: { turbo: false } do %>
+
+
+
+        <span class="link-description">Confirmar compra</span>
+      <% end %>
+
+    </div>
+  </div>
+</div>

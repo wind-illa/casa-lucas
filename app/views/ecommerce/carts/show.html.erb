@@ -1,0 +1,121 @@
+<% content_for :title, "Carrito de compras | Baratísimo Bazar" %>
+
+<div class="cart-container">
+
+  <% if @cart_items.any? %>  <!-- Verificar si hay productos en el carrito -->
+    <div class="cart-sections">
+      <div class="cart-items">
+        <div class="cart-item-header">
+          <h2>Carrito</h2>
+          <div class="cart-actions">
+            <%= button_to 'Vaciar carrito', clear_cart_ecommerce_cart_path(@cart), method: :delete, class: 'btn btn-danger clear-cart-button', data: { turbo: false }, data: { confirm: '¿Estás seguro de que deseas vaciar el carrito?' } %>
+          </div>
+        </div>
+        <% @cart_items.each do |item| %>
+          <turbo-frame id="cart-item-details-<%= item.id %>">
+            <div class="cart-item">
+              <div class="item-image">
+                <%= image_tag url_for(item.images.first), alt: item.product.product_name %>
+              </div>
+              <div class="item-details">
+                <div class="seccion-uno">
+                  <h2 class="name"><%= item.product.product_name %></h2>
+                  <span class="color">Color: <%= item.color %></span>
+                  <div class="product-pricing">
+                    <% if item.product.price_discount.present? && item.product.price_discount > 0 %>
+                      <p class="price-original">$<%= number_to_currency(item.product.price, unit: "", separator: ",", delimiter: ".") %></p>
+                      <div class="section-price">
+                        <p class="price-discounted">$<%= number_to_currency(item.product.price * (1 - (item.product.price_discount.to_f / 100)), unit: "", separator: ",", delimiter: ".") %></p>
+                        <p class="discounted"><%= item.product.price_discount %>% Descuento</p>
+                      </div>
+                    <% else %>
+                      <p class="price-normal">$<%= number_to_currency(item.product.price, unit: "", separator: ",", delimiter: ".") %></p>
+                    <% end %>
+                  </div>
+
+                  <%= button_to ecommerce_cart_item_path(item), method: :delete, class: 'link' do %>
+                    <span>Eliminar</span>
+                  <% end %>
+                </div>
+                <div class="seccion-uno-dos">
+                  <div class="seccion-dos">
+                    <div class="product-actions">
+                      <!-- Disminuir cantidad -->
+                      <%= form_with url: ecommerce_cart_item_path(item), method: :patch, local: true, class: "update-quantity" do |form| %>
+                        <%= form.hidden_field :quantity, value: item.quantity - 1 if item.quantity > 1 %>
+                        <%= form.submit "-", class: "btn btn-decrease" %>
+                      <% end %>
+                      <p class="cantidad"><%= item.quantity %></p>
+                      <!-- Aumentar cantidad -->
+                      <%= form_with url: ecommerce_cart_item_path(item), method: :patch, local: true, class: "update-quantity" do |form| %>
+                        <%= form.hidden_field :quantity, value: item.quantity + 1 %>
+                        <%= form.submit "+", class: "btn btn-increase" %>
+                      <% end %>
+                    </div>
+                  </div>
+                  <div class="seccion-tres">
+                    <div class="item-total-price">
+                      <p class="precio-total-item"><%= number_to_currency(item.total_price_for_item) %></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </turbo-frame>
+        <% end %>
+      </div>
+      <div class="cart-summary">
+        <span class="resumen">Resumen de la compra</span>
+        <div class="separador"></div>
+
+        <turbo-frame id="cart-summary">
+          <div class="resumen-dinamica">
+            <div class="cantidad-productos">
+              <span>Productos (<%= @cart.total_items %>)</span>
+              <span><%= number_to_currency((@total_price || 0) + (@discount_amount || 0)) %></span>
+            </div>
+
+            <div class="cantidad-productos">
+              <% if @discount_percentage && @discount_percentage.positive? %>
+                <span>Descuento por cantidad </span>
+                <span class="descuento-color">-<%= @discount_percentage.to_i %>%</span>
+              <% end %>
+            </div>
+
+            <div class="total">
+              <span>Total</span>
+              <span><%= number_to_currency(@total_price) %></span>
+            </div>
+          </div>
+        </turbo-frame>
+
+        <%= link_to 'Continuar compra', new_ecommerce_order_path, class: 'btn btn-success checkout-button' %>
+
+      </div>
+    </div>
+  <% else %>
+
+    <div class="cart-sections">
+      <div class="cart-items-vacio">
+        <%= image_tag 'logos/carrito.png', alt: 'Icono de menú abierto', class: 'menu-icon' %>
+        <div class="cart-item-header">
+          <span class="carrito-vacio-titulo">Tu carrito en el baratísimo está vacío.</span>
+          <span class="carrito-vacio-text">Añadí productos a tu carrito desde las categorías disponibles.</span>
+        </div>
+      </div>
+
+      <div class="cart-summary-vacio">
+        <span class="resumen">Resumen de la compra</span>
+        <div class="separador"></div>
+        <div class="resumen-dinamica">
+          <div class="cantidad-productos">
+            <span>Aquí verás los importes de tu compra una vez que agregues productos.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+</div>
+<%= render 'shared/whatsApp' %>
+<%= render 'shared/footer' %>

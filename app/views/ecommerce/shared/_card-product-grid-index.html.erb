@@ -1,0 +1,40 @@
+<div class="container-products-filter">
+  <% if @products.present? %>
+    <div class="products-grid">
+      <% @products.each do |product| %>
+        <div class="product-card">
+          <%= link_to ecommerce_category_subcategory_product_path(@subcategory.category, @subcategory, product), class: "product-link" do %>
+            <div class="product-image">
+              <% if product.product_images.attached? %>
+                <%= image_tag product.product_images.first, alt: product.product_name, class: "product-img" %>
+              <% else %>
+                <div class="no-image">
+                  <svg class="icon">
+                    <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar-foto') %>"></use>
+                  </svg>
+                </div>
+              <% end %>
+            </div>
+            <div class="product-info">
+              <h2 class="product-name"><%= product.product_name %></h2>
+
+              <div class="product-pricing">
+                <% if product.price_discount.present? && product.price_discount > 0 %>
+                  <p class="price-original">$<%= number_to_currency(product.price, unit: "", separator: ",", delimiter: ".") %></p>
+                  <div class="section-price">
+                    <p class="price-discounted">$<%= number_to_currency(product.price * (1 - (product.price_discount.to_f / 100)), unit: "", separator: ",", delimiter: ".") %></p>
+                    <p class="discounted"><%= product.price_discount %>% Descuento</p>
+                  </div>
+                <% else %>
+                  <p class="price-normal">$<%= number_to_currency(product.price, unit: "", separator: ",", delimiter: ".") %></p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p>No se encontraron productos.</p>
+  <% end %>
+</div>

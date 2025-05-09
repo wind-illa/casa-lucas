@@ -1,0 +1,2 @@
+module Ecommerce::CartsHelper
+end

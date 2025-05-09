@@ -1,0 +1,109 @@
+<% content_for :title, "Medio de pago | Baratísimo Bazar" %>
+
+
+<%= render 'ecommerce/orders/navbar' %>
+<div class="order-details-container-shipping">
+  <div class="order-container">
+    <div class="order-container-primero">
+      <div class="products-navigation">
+        <ol>
+          <li>
+            <span class="informacion-segundo">1- Información de envío</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+            </svg>
+          </li>
+          <li>
+            <span class="informacion-segundo">2- Método de envío</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+            </svg>
+          </li>
+          <li>
+            <span class="envio-primero">3- Medio de pago</span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="order-products">
+
+        <div class="categories-title">
+          <div class="title">
+            <%= link_to shipping_ecommerce_order_path(@order), class: 'arrow-back-link' do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+              </svg>
+            <% end %>
+            <h1 class="category-title">Medio de pago</h1>
+          </div>
+        </div>
+
+        <div class="order-products-header">
+          <h3 class="order-products-title">Medio de pago</h3>
+        </div>
+
+
+        <%= form_with model: @order, url: update_payment_ecommerce_order_path(@order), method: :patch, local: true, class: "shipping-info-form" do |f| %>
+          <% if @payment_methods.any? %>
+            <% @payment_methods.each do |method| %>
+              <label class="order-item">
+                <%= f.radio_button :payment_method_id, method.id, checked: (@order.payment_method_id == method.id), class: "radio-hidden" %>
+                <div class="address-card">
+                  <span class="title-direccion"><%= method.name %></span>
+                  <span class="full-direccion"><%= method.description %></span>
+                  <span class="full-name"></span>
+                </div>
+              </label>
+            <% end %>
+          <% else %>
+            <div class="order-item">
+              <div class="address-card">
+                <span>No hay metodos de envio disponibles. Contactese con soporte</span>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="actions">
+            <%= f.submit "Continuar", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="order-container-segundo">
+      <div class="order-summary">
+        <h1 class="order-summary-title">Resumen de la compra</h1>
+        <div class="barra-separadora"></div>
+
+        <div class="order-summary-details">
+          <% if @order.discount_percentage.to_f.positive? %>
+            <div class="summary-item">
+              <span class="summary-label">Productos (<%= @order.order_items.sum(:quantity) %>)</span>
+              <span class="summary-value"><%= number_to_currency(@order.subtotal) %></span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Descuento por cantidad</span>
+              <span class="summary-value discount">-<%= @order.discount_percentage.to_i %>%</span>
+            </div>
+            <div class="barra-separadora"></div>
+          <% end %>
+
+          <div class="summary-item">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value"><%= number_to_currency(@order.subtotal_with_discount) %></span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Envío</span>
+            <span class="summary-value"><%= number_to_currency(@order.shipping_cost) %></span>
+          </div>
+
+          <div class="barra-separadora"></div>
+          <div class="summary-item total">
+            <span class="summary-label">Total</span>
+            <span class="summary-value"><%= number_to_currency(@order.total_price) %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

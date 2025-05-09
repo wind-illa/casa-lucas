@@ -1,0 +1,38 @@
+
+
+<div class="product-new-edit-content" data-controller="uploader-view-image-single">
+  <div class="product-content">
+
+    <%= form_with(model: [:admin, @category, @subcategory], local: true) do |form| %>
+
+      <div class="form-group form-name">
+        <div class="form-label-wrapper">
+          <%= form.text_field :subcategory_name, class: 'form-input', placeholder: 'Nombre de la subcategoría', value: @subcategory.subcategory_name, id: 'product_name' %>
+          <label for="subcategory_name" class="form-label">Nombre de la subcategoría</label>
+        </div>
+      </div>
+
+      <div class="form-images">
+        <div class="complemento-images">
+          <div class="image-preview-item-check" data-action="click->uploader-view-image-single#uploadImage" data-uploader-view-image-single-target="imageContainer">
+            <% if @subcategory.subcategory_image.present? %>
+              <%= image_tag @subcategory.subcategory_image, class: 'image-preview-thumbnail', data: { uploader_view_image_single_target: 'previewImage' } %>
+            <% else %>
+              <div class="no-image-placeholder" data-uploader-view-image-single-target="placeholder">
+                <span>No hay imagen</span>
+              </div>
+            <% end %>
+
+          </div>
+          <%= form.file_field :subcategory_image, class: 'hidden-oculto', data: { uploader_view_image_single_target: 'fileInput' } %>
+        </div>
+      </div>
+
+      <%= form.submit "Actualizar categoría", class: "btn btn-primary" %>
+      <div class="space">
+        <%= link_to 'Volver', admin_category_path(@category), class: 'btn btn-secondary' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

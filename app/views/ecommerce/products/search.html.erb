@@ -1,0 +1,141 @@
+<% content_for :title, "#{params[:query_text].present? ? params[:query_text] : 'Categorías'} | Baratísimo Bazar" %>
+
+<div class="products-index-desktop">
+
+  <div class="header-movil search-header">
+
+    <div class="header-title-search">
+      <h1><%= params[:query_text].present? ? params[:query_text] : "Todos los productos" %></h1>
+      <% if params[:query_text].present? %>
+        <span><%= @products.count %> resultados </span>
+      <% end %>
+    </div>
+
+    <div class="filter-container-modal-menu" data-controller="menu">
+
+      <div class="filter">
+        <%= button_tag type: 'button', class: 'filter-button', data: { action: "click->menu#open" } do %>
+          <span>Categorías</span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-chevron-down') %>"></use>
+          </svg>
+        <% end %>
+      </div>
+
+      <!-- Modal -->
+
+      <div class="modal-background" data-menu-target="background" data-action="click->menu#close">
+      </div>
+      <div class="modal-lateral" data-menu-target="modal">
+        <div class="modal-lateral-content">
+
+
+          <div class="modal-lateral-header">
+            <%= link_to ecommerce_categories_path, class: 'arrow-back-link' do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+              </svg>
+            <% end %>
+            <h3>categorías</h3>
+            <button class="close-modal" data-action="click->menu#close">
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-custom') %>"></use>
+              </svg>
+            </button>
+          </div>
+
+          <div class="modal-lateral-body">
+            <div class="modal">
+
+              <div class="container-sidebar">
+
+                <div class="filter-group">
+
+                  <div class="filter-subcategorias">
+                    <ul>
+                      <% Category.all.each do |category| %>
+                        <h3 class="search-title"><%= category.category_name %></h3>
+                        <ul class="subcategorias-search">
+                          <% category.subcategories.each do |subcategory| %>
+                            <li class="search-item">
+                              <%= link_to ecommerce_category_subcategory_products_path(category, subcategory), class: params[:subcategory_id].to_i == subcategory.id ? 'active' : '' do %>
+                                <div class="barra"></div>
+                                <div class="image-container">
+                                  <%= image_tag url_for(subcategory.subcategory_image), alt: subcategory.subcategory_name if subcategory.subcategory_image.attached? %>
+                                </div>
+                                <span><%= subcategory.subcategory_name %></span>
+                              <% end %>
+                            </li>
+                          <% end %>
+                        </ul>
+                      <% end %>
+                    </ul>
+                  </div>
+
+
+
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="products-navigation">
+    <ol>
+      <li>
+        <%= link_to root_path do %>
+          <span>Inicio</span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+          </svg>
+        <% end %>
+      </li>
+    </ol>
+  </div>
+
+  <div class="products-container">
+
+    <div class="container-sidebar">
+      <div class="title">
+        <h1>
+          <%= params[:query_text].present? ? params[:query_text] : "Categorias" %>
+        </h1>
+        <% if params[:query_text].present? %>
+          <span><%= @products.count %> resultados</span>
+        <% end %>
+
+      </div>
+      <div class="filter-group">
+
+        <div class="filter-subcategorias">
+          <% Category.all.each do |category| %>
+            <h3><%= category.category_name %></h3>
+            <ul class="subcategorias-search">
+              <% category.subcategories.each do |subcategory| %>
+                <li>
+                  <%= link_to ecommerce_category_subcategory_products_path(category, subcategory), class: params[:subcategory_id].to_i == subcategory.id ? 'active' : '' do %>
+                    <span><%= subcategory.subcategory_name %></span>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+
+    <%= render 'ecommerce/shared/card-product-grid-search' %>
+
+  </div>
+</div>
+
+<%= paginate @products, theme: 'custom-pagination-ecommerce' %>
+<%= render 'shared/footer' %>

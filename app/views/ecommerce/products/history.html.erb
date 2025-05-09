@@ -1,0 +1,59 @@
+<% content_for :title, "Tu historial | Baratísimo Bazar" %>
+
+<div class="history-products-container">
+
+  <% if @history_products.any? %>
+    <div class="history-products-header">
+      <h1>Tu historial</h1>
+      <%= button_to 'Borrar tu historial', ecommerce_clear_history_path, method: :delete, data: { confirm: '¿Estás seguro de que quieres limpiar tu historial de navegación?' }, class: 'clear-history-button' %>
+    </div>
+    <div class="history-products">
+      <% @history_products.each do |product| %>
+        <div class="product-card">
+          <%= link_to ecommerce_product_path(product), class: "product-link" do %>
+
+            <div class="product-image">
+              <% if product.product_images.attached? %>
+                <%= image_tag product.product_images.first, alt: product.product_name, class: "product-img" %>
+              <% else %>
+                <div class="no-image">
+                  <svg class="icon no-image-icon">
+                    <use xlink:href="<%= asset_path('icons/admin.svg#icono-agregar-foto') %>"></use>
+                  </svg>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="product-details">
+              <span class="name"><%= product.product_name %></span>
+
+              <div class="product-pricing">
+                <% if product.price_discount.present? && product.price_discount > 0 %>
+                  <p class="price-original">$<%= number_to_currency(product.price, unit: "", separator: ",", delimiter: ".") %></p>
+                  <div class="section-price">
+                    <p class="price-discounted">$<%= number_to_currency(product.price * (1 - (product.price_discount.to_f / 100)), unit: "", separator: ",", delimiter: ".") %></p>
+                    <p class="discounted"><%= product.price_discount %>% Descuento</p>
+                  </div>
+                <% else %>
+                  <p class="price-normal">$<%= number_to_currency(product.price, unit: "", separator: ",", delimiter: ".") %></p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+          <%= button_to 'Eliminar de la lista', ecommerce_remove_from_history_path(product), method: :delete, class: 'remove-button', data: { confirm: '¿Estás seguro de que quieres eliminar este producto del historial?' } %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="history-products-header">
+      <h1>Tu historial</h1>
+      <span class="clear-history-button borrar">Borrar tu historial</span>
+    </div>
+    <div class="history-products-none">
+      <p class="no-history-message">Aún no viste publicaciones.</p>
+      <p class="no-history">¡Empezá a descubrir todo lo que tenemos para vos!.</p>
+    </div>
+  <% end %>
+</div>
+<%= render 'shared/whatsApp' %>
+<%= render 'shared/footer' %>

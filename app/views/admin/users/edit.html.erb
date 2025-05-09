@@ -1,0 +1,117 @@
+
+<div class="product-new-edit-content">
+  <div class="product-content">
+    <%= form_with(model: @user, url: admin_user_path(@user), method: :patch, local: true) do |form| %>
+
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.text_field :first_name, class: 'form-input', placeholder: 'Nombre' %>
+          <%= form.label :first_name, 'Nombre', class: 'form-label' %>
+        </div>
+        <% if @user.errors[:first_name].any? %>
+          <div class="error-message"><%= @user.errors[:first_name].first %></div>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.text_field :last_name, class: 'form-input', placeholder: 'Apellido' %>
+          <%= form.label :last_name, 'Apellido', class: 'form-label' %>
+        </div>
+        <% if @user.errors[:last_name].any? %>
+          <div class="error-message"><%= @user.errors[:last_name].first %></div>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.email_field :email, class: 'form-input', placeholder: 'Email'  %>
+          <%= form.label :email, 'Email', class: 'form-label' %>
+        </div>
+        <% if @user.errors[:email].any? %>
+          <div class="error-message"><%= @user.errors[:email].first %></div>
+        <% end %>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.select :document_type, options_for_select([['DNI', 0], ['CUIL', 1], ['CUIT', 2], ['Pasaporte', 3]]), {}, class: 'form-input' %>
+            <%= form.label :document_type, 'Tipo de Documento', class: 'form-label' %>
+          </div>
+          <% if @user.errors[:document_type].any? %>
+            <div class="error-message"><%= @user.errors[:document_type].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.text_field :document_id, class: 'form-input', placeholder: 'Número de Documento' %>
+            <%= form.label :document_id, 'Número de Documento', class: 'form-label' %>
+          </div>
+          <% if @user.errors[:document_id].any? %>
+            <div class="error-message"><%= @user.errors[:document_id].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.text_field :phone, class: 'form-input', placeholder: 'Teléfono' %>
+            <%= form.label :phone, 'Teléfono', class: 'form-label' %>
+          </div>
+          <% if @user.errors[:phone].any? %>
+            <div class="error-message"><%= @user.errors[:phone].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.select :role, options_for_select([['Cliente', 3], ['Administrador', 0], ['Repositor', 1], ['Cajero', 2]], 3), {}, class: 'form-input' %>
+            <%= form.label :role, 'Rol', class: 'form-label' %>
+          </div>
+          <% if @user.errors[:role].any? %>
+            <div class="error-message"><%= @user.errors[:role].first %></div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.password_field :password, class: 'form-input', placeholder: 'Contraseña' %>
+          <%= form.label :password, 'Contraseña', class: 'form-label' %>
+        </div>
+        <% if @user.errors[:password].any? %>
+          <div class="error-message"><%= @user.errors[:password].first %></div>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.password_field :password_confirmation, class: 'form-input', placeholder: 'Confirmar Contraseña' %>
+          <%= form.label :password_confirmation, 'Confirmar Contraseña', class: 'form-label' %>
+        </div>
+        <% if @user.errors[:password_confirmation].any? %>
+          <div class="error-message"><%= @user.errors[:password_confirmation].first %></div>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.file_field :profile_picture, class: 'form-input' %>
+          <%= form.label :profile_picture, 'Foto de Perfil', class: 'form-label' %>
+        </div>
+
+      </div>
+
+
+      <%= form.submit 'Actualizar datos del usuario', class: 'btn btn-primary' %>
+
+
+      <div class="space">
+        <%= link_to 'Volver a la lista', clientes_admin_users_path, class: 'btn btn-secondary' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,186 @@
+<% content_for :title, "#{@subcategory.subcategory_name} | Baratísimo Bazar" %>
+
+<div class="products-index-desktop">
+
+
+  <div class="header-movil">
+
+    <div class="header-title">
+      <h1><%= @subcategory.subcategory_name %></h1>
+    </div>
+
+    <div class="filter-container-modal-menu" data-controller="menu">
+
+      <div class="filter">
+        <%= button_tag type: 'button', class: 'filter-button', data: { action: "click->menu#open" } do %>
+          <span><%= @category.category_name %></span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-chevron-down') %>"></use>
+          </svg>
+        <% end %>
+      </div>
+
+      <!-- Modal -->
+
+      <div class="modal-background" data-menu-target="background" data-action="click->menu#close">
+      </div>
+      <div class="modal-lateral" data-menu-target="modal">
+        <div class="modal-lateral-content">
+
+
+          <div class="modal-lateral-header">
+            <%= link_to ecommerce_categories_path, class: 'arrow-back-link' do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+              </svg>
+            <% end %>
+            <h3><%= @category.category_name %></h3>
+            <button class="close-modal" data-action="click->menu#close">
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-custom') %>"></use>
+              </svg>
+            </button>
+          </div>
+
+          <div class="modal-lateral-body">
+            <div class="modal">
+
+              <div class="container-sidebar">
+
+                <div class="filter-group">
+
+                  <div class="filter-subcategorias">
+                    <ul>
+                      <% @category.subcategories.each do |subcategory| %>
+                        <li>
+                          <%= link_to ecommerce_category_subcategory_products_path(@category, subcategory), class: params[:subcategory_id].to_i == subcategory.id ? 'active' : '' do %>
+                            <div class="barra"></div>
+                            <div class="image-container">
+                              <%= image_tag url_for(subcategory.subcategory_image), alt: subcategory.subcategory_name if subcategory.subcategory_image.attached? %>
+                            </div>
+                            <span><%= subcategory.subcategory_name %></span>
+                          <% end %>
+                        </li>
+                      <% end %>
+                    </ul>
+                  </div>
+
+
+                  <div class="filter-precio-bottom">
+                    <h3>Ordenar por</h3>
+                    <ul>
+                      <li>
+                        <%= link_to ecommerce_category_subcategory_products_path(@category, @subcategory, sort: 'desc'), class: params[:sort] == 'desc' ? 'active' : '' do %>
+                          <span>Mayor precio</span>
+                        <% end %>
+                      </li>
+                      <li>
+                        <%= link_to ecommerce_category_subcategory_products_path(@category, @subcategory, sort: 'asc'), class: params[:sort] == 'asc' ? 'active' : '' do %>
+                          <span>Menor precio</span>
+                        <% end %>
+                      </li>
+                      <li>
+                        <%= link_to ecommerce_category_subcategory_products_path(@category, @subcategory, sort: 'newest'), class: params[:sort] == 'newest' ? 'active' : '' do %>
+                          <span>Más nuevos</span>
+                        <% end %>
+                      </li>
+                    </ul>
+
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="products-navigation">
+    <ol>
+      <li>
+        <%= link_to root_path do %>
+          <span>Inicio</span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+          </svg>
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to ecommerce_categories_path do %>
+          <span>Categorías</span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+          </svg>
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to ecommerce_category_path(@category) do %>
+          <span><%= @category.category_name %></span>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/ecommerce.svg#chevron') %>"></use>
+          </svg>
+        <% end %>
+      </li>
+
+      <li>
+        <span><%= @subcategory.subcategory_name %></span>
+      </li>
+
+    </ol>
+  </div>
+
+  <div class="products-container">
+    <div class="container-sidebar">
+      <div class="title">
+        <h1><%= @subcategory.subcategory_name %></h1>
+        <span><%= @products.count %> resultados</span>
+      </div>
+
+      <div class="filter-group">
+
+        <div class="filter-subcategorias">
+          <h3><%= @category.category_name %></h3>
+          <ul>
+            <% @category.subcategories.each do |subcategory| %>
+              <li>
+                <%= link_to ecommerce_category_subcategory_products_path(@category, subcategory),
+                            class: params[:subcategory_id].to_i == subcategory.id ? 'active' : '' do %>
+                  <span><%= subcategory.subcategory_name %></span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+
+        <div class="filter-precio">
+          <h3>Ordenar por</h3>
+          <ul>
+            <li>
+              <%= link_to "Mayor precio", ecommerce_category_subcategory_products_path(@category, @subcategory, sort: 'desc'), class: params[:sort] == 'desc' ? 'active' : '' %>
+            </li>
+            <li>
+              <%= link_to "Menor precio", ecommerce_category_subcategory_products_path(@category, @subcategory, sort: 'asc'), class: params[:sort] == 'asc' ? 'active' : '' %>
+            </li>
+            <li>
+              <%= link_to "Más nuevos", ecommerce_category_subcategory_products_path(@category, @subcategory, sort: 'newest'), class: params[:sort] == 'newest' ? 'active' : '' %>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <%= render 'ecommerce/shared/card-product-grid-index' %>
+  </div>
+</div>
+
+<%= paginate @products, theme: 'custom-pagination-ecommerce' %>
+<%= render 'shared/footer' %>

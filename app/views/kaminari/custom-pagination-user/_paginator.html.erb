@@ -1,0 +1,44 @@
+<% total_pages = @users.total_pages %>
+<% current_page = @users.current_page %>
+<% visible_range = (1..total_pages).to_a.slice([current_page - 1, 0].max, 1) || [] %>
+
+<div class="pagination-container-ecommerce">
+  <div class="pagination">
+    <ul class="custom-pagination">
+      <!-- Link para ir a la página anterior -->
+      <% if current_page > 1 %>
+        <li class="page-item previous">
+          <%= link_to 'Anterior', url_for(page: current_page - 1), class: "page-link previous" %>
+        </li>
+      <% else %>
+        <li class="page-item disabled previous">
+          <span class="page-link previous">Anterior</span>
+        </li>
+      <% end %>
+
+      <!-- Rango de números -->
+      <% visible_range.each do |page| %>
+        <% if page == current_page %>
+          <li class="page-item-number active">
+            <span class="page-link page-number"><%= page %></span>
+          </li>
+        <% else %>
+          <li class="page-item-number">
+            <%= link_to page, url_for(page: page), class: "page-link page-number" %>
+          </li>
+        <% end %>
+      <% end %>
+
+      <!-- Link para ir a la página siguiente -->
+      <% if current_page < total_pages %>
+        <li class="page-item next">
+          <%= link_to 'Siguiente', url_for(page: current_page + 1), class: "page-link next" %>
+        </li>
+      <% else %>
+        <li class="page-item disabled next">
+          <span class="page-link next">Siguiente</span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

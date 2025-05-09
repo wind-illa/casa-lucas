@@ -1,0 +1,44 @@
+<div class="product-new-edit-content">
+  <div class="product-content">
+  <%= form_with model: @mercado_pago_token, url: admin_mercado_pago_token_path(@mercado_pago_token), method: :patch do |form| %>
+    <div class="form-group">
+      <div class="form-label-wrapper">
+        <%= form.text_field :nombre, class: 'form-input', placeholder: 'Nombre' %>
+        <%= form.label :nombre, 'Nombre', class: 'form-label' %>
+      </div>
+      <% if @mercado_pago_token.errors[:nombre].any? %>
+        <div class="error-message"><%= @mercado_pago_token.errors[:nombre].first %></div>
+      <% end %>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label-wrapper">
+        <%= form.text_field :token, class: 'form-input', placeholder: 'Token', value: '************', readonly: true %>
+
+        <%= form.label :token, 'Token', class: 'form-label' %>
+      </div>
+      <% if @mercado_pago_token.errors[:token].any? %>
+        <div class="error-message"><%= @mercado_pago_token.errors[:token].first %></div>
+      <% end %>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label-wrapper">
+        <%= form.select :estado, options_for_select(MercadoPagoToken.estados.keys.map { |estado| [estado.to_s.humanize, estado] }, prompt: 'Selecciona un estado'), {}, class: 'form-input' %>
+        <%= form.label :estado, 'Estado', class: 'form-label' %>
+      </div>
+      <% if @mercado_pago_token.errors[:estado].any? %>
+        <div class="error-message"><%= @mercado_pago_token.errors[:estado].first %></div>
+      <% end %>
+    </div>
+
+    <%= form.submit 'Actualizar Token', class: 'btn btn-primary' %>
+
+    <div class="space">
+      <%= link_to 'Volver', admin_mercado_pago_tokens_path, class: 'btn btn-secondary' %>
+    </div>
+
+  <% end %>
+
+  </div>
+</div>

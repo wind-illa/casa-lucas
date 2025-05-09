@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sku: MyString
+  product_name: MyString
+  bar_code: MyString
+  price: 9.99
+  price_discount: 1
+  brand: MyString
+  product_description: MyText
+  colors: 1
+  weight: 9.99
+  height: 9.99
+  width: 9.99
+  length: 9.99
+  stock_quantity: 1
+
+two:
+  sku: MyString
+  product_name: MyString
+  bar_code: MyString
+  price: 9.99
+  price_discount: 1
+  brand: MyString
+  product_description: MyText
+  colors: 1
+  weight: 9.99
+  height: 9.99
+  width: 9.99
+  length: 9.99
+  stock_quantity: 1
