@@ -229,7 +229,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_18_215743) do
     t.datetime "updated_at", null: false
     t.bigint "category_id", null: false
     t.index ["category_id"], name: "index_subcategories_on_category_id"
-    t.index ["subcategory_name"], name: "index_subcategories_on_subcategory_name", opclass: :gin_trgm_ops, using: :gin
   end
 
   create_table "users", force: :cascade do |t|

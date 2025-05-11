@@ -21,7 +21,8 @@ default: &default
 
 development:
   <<: *default
-  database: baratisimo_ecommerce_development
+  database: casa_lucas_development   # Cambié el nombre de la base de datos
+
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -55,7 +56,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: baratisimo_ecommerce_test
+  database: casa_lucas_test   # Cambié el nombre de la base de datos para las pruebas
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -79,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: baratisimo_ecommerce_production
-  username: baratisimo_ecommerce
-  password: <%= ENV["BARATISIMO_ECOMMERCE_DATABASE_PASSWORD"] %>
+  database: casa_lucas_production   # Cambié el nombre de la base de datos para producción
+  username: casa_lucas_user  # Cambié el nombre del usuario, si corresponde
+  password: <%= ENV["CASA_LUCAS_DATABASE_PASSWORD"] %>   # Si usas una variable de entorno para la contraseña
