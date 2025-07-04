@@ -1,0 +1,58 @@
+
+
+
+
+<% content_for :title, "Edita tus datos personales | Baratísimo Bazar" %>
+
+<div class="account-business-settings-edit">
+  <div class="container-edit-profile">
+
+    <div class="products-navigation">
+      <ol>
+        <li>
+          <%= link_to business_account_settings_path do %>
+            <span>Ajustes</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+        <li>
+          <span>Actualizar mi email</span>
+        </li>
+
+      </ol>
+    </div>
+
+    <div class="profile-header">
+      <h1 class="profile-title"Actualizar correo electrónico</h1>
+      <p class="profile-description">Mantené tu información de contacto actualizada para no perderte ninguna notificación importante.</p>
+      <p class="profile-instructions">Asegurate de ingresar un correo electrónico válido al que tengas acceso. Te enviaremos confirmaciones y novedades allí.</p>
+    </div>
+
+    <div class="settings-form">
+      <%= form_with model: @user, url: update_email_business_account_settings_path, method: :patch, class: 'edit-name-form' do |form| %>
+
+        <div class="flex-group">
+
+          <div class="form-group">
+            <%= form.label :email, 'Nuevo email', class: 'form-label' %>
+            <%= form.email_field :email, class: 'form-control' %>
+
+            <% if @user.errors[:email].any? %>
+              <div class="error-message"><%= @user.errors[:email].first %></div>
+            <% end %>
+          </div>
+
+
+
+        </div>
+
+        <div class="form-actions">
+          <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+          <%= link_to 'Volver', business_account_settings_path, class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

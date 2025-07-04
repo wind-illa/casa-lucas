@@ -1,0 +1,62 @@
+<% content_for :title, "Edita tus datos personales | Baratísimo Bazar" %>
+
+<div class="account-business-profile-edit">
+  <div class="container-edit-profile">
+
+    <div class="products-navigation">
+      <ol>
+        <li>
+          <%= link_to business_account_profile_path do %>
+            <span>Mi perfil</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to informacion_business_account_profile_path do %>
+            <span>Información Personal</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+
+        <li>
+          <span>Editar mi nombre</span>
+        </li>
+
+      </ol>
+    </div>
+
+
+
+    <div class="profile-header">
+      <h1 class="profile-title">¿Cómo querés que te llamemos?</h1>
+      <p class="profile-description">Los asesores de ventas que interactúen con vos en Elyza Negocios verán el nombre que elijas.</p>
+      <p class="profile-instructions">Usá el nombre tal como figura en tu DNI para evitar confusiones en el envío y en la facturacion.</p>
+    </div>
+
+    <div class="profile-form">
+      <%= form_with model: @user, url: business_account_profile_path, method: :patch, local: true, class: 'edit-name-form' do |form| %>
+        <div class="flex-group">
+          <div class="form-group">
+            <%= form.label :first_name, 'Nombre elegido', class: 'form-label' %>
+            <%= form.text_field :first_name, value: current_user.first_name, class: 'form-control', required: true, placeholder: 'Escribí tu nombre' %>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :last_name, 'Apellido elegido', class: 'form-label' %>
+            <%= form.text_field :last_name, value: current_user.last_name, class: 'form-control', required: true, placeholder: 'Escribí tu apellido' %>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+          <%= link_to 'Volver', informacion_business_account_profile_path, class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

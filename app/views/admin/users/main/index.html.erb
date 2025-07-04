@@ -1,0 +1,234 @@
+<div class="admin-users-main">
+  <%= render 'admin/shared/sidevar' %>
+
+
+
+  <div class="section-admin-users-main">
+
+    <section class="section-title">
+      <div class="title">
+        <%= link_to business_account_profile_path, class: 'arrow-back-link' do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/business.svg#icon-arrow') %>"></use>
+          </svg>
+        <% end %>
+        <h1 class="category-title">Gestión general de usuarios</h1>
+      </div>
+    </section>
+
+    <section class="section-user-roles">
+
+      <div class="section-roles">
+
+        <%= link_to admin_users_administradores_path, class: "card-user-role-link" do %>
+          <svg class="icon-user-role">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-user-administrador') %>"></use>
+          </svg>
+          <div class="info">
+            <h2 class="title-user">Administradores</h2>
+            <span class="description-user">Administradores registrados: <%= User.administrador.count %></span>
+          </div>
+          <svg class="icon-flecha">
+            <use xlink:href="<%= asset_path('icons/admin.svg#flecha-separacion-siguiente') %>"></use>
+          </svg>
+        <% end %>
+
+        <%= link_to admin_users_repositores_path, class: "card-user-role-link" do %>
+          <svg class="icon-user-role">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-user-repositor') %>"></use>
+          </svg>
+          <div class="info">
+            <h2 class="title-user">Repositores</h2>
+            <span class="description-user">Repositores registrados: <%= User.repositor.count %></span>
+          </div>
+          <svg class="icon-flecha">
+            <use xlink:href="<%= asset_path('icons/admin.svg#flecha-separacion-siguiente') %>"></use>
+          </svg>
+        <% end %>
+
+        <%= link_to admin_users_cajeros_path, class: "card-user-role-link" do %>
+          <svg class="icon-user-role">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-user-pos') %>"></use>
+          </svg>
+          <div class="info">
+            <h2 class="title-user">Cajeros</h2>
+            <span class="description-user">Cajeros registrados: <%= User.cajero.count %></span>
+          </div>
+          <svg class="icon-flecha">
+            <use xlink:href="<%= asset_path('icons/admin.svg#flecha-separacion-siguiente') %>"></use>
+          </svg>
+        <% end %>
+
+        <%= link_to admin_users_clientes_regular_index_path, class: "card-user-role-link" do %>
+          <svg class="icon-user-role">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-user-regular') %>"></use>
+          </svg>
+          <div class="info">
+            <h2 class="title-user">Cliente Regular</h2>
+            <span class="description-user">Clientes regulares registrados: <%= User.cliente_regular.count %></span>
+          </div>
+          <svg class="icon-flecha">
+            <use xlink:href="<%= asset_path('icons/admin.svg#flecha-separacion-siguiente') %>"></use>
+          </svg>
+        <% end %>
+
+        <%= link_to admin_users_clientes_mayorista_path, class: "card-user-role-link" do %>
+          <svg class="icon-user-role">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-user-mayorista') %>"></use>
+          </svg>
+          <div class="info">
+            <h2 class="title-user">Cliente Mayorista</h2>
+            <span class="description-user">Cliente mayoristas registrados: <%= User.cliente_mayorista.count %></span>
+          </div>
+          <svg class="icon-flecha">
+            <use xlink:href="<%= asset_path('icons/admin.svg#flecha-separacion-siguiente') %>"></use>
+          </svg>
+        <% end %>
+
+      </div>
+
+      <div class="pie-chart-container">
+        <div
+          data-controller="admin--user-roles-pie"
+          data-admin--user-roles-pie-labels-value='<%= @role_names.to_json %>'
+          data-admin--user-roles-pie-values-value='<%= @role_values.to_json %>'
+        >
+          <svg width="200" height="200" viewBox="0 0 32 32"></svg>
+        </div>
+      </div>
+
+
+    </section>
+
+    <section class="section-user-actions">
+
+      <div class="last-users-container">
+        <h3 class="title-last-user">Últimos usuarios registrados</h3>
+        <div class="last-users-list">
+          <% @users.each do |user| %>
+            <%= link_to admin_user_path(user), class: "user-link" do %>
+              <% if user.profile_picture.attached? %>
+                <%= image_tag url_for(user.profile_picture), alt: "Avatar de #{user.first_name}", class: "user-avatar" %>
+              <% else %>
+                <% if user.role == "administrador" %>
+                  <div class="user-avatar-administrador">
+                    <span><%= "#{user.first_name.first.upcase}#{user.last_name.first.upcase}" %></span>
+                  </div>
+                <% elsif user.role == "repositor" %>
+                  <div class="user-avatar-repositor">
+                    <span><%= "#{user.first_name.first.upcase}#{user.last_name.first.upcase}" %></span>
+                  </div>
+                <% elsif user.role == "cajero" %>
+                  <div class="user-avatar-cajero">
+                    <span><%= "#{user.first_name.first.upcase}#{user.last_name.first.upcase}" %></span>
+                  </div>
+                <% elsif user.role == "cliente_regular" %>
+                  <div class="user-avatar-cliente-regular">
+                    <span><%= "#{user.first_name.first.upcase}#{user.last_name.first.upcase}" %></span>
+                  </div>
+                <% elsif user.role == "cliente_mayorista" %>
+                  <div class="user-avatar-cliente-mayorista">
+                    <span><%= "#{user.first_name.first.upcase}#{user.last_name.first.upcase}" %></span>
+                  </div>
+                <% end %>
+              <% end %>
+
+              <div class="user-details">
+                <p class="user-name"><%= user.first_name %> <%= user.last_name %></p>
+                <p class="user-registered-time"><%= l(user.created_at, format: "%-d de %B %H:%M") %></p>
+              </div>
+
+              <% if user.role == "administrador" %>
+                <div class="user-roll">
+                  <span class="user-roll-administrador"><%= user.role.humanize %></span>
+                </div>
+              <% elsif user.role == "repositor" %>
+                <div class="user-roll">
+                  <span class="user-roll-repositor"><%= user.role.humanize %></span>
+                </div>
+              <% elsif user.role == "cajero" %>
+                <div class="user-roll">
+                  <span class="user-roll-cajero"><%= user.role.humanize %></span>
+                </div>
+              <% elsif user.role == "cliente_regular" %>
+                <div class="user-roll">
+                  <span class="user-roll-cliente-regular"><%= user.role.humanize %></span>
+                </div>
+              <% elsif user.role == "cliente_mayorista" %>
+                <div class="user-roll">
+                  <span class="user-roll-cliente-mayorista"><%= user.role.humanize %></span>
+                </div>
+              <% end %>
+
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="last-users-container">
+        <h3 class="title-last-user">Últimos usuarios registrados</h3>
+        <div class="last-users-list">
+          <% @users.each do |user| %>
+            <%= link_to admin_user_path(user), class: "user-link" do %>
+              <% if user.profile_picture.attached? %>
+                <%= image_tag url_for(user.profile_picture), alt: "Avatar de #{user.first_name}", class: "user-avatar" %>
+              <% else %>
+                <% if user.role == "administrador" %>
+                  <div class="user-avatar-administrador">
+                    <span><%= "#{user.first_name.first.upcase}#{user.last_name.first.upcase}" %></span>
+                  </div>
+                <% elsif user.role == "repositor" %>
+                  <div class="user-avatar-repositor">
+                    <span><%= "#{user.first_name.first.upcase}#{user.last_name.first.upcase}" %></span>
+                  </div>
+                <% elsif user.role == "cajero" %>
+                  <div class="user-avatar-cajero">
+                    <span><%= "#{user.first_name.first.upcase}#{user.last_name.first.upcase}" %></span>
+                  </div>
+                <% elsif user.role == "cliente_regular" %>
+                  <div class="user-avatar-cliente-regular">
+                    <span><%= "#{user.first_name.first.upcase}#{user.last_name.first.upcase}" %></span>
+                  </div>
+                <% elsif user.role == "cliente_mayorista" %>
+                  <div class="user-avatar-cliente-mayorista">
+                    <span><%= "#{user.first_name.first.upcase}#{user.last_name.first.upcase}" %></span>
+                  </div>
+                <% end %>
+              <% end %>
+
+              <div class="user-details">
+                <p class="user-name"><%= user.first_name %> <%= user.last_name %></p>
+                <p class="user-registered-time"><%= l(user.created_at, format: "%-d de %B %H:%M") %></p>
+              </div>
+
+              <% if user.role == "administrador" %>
+                <div class="user-roll">
+                  <span class="user-roll-administrador"><%= user.role.humanize %></span>
+                </div>
+              <% elsif user.role == "repositor" %>
+                <div class="user-roll">
+                  <span class="user-roll-repositor"><%= user.role.humanize %></span>
+                </div>
+              <% elsif user.role == "cajero" %>
+                <div class="user-roll">
+                  <span class="user-roll-cajero"><%= user.role.humanize %></span>
+                </div>
+              <% elsif user.role == "cliente_regular" %>
+                <div class="user-roll">
+                  <span class="user-roll-cliente-regular"><%= user.role.humanize %></span>
+                </div>
+              <% elsif user.role == "cliente_mayorista" %>
+                <div class="user-roll">
+                  <span class="user-roll-cliente-mayorista"><%= user.role.humanize %></span>
+                </div>
+              <% end %>
+
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</div>

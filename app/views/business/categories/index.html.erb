@@ -1,0 +1,41 @@
+<% content_for :title, "Compra por categoría | Baratísimo Bazar" %>
+
+
+<div class="ui-category-trends-index">
+
+  <div class="categories-title">
+    <div class="title">
+      <svg class="icon">
+        <use xlink:href="<%= asset_path('icons/ecommerce.svg#icon-circles') %>"></use>
+      </svg>
+      <h1>Compra por categoría</h1>
+      <svg class="icon">
+        <use xlink:href="<%= asset_path('icons/ecommerce.svg#icon-circles') %>"></use>
+      </svg>
+    </div>
+  </div>
+
+  <% if @categories.present? %>
+    <section class="categories-list">
+      <div class="list">
+        <% @categories.each do |category| %>
+          <div class="category-card">
+            <%= link_to business_category_path(category), class: "category-link" do %>
+              <div class="category-image">
+                <%= image_tag url_for(category.category_image), alt: category.category_name, class: "image" if category.category_image.attached? %>
+              </div>
+              <div class="category-info">
+                <h2 class="category-name"><%= category.category_name %></h2>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% else %>
+    <p class="no-categories-message">No hay categorías disponibles en este momento.</p>
+  <% end %>
+
+</div>
+
+<%= render 'business/shared/footer_business' %>

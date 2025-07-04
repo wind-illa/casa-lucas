@@ -1,0 +1,56 @@
+<footer class="footer-business">
+  <div class="footer-container">
+    <!-- Main Sections -->
+
+    <div class="footer-redes-sociales">
+      <%= link_to "https://wa.me/+5493885768235", target: "_blank", class: "float" do %>
+        <svg class="icon no-image-icon">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icon-whatsapp') %>"></use>
+        </svg>
+      <% end %>
+      <%= link_to "https://www.tiktok.com/@baratisimo.bazar", target: "_blank", class: "float" do %>
+        <svg class="icon no-image-icon">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icon-tiktok') %>"></use>
+        </svg>
+      <% end %>
+    </div>
+
+
+    <div class="footer-sections">
+      <div class="footer-section">
+        <h5 class="footer-title">Acerca de El Baratísimo </h5>
+        <ul class="footer-list">
+          <li><%= link_to 'Trabaja con nosotros', '#' %></li>
+          <li><%= link_to 'Términos y condiciones', '#' %></li>
+          <li><%= link_to 'Políticas de privacidad', '#' %></li>
+          <li><%= link_to 'Ayuda', '#' %></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h5 class="footer-title">Categorías</h5>
+        <ul class="footer-list">
+          <li><%= link_to 'Electrónica', '#' %></li>
+          <li><%= link_to 'Hogar y Muebles', '#' %></li>
+          <li><%= link_to 'Moda', '#' %></li>
+          <li><%= link_to 'Deportes', '#' %></li>
+          <li><%= link_to 'Más categorías', '#' %></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h5 class="footer-title">Políticas</h5>
+        <ul class="footer-list">
+          <li><%= link_to 'Cómo cuidamos tu privacidad', '#' %></li>
+          <li><%= link_to 'Defensa del consumidor', '#' %></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p class="footer-copyright">
+        &copy; 2025 El Baratísimo. Todos los derechos reservados.
+      </p>
+    </div>
+  </div>
+</footer>

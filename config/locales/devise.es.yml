@@ -1,0 +1,46 @@
+# config/locales/devise.es.yml
+es:
+  devise:
+    sessions:
+      signed_in: "¡Bienvenido de nuevo! Nos alegra tenerte aquí."
+      signed_out: "¡Hasta luego! Que tengas un gran día."
+      timeout: "Tu sesión ha expirado, por favor inicia sesión nuevamente."
+      invalid: "No pudimos iniciar sesión con esas credenciales. Intentá de nuevo."
+      unauthenticated: "Necesitás iniciar sesión para continuar."
+    registrations:
+      signed_up: "¡Gracias por registrarte! Ya podés comenzar a usar tu cuenta."
+      updated: "Tus datos se actualizaron correctamente."
+      destroyed: "Tu cuenta fue eliminada, lamentamos verte partir."
+      signed_up_but_unconfirmed: "Te registraste correctamente. Por favor, confirmá tu correo para activar tu cuenta."
+      signed_up_but_locked: "Tu cuenta está bloqueada. Contactá con soporte."
+    passwords:
+      send_instructions: "Te enviamos un correo con instrucciones para restablecer tu contraseña."
+      updated: "Tu contraseña fue cambiada con éxito."
+      not_found_in_database: "No encontramos un usuario con ese correo electrónico."
+    confirmations:
+      send_instructions: "Te enviamos un correo con instrucciones para confirmar tu cuenta."
+      confirmed: "Tu cuenta fue confirmada con éxito."
+      already_confirmed: "Tu cuenta ya estaba confirmada."
+      not_found: "No pudimos encontrar esa cuenta para confirmar."
+    unlocks:
+      send_instructions: "Te enviamos un correo para desbloquear tu cuenta."
+      unlocked: "Tu cuenta fue desbloqueada con éxito."
+      not_found: "No pudimos encontrar esa cuenta para desbloquear."
+    omniauth_callbacks:
+      failure: "No pudimos autenticarte correctamente. Intentá nuevamente."
+    failure:
+      already_authenticated: "Ya estás autenticado."
+      inactive: "Tu cuenta no está activa."
+      locked: "Tu cuenta está bloqueada."
+      invalid: "Datos inválidos. Intentá de nuevo."
+      timeout: "Tu sesión expiró, por favor inicia sesión nuevamente."
+      unauthenticated: "Necesitás iniciar sesión para continuar."
+      unauthenticated_admin: "Debés iniciar sesión como administrador para acceder."
+      not_found_in_database: "Usuario o contraseña inválidos"
+    mailer:
+      reset_password_instructions:
+        subject: "Instrucciones para restablecer tu contraseña"
+      confirmation_instructions:
+        subject: "Instrucciones para confirmar tu cuenta"
+      unlock_instructions:
+        subject: "Instrucciones para desbloquear tu cuenta"

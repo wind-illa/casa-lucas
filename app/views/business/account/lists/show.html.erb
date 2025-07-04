@@ -1,0 +1,12 @@
+<h1>Lista: <%= @list.name %></h1>
+
+<%= link_to 'Volver a mis listas', business_account_listas_path, class: 'btn btn-secondary' %>
+
+<ul>
+  <% @list.list_items.includes(:product).each do |item| %>
+    <li>
+      <%= link_to item.product.name, business_product_path(item.product) %>
+      <%= button_to 'Quitar', business_account_lista_producto_path(@list, item), method: :delete, data: { confirm: '¿Eliminar producto de la lista?' } %>
+    </li>
+  <% end %>
+</ul>

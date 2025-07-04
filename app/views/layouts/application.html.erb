@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : 'Compra productos al mejor precio en Baratisimo Bazar Argentina, la tienda en línea con los mejores precios para el hogar.' %>">
 
-    <title><%= content_for?(:title) ? yield(:title) : "Baratísimo Bazar Argentina - Los mejores precios para el Hogar" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "Elyza Argentina - Los mejores precios para el Hogar" %></title>
 
     <%= favicon_link_tag 'logos/miniatura.png', type: 'image/jpeg' %>
-
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-
   </head>
 
   <!----------------------->
@@ -22,11 +21,11 @@
 
     <% unless @hide_navbar %>
       <% if controller_path.start_with?("admin") %>
-        <%= render 'shared/admin_navbar' %>
+        <%= render 'admin/shared/navbar_admin' %>
       <% elsif controller_path.start_with?("ecommerce", "main") %>
         <%= render 'shared/ecommerce_navbar' %>
       <% elsif controller_path.start_with?("business") %>
-        <%= render 'shared/business_navbar' %>
+        <%= render 'business/shared/navbar_business' %>
       <% elsif devise_controller? %>
         <%= render 'shared/devise_navbar' %>
       <% else %>

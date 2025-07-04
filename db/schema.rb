@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_18_215743) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_03_163900) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
-  enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -56,6 +56,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_18_215743) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.integer "address_type", default: 0, null: false
+    t.boolean "default_shipping", default: false, null: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
@@ -124,6 +126,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_18_215743) do
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_histories_on_product_id"
     t.index ["user_id"], name: "index_histories_on_user_id"
+  end
+
+  create_table "list_items", force: :cascade do |t|
+    t.bigint "list_id", null: false
+    t.bigint "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["list_id"], name: "index_list_items_on_list_id"
+    t.index ["product_id"], name: "index_list_items_on_product_id"
+  end
+
+  create_table "lists", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_lists_on_user_id"
   end
 
   create_table "mercado_pago_tokens", force: :cascade do |t|
@@ -231,6 +250,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_18_215743) do
     t.index ["category_id"], name: "index_subcategories_on_category_id"
   end
 
+  create_table "transporte_preferidos", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "nombre"
+    t.boolean "predeterminado"
+    t.text "observaciones"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_transporte_preferidos_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -245,6 +274,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_18_215743) do
     t.string "document_id"
     t.string "phone"
     t.integer "role"
+    t.string "razon_social"
+    t.integer "condicion_fiscal", default: 1
+    t.integer "status", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -258,6 +290,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_18_215743) do
   add_foreign_key "carts", "users"
   add_foreign_key "histories", "products"
   add_foreign_key "histories", "users"
+  add_foreign_key "list_items", "lists"
+  add_foreign_key "list_items", "products"
+  add_foreign_key "lists", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "product_variants"
   add_foreign_key "order_items", "products"
@@ -267,4 +302,5 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_18_215743) do
   add_foreign_key "orders", "users"
   add_foreign_key "product_variants", "products"
   add_foreign_key "subcategories", "categories"
+  add_foreign_key "transporte_preferidos", "users"
 end

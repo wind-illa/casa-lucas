@@ -1,0 +1,149 @@
+<% content_for :title, "Editar Administrador" %>
+
+<div class="admin-users-add-new-edit">
+  <div class="container-edit-profile">
+
+    <div class="products-navigation">
+      <ol>
+        <li>
+          <%= link_to admin_users_main_path do %>
+            <span>Gestión general de usuarios</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to admin_users_administradores_path do %>
+            <span>Administradores</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+        <li>
+          <span>Editar Administrador</span>
+        </li>
+      </ol>
+    </div>
+
+    <div class="profile-header">
+      <h1 class="profile-title">Editar administrador</h1>
+      <p class="profile-description">Modificá los datos del administrador seleccionado.</p>
+    </div>
+
+    <div class="profile-form">
+      <%= form_with model: @administrador, url: admin_users_administradore_path(@administrador), method: :patch, local: true do |form| %>
+
+        <!-- Avatar y datos personales -->
+        <div class="form-grid-name-avatar">
+          <div class="form-images-content" data-controller="uploader-view-image-single">
+            <div class="complemento-images-user">
+              <div class="image-preview-item-check-user"
+                   data-action="click->uploader-view-image-single#uploadImage"
+                   data-uploader-view-image-single-target="imageContainer">
+
+                <% if @administrador.persisted? && @administrador.profile_picture.attached? %>
+                  <%= image_tag @administrador.profile_picture,
+                        class: 'image-preview-thumbnail',
+                        data: { uploader_view_image_single_target: 'previewImage' } %>
+                <% else %>
+                  <div class="no-image-placeholder" data-uploader-view-image-single-target="placeholder">
+                    <span>Subí un avatar</span>
+                  </div>
+                <% end %>
+              </div>
+
+              <%= form.file_field :profile_picture,
+                    class: 'hidden-oculto',
+                    data: { uploader_view_image_single_target: 'fileInput' } %>
+            </div>
+          </div>
+
+          <div class="form-group-name">
+            <div class="form-label-wrapper">
+              <%= form.text_field :first_name, class: 'form-input', placeholder: 'Nombre' %>
+              <%= form.label :first_name, 'Nombre', class: 'form-label' %>
+            </div>
+            <% if @administrador.errors[:first_name].any? %>
+              <div class="error-message"><%= @administrador.errors[:first_name].first %></div>
+            <% end %>
+
+            <div class="form-label-wrapper">
+              <%= form.text_field :last_name, class: 'form-input', placeholder: 'Apellido' %>
+              <%= form.label :last_name, 'Apellido', class: 'form-label' %>
+            </div>
+            <% if @administrador.errors[:last_name].any? %>
+              <div class="error-message"><%= @administrador.errors[:last_name].first %></div>
+            <% end %>
+
+            <div class="form-label-wrapper">
+              <%= form.text_field :phone, class: 'form-input', placeholder: 'Teléfono' %>
+              <%= form.label :phone, 'Teléfono', class: 'form-label' %>
+            </div>
+            <% if @administrador.errors[:phone].any? %>
+              <div class="error-message"><%= @administrador.errors[:phone].first %></div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group-document-type">
+            <div class="form-label-wrapper">
+              <%= form.select :document_type, User.document_types.keys.map { |type| [type.upcase, type] }, {}, class: 'form-input-desplegable' %>
+            </div>
+            <% if @administrador.errors[:document_type].any? %>
+              <div class="error-message"><%= @administrador.errors[:document_type].first %></div>
+            <% end %>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-wrapper">
+              <%= form.text_field :document_id, class: 'form-input', placeholder: 'Número de Documento', autocomplete: 'new-password', autocorrect: 'off', spellcheck: 'false' %>
+              <%= form.label :document_id, 'Número de Documento', class: 'form-label' %>
+            </div>
+            <% if @administrador.errors[:document_id].any? %>
+              <div class="error-message"><%= @administrador.errors[:document_id].first %></div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.email_field :email, class: 'form-input', placeholder: 'Email' %>
+            <%= form.label :email, 'Email', class: 'form-label' %>
+          </div>
+          <% if @administrador.errors[:email].any? %>
+            <div class="error-message"><%= @administrador.errors[:email].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.password_field :password, class: 'form-input', placeholder: 'Nueva Contraseña (opcional)' %>
+            <%= form.label :password, 'Contraseña', class: 'form-label' %>
+          </div>
+          <% if @administrador.errors[:password].any? %>
+            <div class="error-message"><%= @administrador.errors[:password].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.password_field :password_confirmation, class: 'form-input', placeholder: 'Confirmar nueva contraseña' %>
+            <%= form.label :password_confirmation, 'Confirmar Contraseña', class: 'form-label' %>
+          </div>
+          <% if @administrador.errors[:password_confirmation].any? %>
+            <div class="error-message"><%= @administrador.errors[:password_confirmation].first %></div>
+          <% end %>
+        </div>
+
+        <div class="space">
+          <%= link_to 'Cancelar', admin_users_administradores_path, class: 'btn btn-secondary' %>
+          <%= form.submit 'Actualizar Administrador', class: 'btn btn-primary' %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -36,6 +36,21 @@
           <p><%= User.count %> Usuarios</p>
           <%= link_to 'Gestionar Usuarios', clientes_admin_users_path, class: 'btn btn-primary' %>
         </div>
+
+        <div class="card">
+          <h3>Tienda negocios</h3>
+          <p><%= User.count %> Inicio negocio</p>
+          <%= link_to 'Gestionar Usuarios', business_root_path, class: 'btn btn-primary' %>
+        </div>
+
+        <div class="card">
+          <h3>Tienda minorista</h3>
+          <p><%= User.count %> Inicio negocio</p>
+          <%= link_to 'Gestionar Usuarios',  root_path, class: 'btn btn-primary' %>
+        </div>
+
+
+
       </div>
     </div>
 

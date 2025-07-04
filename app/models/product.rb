@@ -14,6 +14,9 @@ class Product < ApplicationRecord
   has_many :order_items, dependent: :destroy  # Eliminamos los order_items asociados
   has_many :cart_items, dependent: :destroy    # Eliminamos los cart_items asociados
 
+  has_many :list_items, dependent: :destroy
+  has_many :lists, through: :list_items
+
   has_many :carts, through: :cart_items
   has_many :histories, dependent: :destroy
   has_many :viewers, through: :histories, source: :user

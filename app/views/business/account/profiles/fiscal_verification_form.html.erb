@@ -1,0 +1,47 @@
+<div class="account-business-fiscal-verification-form" data-controller="uploader-view-image-single">
+  <div class="form-fiscal-content">
+
+    <div class="title-edit-fiscal">
+      <h1 class="title">Cargá tu Constancia de inscripción emitida por ARCA.</h1>
+      <p class="description">Este documento nos permitirá verificar tu condición y domicilio fiscal. Asegurate de que haya sido emitido en el último mes.</p>
+      <p class="guia">
+        <%= link_to 'Consultá esta guía', business_help_constancia_arca_path, class: 'link-ayuda' %>
+        para saber cómo descargar tu Constancia de inscripción.
+      </p>
+
+    </div>
+
+    <%= form_with model: @user, url: upload_constancia_fiscal_business_account_profile_path, method: :patch, local: true, multipart: true, html: { class: 'form-action' } do |form| %>
+      <div class="form-images-fiscal">
+        <div class="complemento-images-fiscal">
+          <div class="image-preview-item-check" data-action="click->uploader-view-image-single#uploadImage" data-uploader-view-image-single-target="imageContainer">
+            <% if @user.constancia_fiscal.attached? %>
+              <% if @user.constancia_fiscal.content_type.start_with?('image/') %>
+                <%= image_tag @user.constancia_fiscal, class: 'image-preview-thumbnail', data: { uploader_view_image_single_target: 'previewImage' } %>
+              <% else %>
+                <div class="no-image-placeholder" data-uploader-view-image-single-target="placeholder">
+                  <span>Archivo PDF cargado</span>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="no-image-placeholder" data-uploader-view-image-single-target="placeholder">
+                <span>No hay archivo</span>
+              </div>
+            <% end %>
+          </div>
+          <%= form.file_field :constancia_fiscal, class: 'hidden-oculto', data: { uploader_view_image_single_target: 'fileInput' }, accept: 'image/*,application/pdf' %>
+        </div>
+      </div>
+
+
+
+      <!-- Botón para volver -->
+      <div class="botones-fiscal">
+        <%= link_to 'Volver', informacion_business_account_profile_path, class: 'btn btn-secondary-fiscal' %>
+        <%= form.submit "Enviar Constancia", class: "btn btn-primary-fiscal" %>
+      </div>
+
+    <% end %>
+
+  </div>
+</div>

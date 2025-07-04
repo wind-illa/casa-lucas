@@ -1,0 +1,78 @@
+<%= render 'business/help/static_pages/navbar_ayuda_business' %>
+<% content_for :title, "Tu cuenta de negocios" %>
+
+<div class="constancia-arca">
+  <section class="help-business-content-arca">
+
+    <div class="products-navigation">
+      <ol>
+        <li>
+          <%= link_to business_help_index_path do %>
+            <span>Centro de ayuda</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+
+        <li>
+          <span>¿Cómo descargo mi Constancia de inscripción en ARCA?</span>
+        </li>
+
+      </ol>
+    </div>
+
+    <div class="title-help-business">
+      <h1 class="account-title">¿Cómo descargo mi Constancia de inscripción en ARCA?</h1>
+    </div>
+
+    <div class="help-business-content-arca-text">
+      <p class="text-help-business">
+        <span>
+          Este documento confirma tu registro como contribuyente ante la Agencia de Recaudación y Control Aduanero.
+        </span>
+      </p>
+      <p class="text-help-business">
+        <span>
+          Para descargarlo, seguí estos pasos:
+        </span>
+      </p>
+      <p class="text-help-business">
+        <span>
+          1. Ingresá a la sección
+          <%= link_to 'https://seti.afip.gob.ar/padron-puc-constancia-internet/ConsultaConstanciaAction.do', target: '_blank', rel: 'noopener' do %>
+            <span>Constancia de inscripción</span>
+          <% end %>
+           del sitio web de la ARCA.
+        </span>
+      </p>
+      <p class="text-help-business">
+        <span>
+          2. Completá tu número de CUIT (los 11 dígitos sin guiones), el código de seguridad que aparece en la pantalla y hacé clic en “Consultar”.
+        </span>
+      </p>
+
+      <div class="image-help-business">
+        <%= image_tag('business/help/arca 1.jpeg', alt: 'Logo de [Nombre de la Tienda]') %>
+      </div>
+
+      <p class="text-help-business">
+        <span>
+          3. Para guardar tu constancia, seleccioná la opción “imprimir pantalla ” que se muestra en la parte superior derecha y hacé clic luego en “guardar”
+        </span>
+      </p>
+
+      <div class="image-help-business">
+        <%= image_tag('business/help/arca 2.jpeg', alt: 'Logo de [Nombre de la Tienda]') %>
+      </div>
+
+      <p class="text-help-business">
+        <span>
+          Tené en cuenta que la constancia tendrá una validez de 30 días, contados a partir del momento de la descarga.
+        </span>
+      </p>
+
+    </div>
+  </section>
+</div>
+<%= render 'business/shared/footer_business' %>
