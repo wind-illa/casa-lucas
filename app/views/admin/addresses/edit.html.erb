@@ -26,6 +26,17 @@
 
         <div class="form-group">
           <div class="form-label-wrapper">
+            <%= form.select :address_type, options_for_select([['Dirección de envío', 0], ['Dirección fiscal', 1]], selected: nil), { prompt: 'Seleccioná un tipo de dirección' }, class: 'form-input' %>
+            <%= form.label :address_type, 'Tipo de dirección', class: 'form-label' %>
+          </div>
+          <% if @address.errors[:address_type].any? %>
+            <div class="error-message"><%= @address.errors[:address_type].first %></div>
+          <% end %>
+        </div>
+
+
+        <div class="form-group">
+          <div class="form-label-wrapper">
             <%= form.number_field :postal_code, class: 'form-input', placeholder: 'Código Postal' %>
             <%= form.label :postal_code, 'Código Postal', class: 'form-label' %>
           </div>
@@ -85,4 +96,3 @@
     <% end %>
   </div>
 </div>
-

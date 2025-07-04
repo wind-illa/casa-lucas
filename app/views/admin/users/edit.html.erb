@@ -1,8 +1,6 @@
-
 <div class="product-new-edit-content">
   <div class="product-content">
     <%= form_with(model: @user, url: admin_user_path(@user), method: :patch, local: true) do |form| %>
-
 
       <div class="form-group">
         <div class="form-label-wrapper">
@@ -37,7 +35,7 @@
       <div class="form-grid">
         <div class="form-group">
           <div class="form-label-wrapper">
-            <%= form.select :document_type, options_for_select([['DNI', 0], ['CUIL', 1], ['CUIT', 2], ['Pasaporte', 3]]), {}, class: 'form-input' %>
+            <%= form.select :document_type, options_for_select([['DNI', 0], ['CUIL', 1], ['CUIT', 2], ['Pasaporte', 3]], @user.document_type), {}, class: 'form-input' %>
             <%= form.label :document_type, 'Tipo de Documento', class: 'form-label' %>
           </div>
           <% if @user.errors[:document_type].any? %>
@@ -67,7 +65,7 @@
 
         <div class="form-group">
           <div class="form-label-wrapper">
-            <%= form.select :role, options_for_select([['Cliente', 3], ['Administrador', 0], ['Repositor', 1], ['Cajero', 2]], 3), {}, class: 'form-input' %>
+            <%= form.select :role, options_for_select(User.roles.keys.map { |r| [r.humanize, User.roles[r]] }, @user.role_before_type_cast), {}, class: 'form-input' %>
             <%= form.label :role, 'Rol', class: 'form-label' %>
           </div>
           <% if @user.errors[:role].any? %>
@@ -78,7 +76,45 @@
 
       <div class="form-group">
         <div class="form-label-wrapper">
-          <%= form.password_field :password, class: 'form-input', placeholder: 'Contraseña' %>
+          <%= form.text_field :razon_social, class: 'form-input', placeholder: 'Razón Social' %>
+          <%= form.label :razon_social, 'Razón Social', class: 'form-label' %>
+        </div>
+        <% if @user.errors[:razon_social].any? %>
+          <div class="error-message"><%= @user.errors[:razon_social].first %></div>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.text_field :cuit, class: 'form-input', placeholder: 'CUIT' %>
+          <%= form.label :cuit, 'CUIT', class: 'form-label' %>
+        </div>
+        <% if @user.errors[:cuit].any? %>
+          <div class="error-message"><%= @user.errors[:cuit].first %></div>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.select :condicion_fiscal,
+              options_for_select([
+                ['Consumidor Final', 0],
+                ['Responsable Inscripto', 1],
+                ['Monotributista', 2],
+                ['Exento', 3]
+              ], @user[:condicion_fiscal_before_type_cast]),
+            {}, class: 'form-input' %>
+          <%= form.label :condicion_fiscal, 'Condición Fiscal', class: 'form-label' %>
+        </div>
+        <% if @user.errors[:condicion_fiscal].any? %>
+          <div class="error-message"><%= @user.errors[:condicion_fiscal].first %></div>
+        <% end %>
+      </div>
+
+
+      <div class="form-group">
+        <div class="form-label-wrapper">
+          <%= form.password_field :password, class: 'form-input', placeholder: 'Dejar en blanco para no cambiar', autocomplete: 'new-password' %>
           <%= form.label :password, 'Contraseña', class: 'form-label' %>
         </div>
         <% if @user.errors[:password].any? %>
@@ -101,12 +137,9 @@
           <%= form.file_field :profile_picture, class: 'form-input' %>
           <%= form.label :profile_picture, 'Foto de Perfil', class: 'form-label' %>
         </div>
-
       </div>
 
-
       <%= form.submit 'Actualizar datos del usuario', class: 'btn btn-primary' %>
-
 
       <div class="space">
         <%= link_to 'Volver a la lista', clientes_admin_users_path, class: 'btn btn-secondary' %>

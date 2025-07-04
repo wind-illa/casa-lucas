@@ -1,0 +1,67 @@
+
+<% content_for :title, "Edita tus datos personales" %>
+
+<div class="account-business-adresses-new">
+  <div class="container-edit-profile">
+
+    <div class="products-navigation">
+      <ol>
+        <li>
+          <%= link_to business_account_profile_path do %>
+            <span>Mi perfil</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to business_account_transporte_preferidos_path do %>
+            <span>Mis servicios de envíos</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+
+        <li>
+          <span>Editar transportista</span>
+        </li>
+
+      </ol>
+    </div>
+
+    <div class="profile-header">
+      <h1 class="profile-title">¿Querés cambiar los datos del transportista?</h1>
+      <p class="profile-description">Modificá la información del transportista según sea necesario.</p>
+      <p class="profile-instructions">Si querés, también podés establecerlo como tu transporte predeterminado.</p>
+    </div>
+
+    <div class="profile-form">
+      <%= form_with model: [:business, :account, @transport], local: true do |form| %>
+        <div class="form-group">
+          <div class="form-label-wrapper">
+            <%= form.text_field :nombre, class: 'form-input', placeholder: 'Nombre del transporte' %>
+            <%= form.label :nombre, 'Nombre del transporte', class: 'form-label' %>
+          </div>
+          <% if @transport.errors[:nombre].any? %>
+            <div class="error-message"><%= @transport.errors[:nombre].first %></div>
+          <% end %>
+        </div>
+
+        <div class="form-group text-area">
+          <div class="form-label-wrapper">
+            <%= form.text_area :observaciones, class: 'form-input', placeholder: 'Observaciones sobre el transportista (opcional)' %>
+            <%= form.label :observaciones, 'Observaciones sobre el transportista (opcional)', class: 'form-label' %>
+          </div>
+        </div>
+
+        <div class="space">
+          <%= link_to 'Volver', business_account_transporte_preferidos_path, class: 'btn btn-secondary' %>
+          <%= form.submit 'Guardar cambios', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>

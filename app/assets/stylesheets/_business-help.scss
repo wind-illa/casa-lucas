@@ -1,0 +1,380 @@
+// view/business/help/static_pages/_navbar
+.header-business-help {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60px;
+  padding: 0px 12px;
+  background: linear-gradient(to right,  #131921,#025491, );
+
+  .header-container-help {
+    display: flex;
+    max-width: 1200px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 48px;
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 218px;
+      max-width: 218px;
+      min-width: 218px;
+      padding: 0 12px;
+      background-color: transparent;
+
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      &:hover {
+        border-radius: 6px;
+        background-color: rgba(255, 255, 255, 0.08);
+        cursor: pointer;
+      }
+    }
+
+    .header-links {
+      display: flex;
+      height: 100%;
+
+      .menu-link {
+        display: flex;
+        text-decoration: none;
+        align-items: center;
+        justify-content: center;
+        padding: 0 12px;
+        height: 100%;
+
+        span {
+          color: #fff;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+        }
+
+        &:hover {
+          border-radius: 6px;
+          background-color: rgba(255, 255, 255, 0.08);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+.header-business-help  { //1000px
+  @media (max-width: 1000px) {
+    .header-container-help {
+      .logo {
+        width: 200px;
+        max-width: 200px;
+        min-width: 200px;
+      }
+    }
+  }
+}
+.header-business-help  { //800px
+  @media (max-width: 800px) {
+    .header-container-help {
+      .logo {
+        padding: 0 0px;
+        width: 170px;
+        max-width: 170px;
+        min-width: 170px;
+
+        &:hover {
+          border-radius: 6px;
+          background-color: transparent;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+
+// view/business/help/static-pages/index.html.erb
+.help-business-index {
+  display: flex;
+  width: 100%;
+  background: white;
+  min-height: calc(100vh - 60px);
+
+
+  .help-business-content {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+    margin: 0 auto;
+
+    .title-help-business {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 20px 0px;
+      border-radius: 4px;
+
+      .account-title {
+        font-size: 28px;
+        font-weight: 600;
+        width: 100%;
+        margin: 4px 0;
+      }
+      .account-description {
+        font-size: 16px;
+        width: 100%;
+        margin-top: 4px;
+      }
+    }
+
+    .help-options {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 1200px;
+      width: 100%;
+      margin-top: 20px;
+      overflow: hidden;
+
+      .help-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #3C4043;
+        padding: 16px;
+        border-radius: 6px;
+        background: rgba(0, 0, 0, .04);
+        border: 1px solid rgba(0, 0, 0, .01);
+        transition: background-color, border, 0.3s ease;
+
+        .icon {
+          margin-right: 16px;
+          height: 24px;
+          min-width: 24px;
+          max-width: 24px;
+          width: 100%;
+        }
+
+
+        .account-info {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 100%;
+          h2 {
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 4px;
+            color: rgba(0, 0, 0, .9);
+          }
+          p  {
+            font-size: 13px;
+            color: #777;
+          }
+        }
+
+        .icon-flecha {
+          min-width: 10px;
+          max-width: 10px;
+          width: 100%;
+          height: 10px;
+          margin-right: 4px;
+        }
+
+        &:hover {
+          border: #3483FA 1px solid;
+        }
+
+
+
+
+
+
+      }
+    }
+  }
+}
+.help-business-index {
+  @media (max-width: 768px) {
+    .help-business-content {
+      margin: 0;
+      padding: 16px;
+
+      .title-help-business {
+        padding: 0px 0px;
+        .account-title {
+          font-size: 20px;
+        }
+        .account-description{
+          font-size: 14px;
+        }
+      }
+      .help-options {
+        gap: 12px;
+
+        .help-link{
+          padding: 14px;
+          .icon {
+            margin-right: 12px;
+          }
+          .account-info{
+            h2 {
+              font-size: 16px;
+            }
+            p {
+              font-size: 13px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// view/business/help/static-pages/constancia_arca.html.erb
+.constancia-arca {
+  display: flex;
+  width: 100%;
+  background: white;
+  min-height: calc(100vh - 60px);
+
+
+  .help-business-content-arca {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+    margin: 0 auto;
+
+    .products-navigation {
+      font-size: 13px;
+      width: 100%;
+      margin-top: 12px;
+
+
+      ol {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+
+        li {
+          display: flex;
+          align-items: center;
+          margin-right: 10px;
+
+          a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 1;
+            transition: color 0.2s ease-in-out;
+
+
+            span {
+              margin-right: 10px;
+              font-weight: 600;
+              color: #3483FA;
+
+            }
+
+            .icon {
+              width: 8px;
+              height: 8px;
+              fill: currentColor;
+              margin-bottom: 2px;
+            }
+          }
+
+          span {
+            margin-right: 5px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, .9);
+          }
+        }
+      }
+    }
+
+    .title-help-business {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 20px 0px;
+      border-radius: 4px;
+
+      .account-title {
+        font-size: 24px;
+        font-weight: 600;
+        width: 100%;
+        margin: 4px 0;
+      }
+    }
+
+    .help-business-content-arca-text {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      margin-top: 20px;
+      overflow: hidden;
+      padding-bottom: 20px;
+
+      .text-help-business {
+        color: rgba(0, 0, 0, .8);
+        font-size: 16px;
+        line-height: 1.5;
+        span {
+          a {
+            color: #3483FA;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+
+            &:hover {
+              color: #1a73e8;
+            }
+          }
+        }
+      }
+      .image-help-business {
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+    }
+  }
+}
+.constancia-arca {
+  @media (max-width: 768px) {
+    .help-business-content-arca {
+      margin: 0;
+      padding: 16px;
+      .products-navigation {
+        display: none;
+      }
+      .help-business-content-arca-text {
+        margin-top: 0px;
+      }
+
+    }
+  }
+}

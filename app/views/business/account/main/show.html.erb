@@ -1,0 +1,122 @@
+<% content_for :title, "Tu cuenta de negocios" %>
+
+<div class="account-business-main">
+  <section class="sidebar-accounts-business">
+    <div class="sidebar-section">
+
+      <%= link_to business_account_main_path, class: 'link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-home-account-2') %>"></use>
+        </svg>
+        <h2 class="select-view">Mi cuenta</h2>
+      <% end %>
+
+      <%= link_to business_account_orders_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-compras-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Compras</h2>
+      <% end %>
+
+      <%= link_to business_account_profile_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-user-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Mi perfil</h2>
+      <% end %>
+
+      <%= link_to business_account_lists_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-listas-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Mis listas</h2>
+      <% end %>
+
+      <%= link_to business_account_facturacion_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-facturacion-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Facturación</h2>
+      <% end %>
+
+      <%= link_to business_account_settings_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-ajustes-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Ajustes</h2>
+      <% end %>
+
+    </div>
+  </section>
+
+  <section class="account-business-content">
+    <div class="title-account-business">
+      <h1 class="account-title">Tu negocio</h1>
+      <span class="account-description">Administra tu cuenta</span>
+    </div>
+
+    <div class="account-options">
+
+      <% if current_user %>
+        <%= link_to business_account_profile_path, class: 'account-link' do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/business.svg#icon-user-account-1') %>"></use>
+          </svg>
+          <div class="account-info">
+            <h2>Mi Perfil</h2>
+            <p>Administrá o editá los datos de tu perfil.</p>
+          </div>
+        <% end %>
+      <% else %>
+        <span class="disabled-option">Mi Perfil</span>
+      <% end %>
+
+      <%= link_to business_account_orders_path, class: 'account-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-compras-account-1') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>Mis compras</h2>
+          <p>Devolver, cancelar o comprar de nuevo.</p>
+        </div>
+      <% end %>
+
+      <%= link_to business_account_lists_path, class: 'account-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-listas-account-1') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>Mis listas</h2>
+          <p>Mira y modifica, o crea otras nuevas</p>
+        </div>
+      <% end %>
+
+      <%= link_to business_account_facturacion_path, class: 'account-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-facturacion-account-1') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>Facturación</h2>
+          <p>Elimina tu cuenta.</p>
+        </div>
+      <% end %>
+
+      <%= link_to business_account_settings_path, class: 'account-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-ajustes-account-1') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>Ajustes</h2>
+          <p>Elimina tu cuenta.</p>
+        </div>
+      <% end %>
+    </div>
+  </section>
+</div>
+
+<%= render 'business/shared/footer_business' %>

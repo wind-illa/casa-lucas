@@ -1,0 +1,110 @@
+<%= render 'business/help/static_pages/navbar_ayuda_business' %>
+<% content_for :title, "Tu cuenta de negocios" %>
+
+<div class="help-business-index">
+  <section class="help-business-content">
+
+    <div class="title-help-business">
+      <h1 class="account-title">¿Con qué podemos ayudarte?</h1>
+      <span class="account-description">Encontrá respuestas o escribinos directamente si necesitás ayuda personalizada.</span>
+    </div>
+
+    <div class="help-options">
+
+      <%= link_to business_help_about_path, class: 'help-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#Icon-sobre-nosotros') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>Sobre nosotros</h2>
+          <p>Elimina tu cuenta.</p>
+        </div>
+        <svg class="icon-flecha">
+          <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+        </svg>
+      <% end %>
+
+      <%= link_to business_help_contact_path, class: 'help-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#Icon-contacto') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>Contacto</h2>
+          <p>Elimina tu cuenta.</p>
+        </div>
+        <svg class="icon-flecha">
+          <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+        </svg>
+      <% end %>
+
+      <%= link_to '#', class: 'help-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#Icon-tiendas') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>Tiendas oficiales</h2>
+          <p>Encontrá nuestras tiendas y hacé tus compras en persona.</p>
+        </div>
+        <svg class="icon-flecha">
+          <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+        </svg>
+      <% end %>
+
+      <%= link_to '#', class: 'help-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#Icon-medios-pago') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>Cómo pagar tu compra</h2>
+          <p>Encontrá nuestras tiendas y hacé tus compras en persona.</p>
+        </div>
+        <svg class="icon-flecha">
+          <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+        </svg>
+      <% end %>
+
+      <%= link_to '#', class: 'help-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#Icon-cart-envio') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>Métodos de envío</h2>
+          <p>Encontrá nuestras tiendas y hacé tus compras en persona.</p>
+        </div>
+        <svg class="icon-flecha">
+          <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+        </svg>
+      <% end %>
+
+      <%= link_to business_help_constancia_arca_path, class: 'help-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#Icon-guia-arca') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>¿Cómo descargo mi Constancia de inscripción en ARCA?</h2>
+          <p>Elimina tu cuenta.</p>
+        </div>
+        <svg class="icon-flecha">
+          <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+        </svg>
+      <% end %>
+
+      <%= link_to '#', class: 'help-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#Icon-uso-legal') %>"></use>
+        </svg>
+        <div class="account-info">
+          <h2>Información legal y condiciones de uso</h2>
+          <p>Encontrá nuestras tiendas y hacé tus compras en persona.</p>
+        </div>
+        <svg class="icon-flecha">
+          <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+        </svg>
+      <% end %>
+
+    </div>
+
+  </section>
+</div>
+
+<%= render 'business/shared/footer_business' %>

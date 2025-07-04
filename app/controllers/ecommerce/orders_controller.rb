@@ -238,7 +238,6 @@ module Ecommerce
       @order.update(payment_method_id: payment_method_id)
     end
 
-
     def complete_order
       @order.transaction do
         calculate_totals
@@ -257,7 +256,6 @@ module Ecommerce
         @cart.cart_items.destroy_all # Vacía el carrito
       end
     end
-
 
     def calculate_totals
       total_price_data = @cart.total_price
@@ -281,8 +279,6 @@ module Ecommerce
 
       @order.save!
     end
-
-
 
   end
 end

@@ -36,14 +36,6 @@ class Account::ProfilesController < ApplicationController
     end
   end
 
-  # def update_profile_picture
-  #   if @user.update(profile_picture_params)
-  #     redirect_to account_profile_path(@user), notice: 'Foto de perfil actualizada exitosamente.'
-  #   else
-  #     render :show
-  #   end
-  # end
-
   def update_profile_picture
     if params[:user][:profile_picture].present?
       processed_image = ImageProcessing::MiniMagick

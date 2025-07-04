@@ -1,0 +1,12 @@
+<h1>Mis Listas</h1>
+
+<%= link_to 'Crear nueva lista', new_business_account_lista_path, class: 'btn btn-primary' %>
+
+<ul>
+  <% @lists.each do |list| %>
+    <li>
+      <%= link_to list.name, business_account_lista_path(list) %>
+      (<%= list.list_items.count %> productos)
+    </li>
+  <% end %>
+</ul>

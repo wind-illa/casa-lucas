@@ -1,0 +1,229 @@
+<div class="admin-users-administradores">
+  <%= render 'admin/shared/sidevar' %>
+  <div class="section-admin-users-main">
+
+    <section class="section-navigation-user">
+      <ol>
+        <li>
+          <%= link_to admin_users_main_path do %>
+            <span>Gestión general de usuarios</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+
+        <li>
+          <span>Administradores</span>
+        </li>
+
+      </ol>
+    </section>
+
+    <section class="section-title">
+      <div class="title">
+        <%= link_to business_account_profile_path, class: 'arrow-back-link' do %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/business.svg#icon-arrow') %>"></use>
+          </svg>
+        <% end %>
+        <h1 class="category-title">Gestionar administradores </h1>
+      </div>
+
+      <div class="search-container" data-controller="admin--search">
+        <%= form_with url: admin_users_administradores_path, method: :get, data: { controller: 'admin--search' } do |form| %>
+          <svg class="icon">
+            <use xlink:href="<%= asset_path('icons/admin.svg#icon-search-button') %>"></use>
+          </svg>
+
+          <div class="search-input-container">
+            <%= form.text_field :query_text,
+                  placeholder: "Buscar...",
+                  value: params[:query_text],
+                  class: 'search-input',
+                  data: {
+                    'admin--search-target': 'input',
+                    action: 'input->admin--search#toggleClearButton'
+                  } %>
+          </div>
+          <button type="button"
+                  id="clear-search"
+                  class="clear-button"
+                  style="display: none;"
+                  data-action="click->admin--search#clearSearch"
+                  data-admin--search-target="clearButton">
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-clear') %>"></use>
+            </svg>
+          </button>
+          <%= form.submit "Buscar", data: { action: "submit->admin--search#submitForm" } %>
+        <% end %>
+      </div>
+
+    </section>
+
+    <section class="section-links-other-roles">
+
+      <%= link_to admin_users_administradores_path, class: "link-other-role view" do %>
+        <h2 class="title-user">Administradores</h2>
+      <% end %>
+
+      <%= link_to admin_users_repositores_path, class: "link-other-role" do %>
+        <h2 class="title-user">Repositores</h2>
+      <% end %>
+
+      <%= link_to admin_users_cajeros_path, class: "link-other-role" do %>
+        <h2 class="title-user">Cajeros</h2>
+      <% end %>
+
+      <%= link_to admin_users_clientes_regular_index_path, class: "link-other-role" do %>
+        <h2 class="title-user">Cliente Regular</h2>
+      <% end %>
+
+      <%= link_to admin_users_clientes_mayorista_path, class: "link-other-role" do %>
+        <h2 class="title-user">Cliente Mayorista</h2>
+      <% end %>
+
+      <%= link_to  new_admin_users_administradore_path, class: "link-add-new-admin" do %>
+        <svg class="icon-user-role">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icon-add-user') %>"></use>
+        </svg>
+        <h2 class="title-user">Agregar </h2>
+      <% end %>
+
+    </section>
+
+
+    <table class="tabla-administradores">
+      <tbody class="body-administradores">
+        <tr class="tabla-header">
+          <td class="td avatar-name-email-header">OPERADOR</td>
+          <td class="td nn-header"></td>
+          <td class="td other-data-header">OTROS DATOS</td>
+          <td class="td date">FECHA DE REGISTRO</td>
+          <td class="td"></td>
+          <td class="td"></td>
+        </tr>
+
+        <% @administradores.each do |admin| %>
+          <tr class="tabla-body">
+
+            <td class="avatar-td">
+              <% if admin.profile_picture.attached? %>
+                <%= image_tag admin.profile_picture, class: "user-avatar" %>
+              <% else %>
+                <div class="user-avatar-placeholder">
+                  <p><%= "#{admin.first_name.first}#{admin.last_name.first}".upcase %></p>
+                </div>
+              <% end %>
+            </td>
+
+            <td class="td name-email">
+              <h4><%= "#{admin.first_name} #{admin.last_name}" %></h4>
+              <p><%= admin.email %></p>
+            </td>
+
+            <td class="td other-data">
+              <h4>Telefono: <%= admin.phone %></h4>
+              <p>
+                <%= admin.document_type %>
+                <%= if %w[CUIL CUIT].include?(admin.document_type)
+                      formatted = admin.document_id.to_s
+                      "#{formatted[0..1]}-#{formatted[2..-2]}-#{formatted[-1]}"
+                    else
+                      admin.document_id
+                    end
+                %>
+              </p>
+            </td>
+
+            <td class="td fecha">
+              <h4><%= l(admin.created_at, format: "%-d de %B %H:%M") %></h4>
+              <p><%= time_ago_in_words(admin.created_at) %> </p>
+            </td>
+
+            <td class="td status-content">
+              <span class="status <%= admin.status %>">
+                <%= admin.status.humanize %>
+              </span>
+            </td>
+
+            <td class="actions">
+              <div class="filter-container-modal-user-menu" data-controller="menu">
+                <div class="filter">
+                  <%= button_tag type: 'button', class: 'filter-button', data: { action: "click->menu#open" } do %>
+                    <svg class="icon">
+                      <use xlink:href="<%= asset_path('icons/admin.svg#icon-menu-modal-user') %>"></use>
+                    </svg>
+                  <% end %>
+                </div>
+
+                <!-- Modal -->
+
+                <div class="modal-background" data-menu-target="background" data-action="click->menu#close">
+                </div>
+                <div class="modal-lateral" data-menu-target="modal">
+                  <div class="modal-lateral-content">
+
+                    <div class="modal-lateral-header">
+                      <button class="close-modal" data-action="click->menu#close">
+                        <svg class="icon">
+                          <use xlink:href="<%= asset_path('icons/admin.svg#icon-close-modal') %>"></use>
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div class="modal-lateral-body">
+                      <div class="modal">
+
+                        <%= link_to admin_users_administradore_path(admin), class: "btn-info btn-detalle" do %>
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-perfil-user') %>"></use>
+                          </svg>
+                          <span>Ver el Perfil</span>
+                        <% end %>
+
+                        <%= link_to edit_admin_users_administradore_path(admin), class: "btn-info btn-detalle" do %>
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-editar') %>"></use>
+                          </svg>
+                          <span>Editar</span>
+                        <% end %>
+
+                        <%= button_to toggle_status_admin_users_administradore_path(admin),
+                                      method: :patch,
+                                      class: "btn-info btn-detalle",
+                                      form: { data: { turbo_confirm: "¿Estás seguro de #{admin.habilitado? ? 'inhabilitar' : 'habilitar'} este usuario?" } } do %>
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path("icons/admin.svg##{admin.habilitado? ? 'user-block' : 'user-check'}") %>"></use>
+                          </svg>
+                          <span><%= admin.habilitado? ? "Inhabilitar" : "Habilitar" %></span>
+                        <% end %>
+
+
+                        <%= button_to admin_users_administradore_path(admin), method: :delete, data: { turbo_confirm: '¿Estás seguro de eliminar por completo a este administrador?' }, class: 'btn-info btn-detalle' do %>
+                          <svg class="icon">
+                            <use xlink:href="<%= asset_path('icons/admin.svg#icon-cancelar') %>"></use>
+                          </svg>
+                          <span class="ms-2">Eliminar</span>
+                        <% end %>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </td>
+
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+
+    <%= paginate @administradores, theme: :admin %>
+
+
+  </div>
+</div>

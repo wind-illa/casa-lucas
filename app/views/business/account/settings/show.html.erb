@@ -1,0 +1,116 @@
+
+<% content_for :title, "Información Personal" %>
+
+
+
+<div class="account-business-settings">
+  <section class="sidebar-accounts-business">
+    <div class="sidebar-section">
+
+      <%= link_to business_account_main_path, class: 'link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-home-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Mi cuenta</h2>
+      <% end %>
+
+      <%= link_to business_account_orders_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-compras-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Compras</h2>
+      <% end %>
+
+      <%= link_to business_account_profile_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-user-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Mi perfil</h2>
+      <% end %>
+
+      <%= link_to business_account_lists_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-listas-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Mis listas</h2>
+      <% end %>
+
+      <%= link_to business_account_facturacion_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-facturacion-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Facturación</h2>
+      <% end %>
+
+      <%= link_to business_account_settings_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-ajustes-account-2') %>"></use>
+        </svg>
+        <h2 class="select-view">Ajustes</h2>
+      <% end %>
+
+    </div>
+  </section>
+
+  <section class="account-business-content-settings">
+    <div class="profile-info-business">
+      <div class="profile-info-container">
+
+        <div class="categories-title">
+          <div class="title">
+            <%= link_to business_account_main_path, class: 'arrow-back-link' do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/business.svg#icon-arrow') %>"></use>
+              </svg>
+            <% end %>
+            <h1 class="category-title">Ajustes de mi cuenta comercial</h1>
+          </div>
+        </div>
+
+        <div class="settings-business-info">
+
+          <%= link_to edit_password_business_account_settings_path, class: 'card-business-settings ' do %>
+            <div class="profile-info-detail">
+              <h4 class="profile-info-label">Contraseña</h4>
+              <p class="profile-info-value">**********</p>
+            </div>
+            <div class="icon-edit-conteiner">
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/business.svg#Icon-edit-seting') %>"></use>
+              </svg>
+            </div>
+          <% end %>
+
+          <%= link_to edit_email_business_account_settings_path, class: 'card-business-settings ' do %>
+            <div class="profile-info-detail">
+              <h4 class="profile-info-label">Correo electrónico</h4>
+              <p class="profile-info-value"><%= @user.email %></p>
+            </div>
+            <div class="icon-edit-conteiner">
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/business.svg#Icon-edit-seting') %>"></use>
+              </svg>
+            </div>
+          <% end %>
+
+
+          <%= button_to delete_account_business_account_settings_path, method: :delete, data: { turbo_confirm: '¿Estás seguro que querés eliminar tu cuenta?' }, class: 'card-business-settings ' do %>
+            <div class="profile-info-detail">
+              <h4 class="profile-info-label">Eliminar cuenta comercial</h4>
+              <p class="profile-info-value">Podés eliminar tu cuenta de forma definitiva. Esta acción no se puede deshacer.</p>
+            </div>
+            <%= image_tag 'business/Icon-trash-animate.gif', alt: 'Eliminar cuenta', class: 'gif-basura' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<%= render 'business/shared/footer_business' %>

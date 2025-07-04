@@ -1,0 +1,40 @@
+<% content_for :title, "#{@category.category_name} | Baratísimo Bazar" %>
+
+<div class="ui-category-trends-show">
+
+  <div class="categories-title">
+    <div class="title">
+      <%= link_to business_categories_path, class: 'arrow-back-link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/admin.svg#icon-arrow') %>"></use>
+        </svg>
+      <% end %>
+      <h1 class="category-title"><%= @category.category_name %></h1>
+      <div class="arrow-back-link space"></div>
+    </div>
+  </div>
+
+  <% if @subcategories.present? %>
+    <section class="categories-list">
+      <div class="list">
+        <% @subcategories.each do |subcategory| %>
+          <div class="category-card">
+            <%= link_to business_category_subcategory_path(@category, subcategory), class: "category-link" do %>
+
+              <div class="category-image">
+                <%= image_tag url_for(subcategory.subcategory_image), alt: subcategory.subcategory_name, class: "image" if subcategory.subcategory_image.attached? %>
+              </div>
+              <div class="category-info">
+                <h2 class="category-name"><%= subcategory.subcategory_name %></h2>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% else %>
+    <p class="no-categories-message">No hay categorías disponibles en este momento.</p>
+  <% end %>
+</div>
+
+<%= render 'business/shared/footer_business' %>

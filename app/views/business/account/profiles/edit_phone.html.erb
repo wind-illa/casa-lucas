@@ -1,0 +1,58 @@
+
+
+<div class="account-business-profile-edit">
+  <div class="container-edit-profile">
+
+    <div class="products-navigation">
+      <ol>
+        <li>
+          <%= link_to business_account_profile_path do %>
+            <span>Mi perfil</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to informacion_business_account_profile_path do %>
+            <span>Información Personal</span>
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+            </svg>
+          <% end %>
+        </li>
+
+        <li>
+          <span>Editar mi telefono</span>
+        </li>
+
+      </ol>
+    </div>
+
+
+
+    <div class="profile-header">
+      <h1 class="profile-title">¿A qué número querés que te llamemos?</h1>
+      <p class="profile-description">Si es necesario, los asesores de Elyza Negocios se pondrán en contacto con vos al número que hayas indicado.</p>
+      <p class="profile-instructions">Ingresá tu número de contacto comercial. Si no tenés uno, podés ingresar tu número personal.</p>
+    </div>
+
+    <div class="profile-form">
+      <%= form_with model: @user, url: business_account_profile_path, method: :patch, local: true, class: 'edit-name-form' do |form| %>
+        <div class="flex-group">
+          <div class="form-group">
+            <%= form.label :edit_phone, 'Teléfono comercial o personal', class: 'form-label' %>
+            <%= form.text_field :phone, value: current_user.phone, class: 'form-control', required: true, placeholder: 'Ingresá tu número' %>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+          <%= link_to 'Volver', informacion_business_account_profile_path, class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

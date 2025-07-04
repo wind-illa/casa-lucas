@@ -1,0 +1,190 @@
+<% content_for :title, "Mis compras" %>
+
+<div class="account-business-orders">
+  <section class="sidebar-accounts-business">
+    <div class="sidebar-section">
+
+      <%= link_to business_account_main_path, class: 'link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-home-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Mi cuenta</h2>
+      <% end %>
+
+      <%= link_to business_account_orders_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-compras-account-2') %>"></use>
+        </svg>
+        <h2 class="select-view">Compras</h2>
+      <% end %>
+
+      <%= link_to business_account_profile_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-user-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Mi perfil</h2>
+      <% end %>
+
+      <%= link_to business_account_lists_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-listas-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Mis listas</h2>
+      <% end %>
+
+      <%= link_to business_account_facturacion_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-facturacion-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Facturación</h2>
+      <% end %>
+
+      <%= link_to business_account_settings_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-ajustes-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Ajustes</h2>
+      <% end %>
+
+    </div>
+  </section>
+
+
+  <div class="account-business-content">
+    <div class="purchase-history-container">
+
+
+      <div class="arrow-back">
+        <div class="header-order-index">
+          <h3 class="purchase-history-title">
+            Compras
+          </h3>
+          <div class="barra">
+          </div>
+          <span class="order-count">
+            <%= @orders.count %> compras
+          </span>
+        </div>
+
+        <div class="search-container" data-controller="search">
+          <%= form_with url: ecommerce_orders_path, method: :get, data: { controller: 'search' } do |form| %>
+
+            <!-- Icono de búsqueda (no cambia) -->
+            <svg class="icon">
+              <use xlink:href="<%= asset_path('icons/admin.svg#icon-search-button') %>"></use>
+            </svg>
+
+            <div class="search-input-container">
+              <%= form.text_field :query_texto, placeholder: "Nº de compra...", value: params[:query_texto], class: 'search-input', data: { search_target: 'input', action: 'input->search#toggleClearButton' } %>
+            </div>
+
+            <button type="button" id="clear-search" class="clear-button" style="display: none;" data-action="click->search#clearSearch" data-search-target="clearButton">
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/admin.svg#icon-clear') %>"></use>
+              </svg>
+            </button>
+
+            <%= form.submit "Buscar", data: { action: "submit->search#submitForm" } %>
+          <% end %>
+        </div>
+      </div>
+
+
+
+
+    <div class="main-container-orders">
+      <% if @orders.any? %>
+        <% @orders.each do |order| %>
+          <div class="order-item-card">
+            <div class="order-item-header">
+            <span class="header-card fecha">
+              <%= I18n.l(order.created_at, format: "%d de %B %H:%M").downcase %>
+            </span>
+              <span class="header-card id"># <%= order.id %></span>
+            </div>
+
+            <div class="order-item-body">
+              <div class="order-item-info">
+                <div class="img-container-order">
+
+                  <% items_count = order.order_items.first(3).size %>
+                  <div class="order-images images-<%= items_count %>">
+                    <% order.order_items.first(3).each do |item| %>
+                      <div class="img-product-order">
+                        <% if item.images.attached? %>
+                          <%= image_tag url_for(item.images.first), alt: item.product.product_name, class: "product-thumbnail" %>
+                        <% else %>
+                          <div class="no-image">Sin imagen</div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                    <% if items_count > 1 %>
+                      <div class="product-info">
+                        <span class="summary-label"><%= order.order_items.sum(:quantity) %></span>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="order-item-status">
+                  <span class="status <%= status_class(order.status) %>">
+                    <%= order.status.humanize %>
+                  </span>
+
+                  <% case order.status %>
+                    <% when "pendiente" %>
+                      <span class="user-name">Aún no has finalizado tu compra.</span>
+                    <% when "pago_pendiente" %>
+                      <span class="user-name">Paga ahora para asegurar tu stock.</span>
+                    <% when "pagado" %>
+                      <span class="user-name">Tu pago ha sido confirmado con éxito.</span>
+                    <% when "en_preparacion" %>
+                      <span class="user-name">Tu compra está siendo preparada.</span>
+                    <% when "listo_para_retirar" %>
+                      <span class="user-name">Acercate a el Baratísimo para retirar tu compra</span>
+                    <% when "enviado" %>
+                      <span class="user-name">¡Tu compra ya está en camino!</span>
+                    <% when "entregado" %>
+                      <span class="user-name">¡Gracias por tu compra!</span>
+                    <% when "cancelado" %>
+                      <span class="user-name">Tu compra ha sido cancelada.</span>
+                    <% else %>
+                      <span class="user-name">No hay un estado disponible para tu compra.</span>
+                  <% end %>
+
+
+
+                </div>
+
+                <%= link_to ecommerce_order_path(order), class: "order-link" do %>
+                  <span class="order-details-link">Ver compra</span>
+                <% end %>
+
+              </div>
+              <div class="order-item-detail">
+                <span><%= number_to_currency(order.total_price) %></span>
+                <span><%= order.payment_method&.name %> - <%= order.shipping_method&.name %></span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="no-orders-message">No tienes órdenes registradas.</p>
+      <% end %>
+    </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<%= paginate @orders, theme: 'custom-pagination-orders' %>
+<%= render 'shared/whatsApp' %>
+<%= render 'business/shared/footer_business' %>

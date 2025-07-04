@@ -1,0 +1,89 @@
+<div class="admin-users-administradores-show">
+  <%= render 'admin/shared/sidevar' %>
+  <div class="show-administradores-container">
+
+
+
+
+    <div class="show-administrador">
+
+
+        <section class="section-profile-header">
+
+
+          <div class="profile-background">
+            <section class="section-navigation-user">
+              <ol>
+                <li>
+                  <%= link_to admin_users_main_path do %>
+                    <span>Gestión general de usuarios</span>
+                    <svg class="icon">
+                      <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+                    </svg>
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to admin_users_administradores_path do %>
+                    <span>Administradores</span>
+                    <svg class="icon">
+                      <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+                    </svg>
+                  <% end %>
+                </li>
+
+                <li>
+                  <span>Administradores</span>
+                </li>
+
+              </ol>
+            </section>
+          </div>
+
+          <div class="profile-pictures">
+
+            <%= form_with model: @administrador, url: update_picture_business_account_profile_path, method: :patch, local: true, html: { class: "profile-form", data: { controller: "avatar-profiles" } } do |f| %>
+
+              <div class="field profile-picture-field">
+                <%= f.file_field :profile_picture, accept: "image/*", data: { action: "change->avatar-profiles#preview", avatar_profiles_target: "input" }, class: 'profile-file-input', style: "display: none;" %>
+                <div class="profile-picture-preview" data-action="click->avatar-profiles#selectFile">
+                  <% if @administrador.profile_picture.attached? %>
+                    <%= image_tag url_for(@administrador.profile_picture), id: "profilePreview", alt: "Vista previa de la foto de perfil", class: "preview-image" %>
+                  <% else %>
+                    <div class="no-image-preview">
+                      <p class="no-image-text"><%= "#{@administrador.first_name.first}#{@administrador.last_name.first}".upcase %></p>
+                    </div>
+                  <% end %>
+                </div>
+                <svg class="icon-camera">
+                  <use xlink:href="<%= asset_path('icons/business.svg#icon-camera-account') %>"></use>
+                </svg>
+              </div>
+            <% end %>
+
+            <div class="user-info">
+              <p class="user-name"><%= @administrador.first_name.capitalize %> <%= @administrador.last_name.capitalize %></p>
+              <p class="user-email"><%= @administrador.email %></p>
+              <p class="user-status"><%= @administrador.role.humanize %></p>
+            </div>
+          </div>
+
+
+
+        </section>
+
+        <section class="section-profile-body">
+        </section>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+  </div>
+</div>

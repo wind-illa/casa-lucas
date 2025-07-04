@@ -1,0 +1,153 @@
+<% content_for :title, "Información Personal" %>
+
+
+
+<div class="account-business-informacion">
+  <section class="sidebar-accounts-business">
+    <div class="sidebar-section">
+
+      <%= link_to business_account_main_path, class: 'link' do %>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-home-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Mi cuenta</h2>
+      <% end %>
+
+      <%= link_to business_account_orders_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-compras-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Compras</h2>
+      <% end %>
+
+      <%= link_to business_account_profile_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-user-account-2') %>"></use>
+        </svg>
+        <h2 class="select-view">Mi perfil</h2>
+      <% end %>
+
+      <%= link_to business_account_lists_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-listas-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Mis listas</h2>
+      <% end %>
+
+      <%= link_to business_account_facturacion_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-facturacion-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Facturación</h2>
+      <% end %>
+
+      <%= link_to business_account_settings_path, class: 'link' do %>
+        <div class="barra-active"></div>
+        <svg class="icon">
+          <use xlink:href="<%= asset_path('icons/business.svg#icon-ajustes-account-1') %>"></use>
+        </svg>
+        <h2 class="title-view">Ajustes</h2>
+      <% end %>
+
+    </div>
+  </section>
+
+  <section class="account-business-content">
+    <div class="profile-info-business">
+      <div class="profile-info-container">
+
+
+        <div class="products-navigation">
+          <ol>
+            <li>
+              <%= link_to business_account_profile_path do %>
+                <span>Mi perfil</span>
+                <svg class="icon">
+                  <use xlink:href="<%= asset_path('icons/business.svg#flecha-separacion-siguiente') %>"></use>
+                </svg>
+              <% end %>
+            </li>
+
+            <li>
+              <span>Información Personal</span>
+            </li>
+
+          </ol>
+        </div>
+
+        <div class="categories-title">
+          <div class="title">
+            <%= link_to business_account_profile_path, class: 'arrow-back-link' do %>
+              <svg class="icon">
+                <use xlink:href="<%= asset_path('icons/business.svg#icon-arrow') %>"></use>
+              </svg>
+            <% end %>
+            <h1 class="category-title">Administrá tu información</h1>
+          </div>
+        </div>
+
+        <div class="profile-personal-info">
+
+          <div class="profile-info-item profile-name-info">
+            <div class="profile-info-detail">
+              <h4 class="profile-info-label">Nombre elegido</h4>
+              <p class="profile-info-value"><%= "#{current_user.first_name} #{current_user.last_name}" %></p>
+            </div>
+            <%= link_to 'Modificar', edit_name_business_account_profile_path, class: 'profile-info-edit-link' %>
+          </div>
+
+          <% if current_user.razon_social.present? %>
+            <div class="profile-info-item profile-name-info">
+              <div class="profile-info-detail">
+                <h4 class="profile-info-label">Razón social</h4>
+                <p class="profile-info-value"><%= current_user.razon_social %></p>
+              </div>
+              <%= link_to 'Modificar', '#', class: 'profile-info-edit-link disabled-link', tabindex: -1, aria_disabled: true %>
+            </div>
+          <% end %>
+
+          <div class="profile-info-item profile-name-info">
+            <div class="profile-info-detail">
+              <h4 class="profile-info-label">Condición fiscal</h4>
+              <p class="profile-info-value"><%= current_user.condicion_fiscal.humanize %></p>
+            </div>
+            <%= link_to 'Modificar', fiscal_verification_form_business_account_profile_path, class: 'profile-info-edit-link' %>
+          </div>
+
+          <div class="profile-info-item profile-telephone-info">
+            <div class="profile-info-detail">
+              <h4 class="profile-info-label">Teléfono</h4>
+              <p class="profile-info-value">
+                <%= current_user.phone.present? ? current_user.phone : "<span class='missing-data'>Actualiza tu teléfono</span>".html_safe %>
+              </p>
+            </div>
+            <%= link_to 'Modificar', edit_phone_business_account_profile_path, class: 'profile-info-edit-link' %>
+          </div>
+
+          <div class="profile-info-item profile-dni-info">
+            <div class="profile-info-detail">
+              <h4 class="profile-info-label">Tu número de <%= current_user.document_type %></h4>
+              <p class="profile-info-value">
+                <% case current_user.document_type.to_sym %>
+                <% when :CUIL, :CUIT %>
+                  <%= current_user.document_id&.gsub(/(\d{2})(\d{8})(\d{1})/, '\1-\2-\3') %>
+                <% else %>
+                  <%= current_user.document_id %>
+                <% end %>
+              </p>
+            </div>
+            <%= link_to 'Modificar', edit_dni_business_account_profile_path, class: 'profile-info-edit-link' %>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<%= render 'business/shared/footer_business' %>

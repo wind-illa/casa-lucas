@@ -4,7 +4,7 @@ class Admin::UsersController < ApplicationController
   before_action :set_navbar_title
 
   def clientes
-    @users = User.includes(:addresses).where(role: :cliente)
+    @users = User.includes(:addresses).where(role: :cliente_regular)
     @users = @users.search_full_text(params[:query_text]) if params[:query_text].present?
     @users = @users.order(created_at: :desc)
     @users = @users.page(params[:page]).per(20)
@@ -68,7 +68,7 @@ class Admin::UsersController < ApplicationController
   #     render :edit, status: :unprocessable_entity # 👈 Esto le dice a Turbo que renderice correctamente
   #   end
   # end
-  
+
   def update
     # Procesar nueva imagen si se cargó
     if params[:user][:profile_picture].present?
@@ -133,12 +133,19 @@ class Admin::UsersController < ApplicationController
     params.require(:user).permit(
       :first_name, :last_name, :email, :password, :password_confirmation,
       :document_id, :phone, :role, :profile_picture, :document_type,
-      addresses_attributes: %i[id street_name street_number floor apartment locality city province_code postal_code indications _destroy]
+      :razon_social, :cuit, :condicion_fiscal,  # asegurate que estos estén permitidos
+      addresses_attributes: %i[
+        id street_name street_number floor apartment locality city
+        province_code postal_code indications _destroy
+      ]
     ).tap do |whitelisted|
       whitelisted[:document_type] = User.document_types.key(params[:user][:document_type].to_i) if params[:user][:document_type].present?
       whitelisted[:role] = User.roles.key(params[:user][:role].to_i) if params[:user][:role].present?
+      whitelisted[:condicion_fiscal] = User.condicion_fiscals.key(params[:user][:condicion_fiscal].to_i) if params[:user][:condicion_fiscal].present?
     end
   end
+
+
 
 
 

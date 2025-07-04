@@ -1,0 +1,18 @@
+<section class="account-business-fiscal-verification-pending">
+  <div class="fiscal-verification-pending-container">
+
+    <svg class="icon">
+      <use xlink:href="<%= asset_path('icons/business.svg#Icono-verificacion-fiscal') %>"></use>
+    </svg>
+    <h1 class="title">
+      Estamos verificando tus datos
+    </h1>
+    <p class="description">
+      Tu constancia está siendo verificada. En un plazo de 24 horas te avisaremos si fue aprobada. Mientras tanto, podés seguir usando tu cuenta con total normalidad.
+    </p>
+    <div class="actions">
+      <%= link_to 'Ir al inicio', business_root_path, class: 'btn btn-primary' %>
+      <%= link_to 'Volver', informacion_business_account_profile_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+</section>

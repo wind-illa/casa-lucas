@@ -20,20 +20,13 @@ class Order < ApplicationRecord
   }
 
 
-  enum status: {
-    pendiente: 0,           # El pedido fue creado pero no se ha procesado
-    pago_pendiente: 1,      # El pedido está listo, pero el pago está pendiente (pago en tienda o contra entrega)
-    pagado: 2,              # El pago fue confirmado
-    en_preparacion: 3,      # El pedido está siendo preparado
-    listo_para_retirar: 4,  # El pedido está listo para ser retirado en tienda (si aplica)
-    enviado: 5,             # El pedido fue enviado al cliente
-    entregado: 6,           # El pedido fue entregado al cliente
-    cancelado: 7,           # El pedido fue cancelado
-  }
+  enum :status, { pendiente: 0, pago_pendiente: 1, pagado: 2, en_preparacion: 3, listo_para_retirar: 4, enviado: 5, entregado: 6, cancelado: 7 }
+
 
 
   validates :status, presence: true
   before_validation :set_default_status, on: :create
+
 
 
   private
